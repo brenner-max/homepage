@@ -146,6 +146,10 @@ section{padding:5rem 0}
 .cta-features{display:flex;justify-content:center;gap:2rem;flex-wrap:wrap;margin-bottom:2.5rem}
 .cta-features span{color:var(--blue-200);font-size:.9rem;display:flex;align-items:center;gap:.4rem}
 .btn-cta{font-size:1.1rem;padding:1rem 2.5rem;animation:pulseGlow 3s infinite}
+.cta-form{display:flex;gap:.75rem;justify-content:center;flex-wrap:wrap;margin-bottom:1rem}
+.cta-form input[type=email]{padding:.85rem 1.2rem;border-radius:10px;border:1px solid rgba(255,255,255,.2);background:rgba(255,255,255,.1);color:var(--white);font-size:.95rem;font-family:var(--font-body);width:280px;outline:none;transition:border .3s}
+.cta-form input[type=email]::placeholder{color:var(--blue-300)}
+.cta-form input[type=email]:focus{border-color:var(--cyan);background:rgba(255,255,255,.15)}
 
 /* TRUST */
 .trust{text-align:center}
@@ -330,7 +334,10 @@ footer{background:var(--blue-950);color:var(--blue-200);padding:3rem 0 1.5rem}
     <span>✓ Sofort umsetzbare Tipps</span>
     <span>✓ DSGVO-konform</span>
   </div>
-  <a href="mailto:info@bremos.org?subject=Kostenlose%20Erstberatung" class="btn btn-primary btn-cta">Jetzt Erstberatung buchen →</a>
+  <form class="cta-form" onsubmit="sendErstberatung(event)">
+    <input type="email" id="interessent-email" placeholder="Ihre E-Mail-Adresse" required autocomplete="email">
+    <button type="submit" class="btn btn-primary btn-cta">Jetzt kostenlose Erstberatung buchen →</button>
+  </form>
   <p style="margin-top:1rem;font-size:.85rem;color:var(--blue-300)">📞 0157 57054754 · ✉ info@bremos.org</p>
 </div>
 </section>
@@ -436,6 +443,15 @@ footer{background:var(--blue-950);color:var(--blue-200);padding:3rem 0 1.5rem}
 // Navbar scroll
 const nav=document.getElementById('navbar');
 window.addEventListener('scroll',()=>{nav.classList.toggle('scrolled',window.scrollY>50)});
+
+// Erstberatung Formular
+function sendErstberatung(e){
+  e.preventDefault();
+  const email=document.getElementById('interessent-email').value;
+  const subject=encodeURIComponent('Anfrage Kostenlose Erstberatung');
+  const body=encodeURIComponent('Hallo Monika,\n\nich interessiere mich für eine kostenlose Erstberatung.\n\nMeine E-Mail-Adresse: '+email+'\n\nBitte melden Sie sich bei mir.\n\nMit freundlichen Grüßen');
+  window.location.href='mailto:info@bremos.org?subject='+subject+'&body='+body;
+}
 
 // Reveal animations
 const observer=new IntersectionObserver((entries)=>{entries.forEach(e=>{if(e.isIntersecting){e.target.classList.add('visible');observer.unobserve(e.target)}})},{threshold:0.15});
