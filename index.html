@@ -1,0 +1,453 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Monika Brenner KI-Automationen — Mehr Effizienz durch intelligente Automatisierung</title>
+<meta name="description" content="KI-Beratung und Automatisierungen für Solopreneure, Arztpraxen und kleine Unternehmen. 25 Jahre Erfahrung im Gesundheitswesen, jetzt mit KI-Power.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+:root{
+  --blue-950:#0a1628;--blue-900:#0f1d35;--blue-800:#1e3a5f;--blue-700:#1e3a8a;
+  --blue-600:#2563eb;--blue-500:#3b82f6;--blue-400:#60a5fa;--blue-300:#93c5fd;
+  --blue-200:#bfdbfe;--blue-100:#dbeafe;--blue-50:#eff6ff;
+  --cyan:#0ea5e9;--cyan-light:#67e8f9;--cyan-dark:#0284c7;
+  --white:#ffffff;--gray-50:#f8fafc;--gray-100:#f1f5f9;--gray-200:#e2e8f0;
+  --gray-300:#cbd5e1;--gray-400:#94a3b8;--gray-500:#64748b;--gray-600:#475569;
+  --gray-700:#334155;--gray-800:#1e293b;--gray-900:#0f172a;
+  --font-heading:'JetBrains Mono',monospace;--font-body:'Inter',sans-serif;
+  --shadow:0 4px 6px -1px rgba(0,0,0,.1),0 2px 4px -2px rgba(0,0,0,.1);
+  --shadow-lg:0 10px 25px -3px rgba(0,0,0,.15),0 4px 6px -4px rgba(0,0,0,.1);
+  --shadow-glow:0 0 30px rgba(14,165,233,.2);
+}
+html{scroll-behavior:smooth;font-size:16px}
+body{font-family:var(--font-body);color:var(--gray-800);background:var(--white);line-height:1.7;overflow-x:hidden}
+h1,h2,h3,h4{font-family:var(--font-heading);font-weight:600;line-height:1.3}
+.container{max-width:1140px;margin:0 auto;padding:0 1.5rem}
+a{color:var(--blue-600);text-decoration:none;transition:color .3s}
+a:hover{color:var(--cyan)}
+img{max-width:100%;height:auto}
+
+/* Animations */
+@keyframes fadeInUp{from{opacity:0;transform:translateY(30px)}to{opacity:1;transform:translateY(0)}}
+@keyframes float{0%,100%{transform:translateY(0)}50%{transform:translateY(-10px)}}
+@keyframes pulseGlow{0%,100%{box-shadow:0 0 20px rgba(14,165,233,.15)}50%{box-shadow:0 0 40px rgba(14,165,233,.3)}}
+@keyframes slideInLeft{from{opacity:0;transform:translateX(-40px)}to{opacity:1;transform:translateX(0)}}
+@keyframes gradientShift{0%{background-position:0% 50%}50%{background-position:100% 50%}100%{background-position:0% 50%}}
+.reveal{opacity:0;transform:translateY(30px);transition:all .8s cubic-bezier(.4,0,.2,1)}.reveal.visible{opacity:1;transform:translateY(0)}
+
+/* NAV */
+nav{position:fixed;top:0;left:0;right:0;z-index:1000;padding:1rem 0;transition:all .4s}
+nav.scrolled{background:rgba(10,22,40,.95);backdrop-filter:blur(12px);box-shadow:var(--shadow-lg);padding:.6rem 0}
+nav .container{display:flex;justify-content:space-between;align-items:center}
+.nav-logo{display:flex;align-items:center;gap:.75rem;color:var(--white);font-family:var(--font-heading);font-weight:700;font-size:1.1rem}
+.nav-logo img{width:42px;height:42px;border-radius:8px}
+.nav-links{display:flex;gap:2rem;align-items:center;list-style:none}
+.nav-links a{color:var(--blue-200);font-size:.9rem;font-weight:500;transition:color .3s}
+.nav-links a:hover{color:var(--cyan-light)}
+.nav-cta{background:linear-gradient(135deg,var(--cyan),var(--blue-500));color:var(--white)!important;padding:.6rem 1.4rem;border-radius:8px;font-weight:600;font-size:.85rem;transition:transform .3s,box-shadow .3s}
+.nav-cta:hover{transform:translateY(-2px);box-shadow:var(--shadow-glow)}
+.hamburger{display:none;flex-direction:column;gap:5px;cursor:pointer;background:none;border:none;padding:4px}
+.hamburger span{display:block;width:24px;height:2px;background:var(--white);border-radius:2px;transition:all .3s}
+
+/* HERO */
+.hero{min-height:100vh;display:flex;align-items:center;position:relative;overflow:hidden;
+  background:linear-gradient(135deg,var(--blue-950) 0%,var(--blue-900) 40%,var(--blue-800) 100%)}
+.hero::before{content:'';position:absolute;top:0;left:0;right:0;bottom:0;
+  background:radial-gradient(ellipse at 70% 20%,rgba(14,165,233,.12) 0%,transparent 60%),
+  radial-gradient(ellipse at 20% 80%,rgba(59,130,246,.08) 0%,transparent 50%)}
+.hero-grid{display:grid;grid-template-columns:1fr 1fr;gap:3rem;align-items:center;position:relative;z-index:1}
+.hero-text{animation:fadeInUp .8s ease-out}
+.hero-badge{display:inline-flex;align-items:center;gap:.5rem;background:rgba(14,165,233,.12);border:1px solid rgba(14,165,233,.25);color:var(--cyan-light);padding:.4rem 1rem;border-radius:50px;font-size:.8rem;font-weight:500;margin-bottom:1.5rem}
+.hero-badge::before{content:'';width:6px;height:6px;background:var(--cyan);border-radius:50%;animation:pulseGlow 2s infinite}
+.hero h1{font-size:3rem;color:var(--white);margin-bottom:1.2rem;line-height:1.15}
+.hero h1 .accent{background:linear-gradient(135deg,var(--cyan),var(--blue-400));-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text}
+.hero p{color:var(--blue-200);font-size:1.15rem;margin-bottom:2rem;max-width:520px}
+.hero-buttons{display:flex;gap:1rem;flex-wrap:wrap}
+.btn{display:inline-flex;align-items:center;gap:.5rem;padding:.85rem 2rem;border-radius:10px;font-weight:600;font-size:.95rem;transition:all .3s;cursor:pointer;border:none;font-family:var(--font-body)}
+.btn-primary{background:linear-gradient(135deg,var(--cyan),var(--blue-500));color:var(--white);box-shadow:0 4px 15px rgba(14,165,233,.3)}
+.btn-primary:hover{transform:translateY(-3px);box-shadow:0 8px 25px rgba(14,165,233,.4);color:var(--white)}
+.btn-secondary{background:rgba(255,255,255,.08);color:var(--white);border:1px solid rgba(255,255,255,.15)}
+.btn-secondary:hover{background:rgba(255,255,255,.15);transform:translateY(-2px);color:var(--white)}
+.hero-visual{display:flex;justify-content:center;animation:fadeInUp 1s ease-out .3s both}
+.hero-card{background:rgba(255,255,255,.04);border:1px solid rgba(255,255,255,.08);border-radius:16px;padding:2rem;backdrop-filter:blur(10px);animation:float 6s ease-in-out infinite}
+.hero-card .metric{display:flex;align-items:center;gap:1rem;padding:1rem 0;border-bottom:1px solid rgba(255,255,255,.06)}
+.hero-card .metric:last-child{border:none}
+.hero-card .metric-icon{width:42px;height:42px;border-radius:10px;display:flex;align-items:center;justify-content:center;font-size:1.2rem;flex-shrink:0}
+.hero-card .metric-text h4{color:var(--white);font-size:.9rem;margin-bottom:.2rem}
+.hero-card .metric-text p{color:var(--blue-300);font-size:.8rem;margin:0}
+
+/* SECTIONS */
+section{padding:5rem 0}
+.section-label{display:inline-flex;align-items:center;gap:.5rem;font-family:var(--font-heading);font-size:.8rem;font-weight:600;color:var(--cyan-dark);text-transform:uppercase;letter-spacing:2px;margin-bottom:1rem}
+.section-title{font-size:2.2rem;color:var(--blue-950);margin-bottom:1rem}
+.section-subtitle{font-size:1.1rem;color:var(--gray-500);max-width:640px;margin-bottom:3rem}
+
+/* USP */
+.usp{background:var(--gray-50)}
+.usp-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:2rem}
+.usp-card{background:var(--white);border-radius:16px;padding:2rem;border:1px solid var(--gray-200);transition:all .4s;position:relative;overflow:hidden}
+.usp-card:hover{transform:translateY(-6px);box-shadow:var(--shadow-lg);border-color:var(--blue-300)}
+.usp-card::after{content:'';position:absolute;top:0;left:0;right:0;height:3px;background:linear-gradient(90deg,var(--cyan),var(--blue-500));transform:scaleX(0);transition:transform .4s;transform-origin:left}
+.usp-card:hover::after{transform:scaleX(1)}
+.usp-icon{width:52px;height:52px;border-radius:12px;display:flex;align-items:center;justify-content:center;font-size:1.5rem;margin-bottom:1.2rem;background:var(--blue-50);color:var(--blue-600)}
+.usp-card h3{font-size:1.15rem;margin-bottom:.6rem;color:var(--blue-900)}
+.usp-card p{font-size:.92rem;color:var(--gray-600);line-height:1.7}
+
+/* SERVICES */
+.services-grid{display:grid;grid-template-columns:repeat(2,1fr);gap:2rem}
+.service-card{display:flex;gap:1.5rem;background:var(--white);padding:2rem;border-radius:16px;border:1px solid var(--gray-200);transition:all .3s}
+.service-card:hover{box-shadow:var(--shadow);border-color:var(--blue-200)}
+.service-num{font-family:var(--font-heading);font-size:2rem;font-weight:700;color:var(--blue-200);line-height:1}
+.service-card h3{font-size:1.05rem;color:var(--blue-900);margin-bottom:.4rem}
+.service-card p{font-size:.9rem;color:var(--gray-600)}
+
+/* PAIN / SOLUTION */
+.pain{background:linear-gradient(135deg,var(--blue-950),var(--blue-900));color:var(--white)}
+.pain .section-label{color:var(--cyan-light)}
+.pain .section-title{color:var(--white)}
+.pain .section-subtitle{color:var(--blue-200)}
+.pain-grid{display:grid;grid-template-columns:1fr 1fr;gap:3rem;align-items:start}
+.pain-list{display:flex;flex-direction:column;gap:1.2rem}
+.pain-item{display:flex;gap:1rem;align-items:start;background:rgba(255,255,255,.04);border:1px solid rgba(255,255,255,.06);border-radius:12px;padding:1.2rem}
+.pain-icon{font-size:1.4rem;flex-shrink:0;margin-top:2px}
+.pain-item h4{color:var(--white);font-size:.95rem;margin-bottom:.3rem}
+.pain-item p{color:var(--blue-300);font-size:.85rem;margin:0}
+.solution-list .pain-item{border-color:rgba(14,165,233,.2);background:rgba(14,165,233,.06)}
+
+/* ABOUT */
+.about{background:var(--gray-50)}
+.about-grid{display:grid;grid-template-columns:1fr 1.2fr;gap:3rem;align-items:center}
+.about-image{aspect-ratio:1;background:linear-gradient(135deg,var(--blue-700),var(--blue-900));border-radius:20px;display:flex;align-items:center;justify-content:center;position:relative;overflow:hidden}
+.about-image::after{content:'';position:absolute;inset:0;background:radial-gradient(circle at 30% 40%,rgba(14,165,233,.15),transparent 60%)}
+.about-initials{font-family:var(--font-heading);font-size:5rem;color:var(--white);opacity:.9;position:relative;z-index:1}
+.about-stats{display:grid;grid-template-columns:repeat(3,1fr);gap:1rem;margin-top:2rem}
+.stat{text-align:center;padding:1rem;background:var(--white);border-radius:12px;border:1px solid var(--gray-200)}
+.stat-num{font-family:var(--font-heading);font-size:1.8rem;font-weight:700;color:var(--blue-600)}
+.stat-label{font-size:.8rem;color:var(--gray-500)}
+
+/* PROCESS */
+.process-steps{display:grid;grid-template-columns:repeat(4,1fr);gap:1.5rem;counter-reset:step}
+.step{position:relative;padding:2rem 1.5rem;background:var(--white);border-radius:16px;border:1px solid var(--gray-200);text-align:center;transition:all .3s;counter-increment:step}
+.step:hover{box-shadow:var(--shadow);transform:translateY(-4px)}
+.step::before{content:counter(step);font-family:var(--font-heading);font-size:2.5rem;font-weight:700;color:var(--blue-100);display:block;margin-bottom:.8rem}
+.step h3{font-size:1rem;color:var(--blue-900);margin-bottom:.5rem}
+.step p{font-size:.85rem;color:var(--gray-500)}
+
+/* CTA */
+.cta-section{background:linear-gradient(135deg,var(--blue-700),var(--blue-900));padding:5rem 0;text-align:center;position:relative;overflow:hidden}
+.cta-section::before{content:'';position:absolute;inset:0;background:radial-gradient(circle at 50% 50%,rgba(14,165,233,.15),transparent 70%)}
+.cta-section *{position:relative;z-index:1}
+.cta-section h2{font-size:2.4rem;color:var(--white);margin-bottom:1rem}
+.cta-section p{color:var(--blue-200);font-size:1.1rem;margin-bottom:2rem;max-width:560px;margin-left:auto;margin-right:auto}
+.cta-features{display:flex;justify-content:center;gap:2rem;flex-wrap:wrap;margin-bottom:2.5rem}
+.cta-features span{color:var(--blue-200);font-size:.9rem;display:flex;align-items:center;gap:.4rem}
+.btn-cta{font-size:1.1rem;padding:1rem 2.5rem;animation:pulseGlow 3s infinite}
+
+/* TRUST */
+.trust{text-align:center}
+.trust-badges{display:flex;justify-content:center;gap:3rem;flex-wrap:wrap;margin-top:2rem}
+.trust-badge{display:flex;flex-direction:column;align-items:center;gap:.5rem}
+.trust-badge .icon{font-size:2rem}
+.trust-badge p{font-size:.85rem;color:var(--gray-600);font-weight:500}
+
+/* FOOTER */
+footer{background:var(--blue-950);color:var(--blue-200);padding:3rem 0 1.5rem}
+.footer-grid{display:grid;grid-template-columns:1.5fr 1fr 1fr 1fr;gap:2rem;margin-bottom:2rem}
+.footer-brand p{font-size:.85rem;margin-top:.8rem;color:var(--gray-400);line-height:1.6}
+.footer-col h4{font-family:var(--font-heading);font-size:.85rem;color:var(--white);margin-bottom:1rem;text-transform:uppercase;letter-spacing:1px}
+.footer-col ul{list-style:none}
+.footer-col li{margin-bottom:.6rem}
+.footer-col a{color:var(--gray-400);font-size:.85rem;transition:color .3s}
+.footer-col a:hover{color:var(--cyan-light)}
+.footer-bottom{border-top:1px solid rgba(255,255,255,.06);padding-top:1.5rem;display:flex;justify-content:space-between;align-items:center;font-size:.8rem;color:var(--gray-500)}
+
+/* LEGAL MODALS */
+.modal-overlay{display:none;position:fixed;inset:0;background:rgba(0,0,0,.6);z-index:2000;backdrop-filter:blur(4px);align-items:center;justify-content:center}
+.modal-overlay.active{display:flex}
+.modal{background:var(--white);border-radius:16px;max-width:700px;width:90%;max-height:80vh;overflow-y:auto;padding:2.5rem;position:relative}
+.modal h2{font-size:1.5rem;margin-bottom:1.5rem;color:var(--blue-900)}
+.modal h3{font-size:1.1rem;margin:1.5rem 0 .5rem;color:var(--blue-800)}
+.modal p,.modal li{font-size:.9rem;color:var(--gray-600);line-height:1.7;margin-bottom:.5rem}
+.modal ul{padding-left:1.5rem}
+.modal-close{position:absolute;top:1rem;right:1rem;width:36px;height:36px;border-radius:50%;border:none;background:var(--gray-100);cursor:pointer;font-size:1.2rem;display:flex;align-items:center;justify-content:center;transition:background .3s}
+.modal-close:hover{background:var(--gray-200)}
+
+/* RESPONSIVE */
+@media(max-width:768px){
+  .hero h1{font-size:2rem}
+  .hero-grid,.pain-grid,.about-grid,.footer-grid{grid-template-columns:1fr}
+  .usp-grid,.services-grid{grid-template-columns:1fr}
+  .process-steps{grid-template-columns:repeat(2,1fr)}
+  .nav-links{display:none;position:absolute;top:100%;left:0;right:0;flex-direction:column;background:rgba(10,22,40,.98);padding:1.5rem;gap:1rem;border-radius:0 0 12px 12px}
+  .nav-links.open{display:flex}
+  .hamburger{display:flex}
+  .hero-visual{order:-1}
+  .about-image{max-width:280px;margin:0 auto}
+  .cta-section h2{font-size:1.6rem}
+}
+</style>
+</head>
+<body>
+
+<!-- NAV -->
+<nav id="navbar">
+<div class="container">
+  <a href="#" class="nav-logo"><img src="logo.png" alt="Logo">Monika Brenner</a>
+  <button class="hamburger" onclick="document.querySelector('.nav-links').classList.toggle('open')" aria-label="Menü">
+    <span></span><span></span><span></span>
+  </button>
+  <ul class="nav-links">
+    <li><a href="#leistungen">Leistungen</a></li>
+    <li><a href="#ueber-mich">Über mich</a></li>
+    <li><a href="#prozess">Prozess</a></li>
+    <li><a href="#erstberatung" class="nav-cta">Kostenlose Erstberatung</a></li>
+  </ul>
+</div>
+</nav>
+
+<!-- HERO -->
+<section class="hero" id="hero">
+<div class="container">
+<div class="hero-grid">
+  <div class="hero-text">
+    <div class="hero-badge">● KI-Automationen für Ihr Business</div>
+    <h1>Mehr <span class="accent">Effizienz</span> und Rentabilität durch intelligente Automatisierung</h1>
+    <p>25 Jahre Branchenerfahrung im Gesundheitswesen — jetzt mit KI-Lösungen, die Ihnen Stunden pro Woche zurückgeben. Pragmatisch. Messbar. Für Solopreneure, Arztpraxen und kleine Unternehmen.</p>
+    <div class="hero-buttons">
+      <a href="#erstberatung" class="btn btn-primary">Kostenlose Erstberatung →</a>
+      <a href="#leistungen" class="btn btn-secondary">Leistungen entdecken</a>
+    </div>
+  </div>
+  <div class="hero-visual">
+    <div class="hero-card">
+      <div class="metric"><div class="metric-icon" style="background:rgba(14,165,233,.12);color:var(--cyan)">⏱</div><div class="metric-text"><h4>Bis zu 10h / Woche gespart</h4><p>Durch automatisierte Routine-Prozesse</p></div></div>
+      <div class="metric"><div class="metric-icon" style="background:rgba(59,130,246,.12);color:var(--blue-500)">📈</div><div class="metric-text"><h4>Mehr Sichtbarkeit</h4><p>KI-gestützte Content-Erstellung</p></div></div>
+      <div class="metric"><div class="metric-icon" style="background:rgba(14,165,233,.12);color:var(--cyan)">🔒</div><div class="metric-text"><h4>DSGVO-konform</h4><p>Alle Lösungen datenschutzkonform</p></div></div>
+      <div class="metric"><div class="metric-icon" style="background:rgba(59,130,246,.12);color:var(--blue-500)">🤝</div><div class="metric-text"><h4>Persönliche Beratung</h4><p>Keine Agentur-Maschine — 1:1 Zusammenarbeit</p></div></div>
+    </div>
+  </div>
+</div>
+</div>
+</section>
+
+<!-- USP -->
+<section class="usp" id="warum">
+<div class="container">
+  <div class="section-label">→ Warum ich</div>
+  <h2 class="section-title">KI ist kein Hexenwerk — sondern ein Werkzeug.</h2>
+  <p class="section-subtitle">Drei Gründe, warum meine Kunden nicht mit generischen Agenturen arbeiten, sondern mit mir.</p>
+  <div class="usp-grid">
+    <div class="usp-card reveal"><div class="usp-icon">🧠</div><h3>25 Jahre Branchenwissen</h3><p>Pharma-Außendienst, DiGA, Arztpraxen, Kliniken — ich kenne die Abläufe, Schmerzpunkte und Regeln Ihrer Branche aus erster Hand. Keine Einarbeitungszeit nötig.</p></div>
+    <div class="usp-card reveal"><div class="usp-icon">⚡</div><h3>Schlanke KI-Lösungen</h3><p>Kein Enterprise-Overhead. Automatisierungen, die sofort Ergebnisse bringen — zugeschnitten auf Solopreneure und kleine Teams mit begrenzter Zeit und Budget.</p></div>
+    <div class="usp-card reveal"><div class="usp-icon">🎯</div><h3>Pragmatisch statt perfekt</h3><p>„Starten statt perfektionieren" — ich baue funktionierende Workflows, die vom ersten Tag an Zeit sparen. Iterativ verbessert, nie überkompliziert.</p></div>
+  </div>
+</div>
+</section>
+
+<!-- SERVICES -->
+<section id="leistungen">
+<div class="container">
+  <div class="section-label">→ Leistungen</div>
+  <h2 class="section-title">Was ich für Sie automatisiere</h2>
+  <p class="section-subtitle">Von der strategischen Beratung bis zur technischen Umsetzung — alles aus einer Hand.</p>
+  <div class="services-grid">
+    <div class="service-card reveal"><div class="service-num">01</div><div><h3>Workflow-Automatisierung</h3><p>Wiederkehrende Prozesse wie Email-Routing, Terminbestätigungen, Follow-ups und Rechnungsversand — automatisiert mit n8n und KI.</p></div></div>
+    <div class="service-card reveal"><div class="service-num">02</div><div><h3>KI-gestützte Content-Erstellung</h3><p>Mehr Sichtbarkeit ohne Zeitaufwand — LinkedIn-Posts, Blog-Artikel und Social Media Content, unterstützt durch intelligente KI-Tools.</p></div></div>
+    <div class="service-card reveal"><div class="service-num">03</div><div><h3>Voicemail & Omnichannel</h3><p>Automatisierte Sprachnachrichten-Verarbeitung, kanalübergreifende Kommunikation — kein Anruf geht mehr verloren.</p></div></div>
+    <div class="service-card reveal"><div class="service-num">04</div><div><h3>Strategische KI-Beratung</h3><p>Wo lohnt sich KI für Ihr Business wirklich? Gemeinsam identifizieren wir die Hebel mit dem größten Impact — und setzen sie um.</p></div></div>
+  </div>
+</div>
+</section>
+
+<!-- PAIN/SOLUTION -->
+<section class="pain">
+<div class="container">
+  <div class="section-label">→ Ihr Problem, meine Lösung</div>
+  <h2 class="section-title">Kommt Ihnen das bekannt vor?</h2>
+  <p class="section-subtitle">Diese Herausforderungen höre ich jeden Tag — und löse sie.</p>
+  <div class="pain-grid">
+    <div class="pain-list">
+      <div class="pain-item reveal"><div class="pain-icon">😩</div><div><h4>„Ich verbringe mehr Zeit mit Admin als mit meinem Kerngeschäft."</h4><p>Emails, Termine, Rechnungen — der Tag ist vorbei, bevor die eigentliche Arbeit beginnt.</p></div></div>
+      <div class="pain-item reveal"><div class="pain-icon">😰</div><div><h4>„Alle reden über KI, aber ich weiß nicht, wo ich anfangen soll."</h4><p>Die Flut an Tools und Möglichkeiten ist überwältigend. Ohne Orientierung bleibt alles beim Alten.</p></div></div>
+      <div class="pain-item reveal"><div class="pain-icon">😤</div><div><h4>„Ich habe kein Budget für ein Marketing-Team."</h4><p>Content erstellen, Social Media pflegen, sichtbar bleiben — als Solopreneur unmöglich neben dem Tagesgeschäft.</p></div></div>
+    </div>
+    <div class="solution-list pain-list">
+      <div class="pain-item reveal"><div class="pain-icon">✅</div><div><h4>Automatisierte Routine = mehr Zeit fürs Wesentliche</h4><p>Ihre wiederkehrenden Aufgaben laufen im Hintergrund. Sie konzentrieren sich auf Patienten und Kunden.</p></div></div>
+      <div class="pain-item reveal"><div class="pain-icon">✅</div><div><h4>Klare Roadmap statt Überforderung</h4><p>Ich zeige Ihnen genau, wo KI bei Ihnen den größten Unterschied macht — und setze es direkt um.</p></div></div>
+      <div class="pain-item reveal"><div class="pain-icon">✅</div><div><h4>Sichtbarkeit auf Autopilot</h4><p>KI-gestützter Content, der Ihre Expertise zeigt — ohne Stunden vor dem Bildschirm zu sitzen.</p></div></div>
+    </div>
+  </div>
+</div>
+</section>
+
+<!-- ABOUT -->
+<section class="about" id="ueber-mich">
+<div class="container">
+<div class="about-grid">
+  <div class="about-image reveal"><span class="about-initials">MB</span></div>
+  <div class="reveal">
+    <div class="section-label">→ Über mich</div>
+    <h2 class="section-title">Monika Brenner</h2>
+    <p style="font-size:1.05rem;color:var(--gray-600);margin-bottom:1.5rem">25 Jahre lang habe ich im Pharma-Außendienst gesehen, wie viel Zeit in manuellen Prozessen verloren geht — bei Ärzten, in Kliniken und in der Verwaltung. Heute bringe ich dieses Branchenwissen zusammen mit modernster KI-Technologie, um genau diese Zeit zurückzugeben.</p>
+    <p style="font-size:.95rem;color:var(--gray-500);margin-bottom:1.5rem">Als Teilnehmerin der KI Pionier Akademie und zertifizierte Beraterin verbinde ich strategisches Denken mit pragmatischer Umsetzung. Keine leeren KI-Versprechen — sondern Automatisierungen, die ab Tag 1 funktionieren.</p>
+    <div class="about-stats">
+      <div class="stat"><div class="stat-num">25+</div><div class="stat-label">Jahre Erfahrung</div></div>
+      <div class="stat"><div class="stat-num">KI</div><div class="stat-label">Pionier Akademie</div></div>
+      <div class="stat"><div class="stat-num">1:1</div><div class="stat-label">Zusammenarbeit</div></div>
+    </div>
+  </div>
+</div>
+</div>
+</section>
+
+<!-- PROCESS -->
+<section id="prozess">
+<div class="container">
+  <div class="section-label">→ So arbeiten wir zusammen</div>
+  <h2 class="section-title">In 4 Schritten zu Ihrer KI-Automatisierung</h2>
+  <p class="section-subtitle">Klar, strukturiert, ergebnisorientiert — von der Analyse bis zur laufenden Lösung.</p>
+  <div class="process-steps">
+    <div class="step reveal"><h3>Erstberatung</h3><p>15 Min. kostenlos — wir identifizieren Ihre größten Zeitfresser und Potenziale.</p></div>
+    <div class="step reveal"><h3>Analyse & Strategie</h3><p>Ich analysiere Ihre Prozesse und erstelle einen konkreten Automatisierungsplan.</p></div>
+    <div class="step reveal"><h3>Umsetzung</h3><p>Ich baue die Automatisierung — getestet, dokumentiert, DSGVO-konform.</p></div>
+    <div class="step reveal"><h3>Übergabe & Support</h3><p>Sie erhalten eine Einweisung und Support — damit alles reibungslos läuft.</p></div>
+  </div>
+</div>
+</section>
+
+<!-- CTA -->
+<section class="cta-section" id="erstberatung">
+<div class="container">
+  <h2>Kostenlose 15-Minuten Erstberatung</h2>
+  <p>Lassen Sie uns gemeinsam herausfinden, wo KI-Automatisierung Ihnen am meisten bringt. Unverbindlich. Persönlich. Konkret.</p>
+  <div class="cta-features">
+    <span>✓ 100% kostenlos</span>
+    <span>✓ Unverbindlich</span>
+    <span>✓ Sofort umsetzbare Tipps</span>
+    <span>✓ DSGVO-konform</span>
+  </div>
+  <a href="mailto:info@bremos.org?subject=Kostenlose%20Erstberatung" class="btn btn-primary btn-cta">Jetzt Erstberatung buchen →</a>
+  <p style="margin-top:1rem;font-size:.85rem;color:var(--blue-300)">📞 0157 57054754 · ✉ info@bremos.org</p>
+</div>
+</section>
+
+<!-- TRUST -->
+<section class="trust">
+<div class="container">
+  <h2 class="section-title">Vertrauen & Sicherheit</h2>
+  <div class="trust-badges">
+    <div class="trust-badge"><div class="icon">🔒</div><p>DSGVO-konform</p></div>
+    <div class="trust-badge"><div class="icon">🇩🇪</div><p>Beratung auf Deutsch</p></div>
+    <div class="trust-badge"><div class="icon">🎓</div><p>KI Pionier Akademie</p></div>
+    <div class="trust-badge"><div class="icon">💬</div><p>Persönlicher Support</p></div>
+  </div>
+</div>
+</section>
+
+<!-- FOOTER -->
+<footer>
+<div class="container">
+<div class="footer-grid">
+  <div class="footer-brand">
+    <div class="nav-logo" style="margin-bottom:.5rem"><img src="logo.png" alt="Logo" style="width:36px;height:36px;border-radius:6px">Monika Brenner</div>
+    <p>KI-Automationen für mehr Effizienz, Sichtbarkeit und Rentabilität. Für Solopreneure, Arztpraxen und kleine Unternehmen.</p>
+  </div>
+  <div class="footer-col"><h4>Navigation</h4><ul><li><a href="#leistungen">Leistungen</a></li><li><a href="#ueber-mich">Über mich</a></li><li><a href="#prozess">Prozess</a></li><li><a href="#erstberatung">Erstberatung</a></li></ul></div>
+  <div class="footer-col"><h4>Kontakt</h4><ul><li><a href="tel:+4915757054754">0157 57054754</a></li><li><a href="mailto:info@bremos.org">info@bremos.org</a></li></ul></div>
+  <div class="footer-col"><h4>Rechtliches</h4><ul><li><a href="#" onclick="openModal('impressum');return false">Impressum</a></li><li><a href="#" onclick="openModal('datenschutz');return false">Datenschutz</a></li><li><a href="#" onclick="openModal('agb');return false">AGB</a></li></ul></div>
+</div>
+<div class="footer-bottom">
+  <span>© 2026 Monika Brenner KI-Automationen. Alle Rechte vorbehalten.</span>
+  <span>Made with ❤️ und KI</span>
+</div>
+</div>
+</footer>
+
+<!-- IMPRESSUM MODAL -->
+<div class="modal-overlay" id="impressum"><div class="modal">
+<button class="modal-close" onclick="closeModal('impressum')">✕</button>
+<h2>Impressum</h2>
+<h3>Angaben gemäß § 5 TMG</h3>
+<p>Monika Brenner KI-Automationen<br>Monika Brenner<br>Am Königswingert 12<br>67157 Wachenheim</p>
+<h3>Kontakt</h3>
+<p>Telefon: 0157 57054754<br>E-Mail: info@bremos.org</p>
+<h3>Umsatzsteuerhinweis</h3>
+<p>Kleinunternehmer gemäß § 19 UStG — es wird keine Umsatzsteuer erhoben.</p>
+<h3>Verantwortlich für den Inhalt nach § 55 Abs. 2 RStV</h3>
+<p>Monika Brenner<br>Am Königswingert 12, 67157 Wachenheim</p>
+<h3>Streitschlichtung</h3>
+<p>Die Europäische Kommission stellt eine Plattform zur Online-Streitbeilegung (OS) bereit: <a href="https://ec.europa.eu/consumers/odr/" target="_blank">https://ec.europa.eu/consumers/odr/</a>. Wir sind nicht bereit oder verpflichtet, an Streitbeilegungsverfahren vor einer Verbraucherschlichtungsstelle teilzunehmen.</p>
+<h3>Haftung für Inhalte</h3>
+<p>Als Diensteanbieter sind wir gemäß § 7 Abs.1 TMG für eigene Inhalte auf diesen Seiten nach den allgemeinen Gesetzen verantwortlich. Nach §§ 8 bis 10 TMG sind wir als Diensteanbieter jedoch nicht verpflichtet, übermittelte oder gespeicherte fremde Informationen zu überwachen.</p>
+<h3>Haftung für Links</h3>
+<p>Unser Angebot enthält Links zu externen Websites Dritter, auf deren Inhalte wir keinen Einfluss haben. Für die Inhalte der verlinkten Seiten ist stets der jeweilige Anbieter oder Betreiber der Seiten verantwortlich.</p>
+</div></div>
+
+<!-- DATENSCHUTZ MODAL -->
+<div class="modal-overlay" id="datenschutz"><div class="modal">
+<button class="modal-close" onclick="closeModal('datenschutz')">✕</button>
+<h2>Datenschutzerklärung</h2>
+<h3>1. Datenschutz auf einen Blick</h3>
+<p>Die folgenden Hinweise geben einen Überblick darüber, was mit Ihren personenbezogenen Daten passiert, wenn Sie diese Website besuchen. Personenbezogene Daten sind alle Daten, mit denen Sie persönlich identifiziert werden können.</p>
+<h3>2. Verantwortliche Stelle</h3>
+<p>Monika Brenner KI-Automationen<br>Monika Brenner<br>E-Mail: info@bremos.org<br>Telefon: 0157 57054754</p>
+<h3>3. Datenerfassung auf dieser Website</h3>
+<p>Die Datenverarbeitung auf dieser Website erfolgt durch den Websitebetreiber. Die Daten werden erhoben, wenn Sie uns diese mitteilen (z.B. per E-Mail oder Kontaktformular).</p>
+<h3>4. Hosting</h3>
+<p>Diese Website wird bei einem externen Dienstleister gehostet. Personenbezogene Daten, die auf dieser Website erfasst werden, werden auf den Servern des Hosters gespeichert. Server-Log-Files werden automatisch erhoben (Browsertyp, Betriebssystem, Referrer URL, IP-Adresse, Uhrzeit).</p>
+<h3>5. Ihre Rechte</h3>
+<p>Sie haben jederzeit das Recht auf unentgeltliche Auskunft über Ihre gespeicherten personenbezogenen Daten, deren Herkunft und Empfänger und den Zweck der Datenverarbeitung sowie ein Recht auf Berichtigung oder Löschung dieser Daten (Art. 15–21 DSGVO). Hierzu können Sie sich jederzeit an uns wenden.</p>
+<h3>6. Google Fonts</h3>
+<p>Diese Seite nutzt zur einheitlichen Darstellung von Schriftarten Google Fonts. Beim Aufruf einer Seite lädt Ihr Browser die benötigten Fonts in Ihren Browsercache. Zu diesem Zweck muss Ihr Browser Verbindung zu den Servern von Google aufnehmen. Anbieter ist die Google Ireland Limited. Weitere Informationen finden Sie in der Datenschutzerklärung von Google: <a href="https://policies.google.com/privacy" target="_blank">https://policies.google.com/privacy</a></p>
+<h3>7. Kontaktaufnahme</h3>
+<p>Wenn Sie uns per E-Mail oder Telefon kontaktieren, werden die von Ihnen mitgeteilten Daten (Name, E-Mail-Adresse, ggf. Telefonnummer) zum Zwecke der Bearbeitung Ihrer Anfrage gespeichert. Die Rechtsgrundlage hierfür ist Art. 6 Abs. 1 lit. b DSGVO.</p>
+</div></div>
+
+<!-- AGB MODAL -->
+<div class="modal-overlay" id="agb"><div class="modal">
+<button class="modal-close" onclick="closeModal('agb')">✕</button>
+<h2>Allgemeine Geschäftsbedingungen (AGB)</h2>
+<h3>§ 1 Geltungsbereich</h3>
+<p>Diese Allgemeinen Geschäftsbedingungen gelten für alle Verträge zwischen Monika Brenner KI-Automationen (nachfolgend „Auftragnehmer") und dem Auftraggeber über Beratungsleistungen, Automatisierungslösungen und damit verbundene Dienstleistungen.</p>
+<h3>§ 2 Vertragsschluss</h3>
+<p>Angebote des Auftragnehmers sind freibleibend. Ein Vertrag kommt erst durch schriftliche Auftragsbestätigung oder Beginn der Leistungserbringung zustande.</p>
+<h3>§ 3 Leistungsumfang</h3>
+<p>Der Umfang der Leistungen ergibt sich aus der jeweiligen Leistungsbeschreibung oder dem individuellen Angebot. Änderungen des Leistungsumfangs bedürfen der schriftlichen Vereinbarung.</p>
+<h3>§ 4 Vergütung und Zahlung</h3>
+<p>Die Vergütung richtet sich nach dem individuellen Angebot. Rechnungen sind innerhalb von 14 Tagen nach Rechnungsstellung zur Zahlung fällig. Alle Preise verstehen sich zzgl. der gesetzlichen Umsatzsteuer, sofern nicht anders angegeben.</p>
+<h3>§ 5 Mitwirkungspflichten</h3>
+<p>Der Auftraggeber stellt alle für die Leistungserbringung erforderlichen Informationen, Zugänge und Materialien rechtzeitig und vollständig zur Verfügung.</p>
+<h3>§ 6 Geheimhaltung & Datenschutz</h3>
+<p>Beide Parteien verpflichten sich, vertrauliche Informationen der jeweils anderen Partei geheim zu halten. Die Verarbeitung personenbezogener Daten erfolgt in Übereinstimmung mit der DSGVO.</p>
+<h3>§ 7 Haftung</h3>
+<p>Der Auftragnehmer haftet unbeschränkt bei Vorsatz und grober Fahrlässigkeit. Bei leichter Fahrlässigkeit haftet der Auftragnehmer nur bei Verletzung wesentlicher Vertragspflichten, begrenzt auf den vorhersehbaren, vertragstypischen Schaden.</p>
+<h3>§ 8 Kündigung</h3>
+<p>Laufende Beratungsverträge können mit einer Frist von 4 Wochen zum Monatsende gekündigt werden. Das Recht zur außerordentlichen Kündigung aus wichtigem Grund bleibt unberührt.</p>
+<h3>§ 9 Schlussbestimmungen</h3>
+<p>Es gilt das Recht der Bundesrepublik Deutschland. Gerichtsstand ist der Sitz des Auftragnehmers, sofern der Auftraggeber Kaufmann ist. Sollten einzelne Bestimmungen unwirksam sein, bleibt die Wirksamkeit der übrigen Bestimmungen unberührt.</p>
+<p style="margin-top:1.5rem;color:var(--gray-400);font-size:.8rem">Stand: März 2026</p>
+</div></div>
+
+<script>
+// Navbar scroll
+const nav=document.getElementById('navbar');
+window.addEventListener('scroll',()=>{nav.classList.toggle('scrolled',window.scrollY>50)});
+
+// Reveal animations
+const observer=new IntersectionObserver((entries)=>{entries.forEach(e=>{if(e.isIntersecting){e.target.classList.add('visible');observer.unobserve(e.target)}})},{threshold:0.15});
+document.querySelectorAll('.reveal').forEach(el=>observer.observe(el));
+
+// Modals
+function openModal(id){document.getElementById(id).classList.add('active');document.body.style.overflow='hidden'}
+function closeModal(id){document.getElementById(id).classList.remove('active');document.body.style.overflow=''}
+document.querySelectorAll('.modal-overlay').forEach(overlay=>{overlay.addEventListener('click',e=>{if(e.target===overlay){overlay.classList.remove('active');document.body.style.overflow=''}})});
+
+// Close hamburger on link click
+document.querySelectorAll('.nav-links a').forEach(a=>{a.addEventListener('click',()=>{document.querySelector('.nav-links').classList.remove('open')})});
+</script>
+</body>
+</html>
