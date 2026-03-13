@@ -1,4 +1,4 @@
-<!DOCTYPE html>
+﻿<!DOCTYPE html>
 <html lang="de">
 <head>
 <meta charset="UTF-8">
@@ -334,10 +334,14 @@ footer{background:var(--blue-950);color:var(--blue-200);padding:3rem 0 1.5rem}
     <span>✓ Sofort umsetzbare Tipps</span>
     <span>✓ DSGVO-konform</span>
   </div>
-  <form class="cta-form" onsubmit="sendErstberatung(event)">
-    <input type="email" id="interessent-email" placeholder="Ihre E-Mail-Adresse" required autocomplete="email">
-    <button type="submit" class="btn btn-primary btn-cta">Jetzt kostenlose Erstberatung buchen →</button>
+  <form class="cta-form" id="erstberatung-form" onsubmit="sendErstberatung(event)">
+    <input type="email" id="interessent-email" name="email" placeholder="Ihre E-Mail-Adresse" required autocomplete="email">
+    <input type="hidden" name="_subject" value="Neue Erstberatungs-Anfrage von der Website">
+    <button type="submit" id="cta-submit-btn" class="btn btn-primary btn-cta">Jetzt kostenlose Erstberatung buchen →</button>
   </form>
+  <div id="cta-success" style="display:none;margin-top:1.2rem;background:rgba(14,165,233,.15);border:1px solid rgba(14,165,233,.4);border-radius:12px;padding:1rem 1.5rem;color:var(--cyan-light);font-size:.95rem">
+    ✅ Vielen Dank! Wir melden uns schnellstmöglich bei Ihnen.
+  </div>
   <p style="margin-top:1rem;font-size:.85rem;color:var(--blue-300)">📞 0157 57054754 · ✉ info@bremos.org</p>
 </div>
 </section>
@@ -444,13 +448,27 @@ footer{background:var(--blue-950);color:var(--blue-200);padding:3rem 0 1.5rem}
 const nav=document.getElementById('navbar');
 window.addEventListener('scroll',()=>{nav.classList.toggle('scrolled',window.scrollY>50)});
 
-// Erstberatung Formular
-function sendErstberatung(e){
+// Erstberatung Formular — Formspree
+async function sendErstberatung(e){
   e.preventDefault();
-  const email=document.getElementById('interessent-email').value;
-  const subject=encodeURIComponent('Anfrage Kostenlose Erstberatung');
-  const body=encodeURIComponent('Hallo Monika,\n\nich interessiere mich für eine kostenlose Erstberatung.\n\nMeine E-Mail-Adresse: '+email+'\n\nBitte melden Sie sich bei mir.\n\nMit freundlichen Grüßen');
-  window.location.href='mailto:info@bremos.org?subject='+subject+'&body='+body;
+  const btn=document.getElementById('cta-submit-btn');
+  const form=document.getElementById('erstberatung-form');
+  btn.textContent='Wird gesendet...';
+  btn.disabled=true;
+  const data=new FormData(form);
+  try{
+    const res=await fetch('https://formspree.io/f/xjgaobog',{method:'POST',body:data,headers:{Accept:'application/json'}});
+    if(res.ok){
+      form.style.display='none';
+      document.getElementById('cta-success').style.display='block';
+    } else {
+      btn.textContent='Fehler — bitte nochmal versuchen';
+      btn.disabled=false;
+    }
+  } catch(err){
+    btn.textContent='Fehler — bitte nochmal versuchen';
+    btn.disabled=false;
+  }
 }
 
 // Reveal animations
