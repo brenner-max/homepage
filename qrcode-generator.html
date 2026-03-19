@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+<meta charset="UTF-8">
+<title>QR-Code bremos.org</title>
+<script src="https://cdn.jsdelivr.net/npm/qrcodejs@1.0.0/qrcode.min.js"></script>
+<style>
+  body { font-family: Arial, sans-serif; display: flex; flex-direction: column; align-items: center; justify-content: center; min-height: 100vh; margin: 0; background: #f0f4f8; }
+  h1 { color: #1e3a5f; margin-bottom: 0.3rem; }
+  p { color: #64748b; margin-bottom: 2rem; }
+  #qrcode { background: white; padding: 24px; border-radius: 16px; box-shadow: 0 8px 30px rgba(0,0,0,0.12); }
+  #qrcode canvas, #qrcode img { display: block; }
+  .url-label { margin-top: 1.5rem; font-size: 1rem; color: #1e3a5f; font-weight: bold; letter-spacing: 0.05em; }
+  .btn { margin-top: 2rem; padding: 0.8rem 2rem; background: #2563eb; color: white; border: none; border-radius: 8px; font-size: 1rem; cursor: pointer; text-decoration: none; display: inline-flex; align-items: center; gap: 0.5rem; }
+  .btn:hover { background: #1d4ed8; }
+  .info { margin-top: 1rem; font-size: 0.85rem; color: #94a3b8; }
+</style>
+</head>
+<body>
+  <h1>QR-Code — bremos.org</h1>
+  <p>Visitenkarten-tauglich · 800×800 px · Hochauflösend</p>
+  <div id="qrcode"></div>
+  <div class="url-label">bremos.org</div>
+  <button class="btn" onclick="downloadPNG()">⬇ PNG herunterladen (druckfertig)</button>
+  <p class="info">Empfehlung: mindestens 2×2 cm auf der Visitenkarte · PNG ist druckfertig bei 800px</p>
+
+  <script>
+    const qr = new QRCode(document.getElementById("qrcode"), {
+      text: "https://bremos.org",
+      width: 800,
+      height: 800,
+      colorDark: "#0f1d35",
+      colorLight: "#ffffff",
+      correctLevel: QRCode.CorrectLevel.H
+    });
+
+    function downloadPNG() {
+      setTimeout(() => {
+        const canvas = document.querySelector("#qrcode canvas");
+        const link = document.createElement("a");
+        link.download = "qrcode-bremos-org.png";
+        link.href = canvas.toDataURL("image/png");
+        link.click();
+      }, 100);
+    }
+  </script>
+</body>
+</html>
