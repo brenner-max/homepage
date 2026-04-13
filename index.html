@@ -199,7 +199,25 @@ footer{background:#050505;color:var(--blue-200);padding:3rem 0 1.5rem}
   .hero-visual{order:-1}
   .about-image{max-width:280px;margin:0 auto}
   .cta-section h2{font-size:1.6rem}
+  .leadmagnet-grid{grid-template-columns:1fr}
+  .lm-form-card{padding:24px 20px}
 }
+
+/* ═══ LEAD MAGNET ═══ */
+.leadmagnet{background:var(--blue-950);padding:5rem 0;border-top:1px solid rgba(245,200,66,.08);border-bottom:1px solid rgba(245,200,66,.08);position:relative}
+.leadmagnet::before{content:'';position:absolute;inset:0;background:radial-gradient(ellipse at 30% 50%,rgba(245,200,66,.04) 0%,transparent 60%)}
+.leadmagnet-grid{display:grid;grid-template-columns:1fr 1fr;gap:3rem;align-items:center;position:relative;z-index:1}
+.lm-benefits{display:flex;flex-direction:column;gap:12px}
+.lm-benefit{display:flex;align-items:center;gap:10px;font-size:.95rem;color:var(--blue-200)}
+.lm-benefit strong{color:var(--white)}
+.lm-check{color:var(--cyan);font-weight:700;font-size:1.1rem}
+.lm-badge{font-size:.78rem;color:var(--blue-200);background:rgba(255,255,255,.04);border:1px solid rgba(255,255,255,.08);padding:5px 14px;border-radius:999px}
+.lm-form-card{background:var(--blue-800);border:1px solid rgba(245,200,66,.15);border-radius:16px;padding:32px;box-shadow:0 24px 60px rgba(0,0,0,.3)}
+.lm-field{display:flex;flex-direction:column;gap:6px;margin-bottom:14px}
+.lm-field label{font-family:var(--font-heading);font-size:.7rem;color:var(--gray-400);letter-spacing:.06em}
+.lm-field input{background:rgba(255,255,255,.04);border:1px solid rgba(255,255,255,.1);border-radius:8px;padding:12px 16px;color:var(--white);font-family:var(--font-body);font-size:.9rem;outline:none;transition:border-color .2s,box-shadow .2s;width:100%}
+.lm-field input::placeholder{color:var(--gray-400)}
+.lm-field input:focus{border-color:var(--cyan);box-shadow:0 0 0 3px rgba(245,200,66,.08)}
 </style>
 </head>
 <body>
@@ -215,6 +233,7 @@ footer{background:#050505;color:var(--blue-200);padding:3rem 0 1.5rem}
     <li><a href="#leistungen">Leistungen</a></li>
     <li><a href="#ueber-mich">Über mich</a></li>
     <li><a href="#prozess">Prozess</a></li>
+    <li><a href="#checkliste">Checkliste</a></li>
     <li><a href="#erstberatung" class="nav-cta">Kostenlose Erstberatung</a></li>
   </ul>
 </div>
@@ -328,6 +347,60 @@ footer{background:#050505;color:var(--blue-200);padding:3rem 0 1.5rem}
     <div class="step reveal"><h3>Umsetzung</h3><p>Ich baue die Automatisierung — getestet, dokumentiert, DSGVO-konform.</p></div>
     <div class="step reveal"><h3>Übergabe & Support</h3><p>Sie erhalten eine Einweisung und Support — damit alles reibungslos läuft.</p></div>
   </div>
+</div>
+</section>
+
+<!-- LEAD MAGNET -->
+<section class="leadmagnet" id="checkliste">
+<div class="container">
+<div class="leadmagnet-grid">
+  <div class="leadmagnet-content reveal">
+    <div class="section-label">→ Kostenlose Checkliste</div>
+    <h2 class="section-title" style="max-width:500px">Noch nicht bereit für ein Gespräch? <span style="background:linear-gradient(90deg,var(--cyan),var(--papaya));-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text">Starten Sie hier.</span></h2>
+    <p style="color:var(--blue-200);font-size:1.05rem;margin-bottom:2rem;max-width:480px">10 Büroaufgaben, die sich automatisieren lassen — mit dem konkreten Zeitgewinn für Ihr Business. Kostenlos als PDF.</p>
+    <div class="lm-benefits">
+      <div class="lm-benefit"><span class="lm-check">✓</span> <strong>Bis zu 16h pro Woche</strong> zurückgewinnen</div>
+      <div class="lm-benefit"><span class="lm-check">✓</span> <strong>10 konkrete Automatisierungen</strong> aus dem echten Büroalltag</div>
+      <div class="lm-benefit"><span class="lm-check">✓</span> <strong>Sofort umsetzbar</strong> — kein Technik-Wissen nötig</div>
+    </div>
+    <div style="display:flex;gap:12px;flex-wrap:wrap;margin-top:1.5rem">
+      <span class="lm-badge">📄 PDF Download</span>
+      <span class="lm-badge">🔒 Kein Spam</span>
+      <span class="lm-badge">🇩🇪 Auf Deutsch</span>
+    </div>
+  </div>
+  <div class="leadmagnet-form-wrap reveal">
+    <div class="lm-form-card">
+      <div style="font-family:var(--font-heading);font-size:.7rem;color:var(--papaya);letter-spacing:.1em;margin-bottom:12px">→ KOSTENLOS HERUNTERLADEN</div>
+      <h3 style="font-size:1.2rem;font-weight:700;color:var(--white);margin-bottom:6px">Checkliste jetzt erhalten</h3>
+      <p style="font-size:.85rem;color:var(--gray-400);margin-bottom:24px">Tragen Sie sich ein — ich sende Ihnen die Checkliste sofort per E-Mail zu.</p>
+      <form id="leadmagnet-form" onsubmit="sendLeadMagnet(event)">
+        <div style="display:grid;grid-template-columns:1fr 1fr;gap:12px">
+          <div class="lm-field">
+            <label>VORNAME</label>
+            <input type="text" id="lm-vorname" name="vorname" placeholder="Anna" required autocomplete="given-name">
+          </div>
+          <div class="lm-field">
+            <label>NACHNAME</label>
+            <input type="text" id="lm-nachname" name="nachname" placeholder="Müller" required autocomplete="family-name">
+          </div>
+        </div>
+        <div class="lm-field">
+          <label>E-MAIL ADRESSE</label>
+          <input type="email" id="lm-email" name="email" placeholder="anna@beispiel.de" required autocomplete="email">
+        </div>
+        <button type="submit" id="lm-submit-btn" class="btn btn-primary" style="width:100%;margin-top:8px;justify-content:center">Checkliste kostenlos erhalten ↗</button>
+        <p style="text-align:center;font-size:.72rem;color:var(--gray-400);margin-top:12px">Kein Spam. Jederzeit abmeldbar. DSGVO-konform.</p>
+      </form>
+      <div id="lm-success" style="display:none;text-align:center;padding:2rem 0">
+        <div style="font-size:3rem;margin-bottom:12px">🎉</div>
+        <h3 style="font-size:1.2rem;color:var(--white);margin-bottom:8px">Checkliste ist unterwegs!</h3>
+        <p style="font-size:.9rem;color:var(--blue-200);margin-bottom:20px">Prüfen Sie Ihr Postfach — auch den Spam-Ordner.</p>
+        <a href="checkliste.pdf" download class="btn btn-primary" style="justify-content:center">Direkt herunterladen ↓</a>
+      </div>
+    </div>
+  </div>
+</div>
 </div>
 </section>
 
@@ -490,6 +563,31 @@ document.querySelectorAll('.modal-overlay').forEach(overlay=>{overlay.addEventLi
 
 // Close hamburger on link click
 document.querySelectorAll('.nav-links a').forEach(a=>{a.addEventListener('click',()=>{document.querySelector('.nav-links').classList.remove('open')})});
+
+// Lead Magnet Formular
+async function sendLeadMagnet(e){
+  e.preventDefault();
+  const btn=document.getElementById('lm-submit-btn');
+  const form=document.getElementById('leadmagnet-form');
+  btn.textContent='Wird gesendet...';
+  btn.disabled=true;
+  const payload={
+    vorname:document.getElementById('lm-vorname').value.trim(),
+    nachname:document.getElementById('lm-nachname').value.trim(),
+    email:document.getElementById('lm-email').value.trim().toLowerCase(),
+    timestamp:new Date().toISOString(),
+    source:'bremos-org-leadmagnet'
+  };
+  try{
+    await fetch('https://formspree.io/f/xjgaobog',{
+      method:'POST',
+      body:JSON.stringify(payload),
+      headers:{'Content-Type':'application/json',Accept:'application/json'}
+    });
+  }catch(err){console.error('Form error:',err)}
+  form.style.display='none';
+  document.getElementById('lm-success').style.display='block';
+}
 </script>
 </body>
 </html>
