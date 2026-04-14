@@ -8,6 +8,8 @@
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&family=Roboto+Mono:wght@400;500;600;700&display=swap" rel="stylesheet">
+<link href="https://calendar.google.com/calendar/scheduling-button-script.css" rel="stylesheet">
+<script src="https://calendar.google.com/calendar/scheduling-button-script.js" async></script>
 <style>
 *,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
 :root{
@@ -153,10 +155,8 @@ section{padding:5rem 0}
 .cta-features{display:flex;justify-content:center;gap:2rem;flex-wrap:wrap;margin-bottom:2.5rem}
 .cta-features span{color:var(--blue-200);font-size:.9rem;display:flex;align-items:center;gap:.4rem}
 .btn-cta{font-size:1.1rem;padding:1rem 2.5rem;animation:pulseGlow 3s infinite}
-.cta-form{display:flex;gap:.75rem;justify-content:center;flex-wrap:wrap;margin-bottom:1rem}
-.cta-form input[type=email]{padding:.85rem 1.2rem;border-radius:10px;border:1px solid rgba(245,200,66,.2);background:rgba(255,255,255,.06);color:var(--white);font-size:.95rem;font-family:var(--font-body);width:280px;outline:none;transition:border .3s}
-.cta-form input[type=email]::placeholder{color:var(--gray-400)}
-.cta-form input[type=email]:focus{border-color:var(--cyan);background:rgba(255,255,255,.1)}
+.cta-form-card{background:var(--blue-800);border:1px solid rgba(245,200,66,.15);border-radius:16px;padding:32px;box-shadow:0 24px 60px rgba(0,0,0,.3);max-width:480px;margin:0 auto 1rem;text-align:left}
+.cta-form-card .lm-field input{width:100%}
 
 /* TRUST */
 .trust{text-align:center;background:var(--blue-900)}
@@ -415,15 +415,21 @@ footer{background:#050505;color:var(--blue-200);padding:3rem 0 1.5rem}
     <span>✓ Sofort umsetzbare Tipps</span>
     <span>✓ DSGVO-konform</span>
   </div>
-  <form class="cta-form" id="erstberatung-form" onsubmit="sendErstberatung(event)">
-    <input type="email" id="interessent-email" name="email" placeholder="Ihre E-Mail-Adresse" required autocomplete="email">
-    <input type="hidden" name="_subject" value="Neue Erstberatungs-Anfrage von der Website">
-    <button type="submit" id="cta-submit-btn" class="btn btn-primary btn-cta">Jetzt kostenlose Erstberatung buchen →</button>
-  </form>
-  <div id="cta-success" style="display:none;margin-top:1.2rem;background:rgba(245,200,66,.1);border:1px solid rgba(245,200,66,.3);border-radius:12px;padding:1rem 1.5rem;color:var(--cyan-light);font-size:.95rem">
-    ✅ Vielen Dank! Wir melden uns schnellstmöglich bei Ihnen.
+  <div class="cta-form-card" style="text-align:center">
+    <div style="font-family:var(--font-heading);font-size:.7rem;color:var(--papaya);letter-spacing:.1em;margin-bottom:12px">→ JETZT TERMIN SICHERN</div>
+    <h3 style="font-size:1.2rem;font-weight:700;color:var(--white);margin-bottom:6px">Wählen Sie Ihren Wunschtermin</h3>
+    <p style="font-size:.85rem;color:var(--gray-400);margin-bottom:24px">Buchen Sie direkt einen freien Slot in meinem Kalender — unkompliziert und sofort bestätigt.</p>
+    <div style="display:flex;flex-direction:column;align-items:center;gap:16px">
+      <!-- Google Calendar Booking Button -->
+      <div id="booking-button"></div>
+      <noscript><a href="https://calendar.app.google/YU9EvANEbU7RxkVB9" target="_blank" class="btn btn-primary btn-cta" style="justify-content:center">Jetzt Termin wählen →</a></noscript>
+    </div>
+    <div style="margin-top:24px;padding-top:20px;border-top:1px solid rgba(255,255,255,.06)">
+      <p style="font-size:.8rem;color:var(--gray-400);margin-bottom:8px">Sie werden nach Name, E-Mail und Telefonnummer gefragt.</p>
+      <p style="font-size:.72rem;color:var(--gray-400)">🔒 Ihre Daten sind sicher. DSGVO-konform.</p>
+    </div>
   </div>
-  <p style="margin-top:1rem;font-size:.85rem;color:var(--blue-300)">📞 0157 57054754 · ✉ info@bremos.org</p>
+  <p style="margin-top:1.5rem;font-size:.85rem;color:var(--blue-300)">Lieber direkt? 📞 0157 57054754 · ✉ info@bremos.org</p>
 </div>
 </section>
 
@@ -529,28 +535,18 @@ footer{background:#050505;color:var(--blue-200);padding:3rem 0 1.5rem}
 const nav=document.getElementById('navbar');
 window.addEventListener('scroll',()=>{nav.classList.toggle('scrolled',window.scrollY>50)});
 
-// Erstberatung Formular — Formspree
-async function sendErstberatung(e){
-  e.preventDefault();
-  const btn=document.getElementById('cta-submit-btn');
-  const form=document.getElementById('erstberatung-form');
-  btn.textContent='Wird gesendet...';
-  btn.disabled=true;
-  const data=new FormData(form);
-  try{
-    const res=await fetch('https://formspree.io/f/xjgaobog',{method:'POST',body:data,headers:{Accept:'application/json'}});
-    if(res.ok){
-      form.style.display='none';
-      document.getElementById('cta-success').style.display='block';
-    } else {
-      btn.textContent='Fehler — bitte nochmal versuchen';
-      btn.disabled=false;
-    }
-  } catch(err){
-    btn.textContent='Fehler — bitte nochmal versuchen';
-    btn.disabled=false;
+// Google Calendar Appointment Scheduling
+window.addEventListener('load', function(){
+  var target=document.getElementById('booking-button');
+  if(target && window.calendar){
+    calendar.schedulingButton.load({
+      url:'https://calendar.app.google/YU9EvANEbU7RxkVB9',
+      color:'#f5c842',
+      label:'Jetzt Termin wählen →',
+      target
+    });
   }
-}
+});
 
 // Reveal animations
 const observer=new IntersectionObserver((entries)=>{entries.forEach(e=>{if(e.isIntersecting){e.target.classList.add('visible');observer.unobserve(e.target)}})},{threshold:0.15});
