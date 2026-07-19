@@ -395,8 +395,7 @@ footer{background:#050505;color:var(--blue-200);padding:3rem 0 1.5rem}
         <div style="font-size:3rem;margin-bottom:12px">🎉</div>
         <h3 style="font-size:1.2rem;color:var(--white);margin-bottom:8px">Ihre Checkliste ist da!</h3>
         <p style="font-size:.9rem;color:var(--blue-200);margin-bottom:20px">Sie erhalten sie zusätzlich per E-Mail — prüfen Sie ggf. den Spam-Ordner.</p>
-        <a href="checkliste.pdf" target="_blank" rel="noopener" class="btn btn-primary" style="justify-content:center">Checkliste jetzt ansehen →</a>
-        <p style="margin-top:12px"><a href="checkliste.pdf" download style="font-size:.8rem;color:var(--blue-200);text-decoration:underline">Oder als PDF herunterladen ↓</a></p>
+        <a href="checkliste.html" target="_blank" rel="noopener" class="btn btn-primary" style="justify-content:center">Checkliste jetzt ansehen →</a>
       </div>
     </div>
   </div>
@@ -568,7 +567,7 @@ async function sendLeadMagnet(e){
   }catch(err){console.error('Form error:',err)}
   form.style.display='none';
   document.getElementById('lm-success').style.display='block';
-  window.open('checkliste.pdf','_blank');
+  window.open('checkliste.html','_blank');
 }
 </script>
 </body>

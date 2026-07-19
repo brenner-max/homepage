@@ -1,0 +1,895 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Automatisierungs-Checkliste — Monika Brenner</title>
+  <meta name="description" content="10 Büroaufgaben, die Sie automatisieren können — mit konkreter Zeitersparnis. Kostenlose Checkliste von Monika Brenner." />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&family=Roboto+Mono:wght@400;500&display=swap" rel="stylesheet" />
+
+  <style>
+    /* ── TOKENS ── */
+    :root {
+      --black:       #08080a;
+      --black-mid:   #101012;
+      --black-card:  #161618;
+      --black-light: #1e1e22;
+      --gold:        #f5c842;
+      --gold-dim:    #c99e20;
+      --gold-border: rgba(245, 200, 66, 0.22);
+      --gold-subtle: rgba(245, 200, 66, 0.08);
+      --papaya:      #ff784f;
+      --papaya-dim:  #d95e35;
+      --white:       #ffffff;
+      --text-body:   #ccc9c2;
+      --text-muted:  #6e6a62;
+      --font:        'Inter', system-ui, sans-serif;
+      --mono:        'Roboto Mono', monospace;
+    }
+
+    /* ── RESET ── */
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    /* ── SCROLL CONTAINER ── */
+    html {
+      scroll-snap-type: y mandatory;
+      overflow-y: scroll;
+      scroll-behavior: smooth;
+      height: 100%;
+    }
+    body {
+      font-family: var(--font);
+      background: var(--black);
+      color: var(--text-body);
+      height: 100%;
+    }
+
+    /* ── SLIDE BASE ── */
+    .slide {
+      height: 100vh;
+      min-height: 600px;
+      scroll-snap-align: start;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 40px 24px;
+      position: relative;
+      overflow: hidden;
+    }
+
+    /* ── PROGRESS BAR ── */
+    #progress-bar {
+      position: fixed;
+      top: 0; left: 0;
+      height: 3px;
+      background: linear-gradient(90deg, var(--gold), var(--papaya));
+      z-index: 200;
+      transition: width 0.3s ease;
+    }
+
+    /* ── NAV DOTS ── */
+    #nav-dots {
+      position: fixed;
+      right: 24px;
+      top: 50%;
+      transform: translateY(-50%);
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+      z-index: 200;
+    }
+    .nav-dot {
+      width: 8px;
+      height: 8px;
+      border-radius: 50%;
+      background: rgba(255,255,255,0.15);
+      border: 1px solid rgba(255,255,255,0.15);
+      cursor: pointer;
+      transition: all 0.25s ease;
+    }
+    .nav-dot.active {
+      background: var(--gold);
+      border-color: var(--gold);
+      transform: scale(1.3);
+    }
+    .nav-dot:hover { background: rgba(245, 200, 66, 0.5); }
+
+    /* ── SCROLL HINT ── */
+    .scroll-hint {
+      position: absolute;
+      bottom: 28px;
+      left: 50%;
+      transform: translateX(-50%);
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 6px;
+      opacity: 0.35;
+      animation: fadeInHint 1s 2s ease both;
+    }
+    .scroll-hint span { font-size: 0.65rem; font-family: var(--mono); letter-spacing: 0.1em; color: var(--text-muted); }
+    .scroll-arrow { width: 18px; height: 18px; border-right: 2px solid var(--text-muted); border-bottom: 2px solid var(--text-muted); transform: rotate(45deg); animation: bounce 1.5s infinite; }
+    @keyframes bounce { 0%,100% { transform: rotate(45deg) translateY(0); } 50% { transform: rotate(45deg) translateY(4px); } }
+    @keyframes fadeInHint { from { opacity: 0; transform: translateX(-50%) translateY(10px); } to { opacity: 0.35; transform: translateX(-50%) translateY(0); } }
+
+    /* ── SLIDE COUNTER ── */
+    .slide-counter {
+      position: absolute;
+      bottom: 28px;
+      right: 56px;
+      font-family: var(--mono);
+      font-size: 0.65rem;
+      color: var(--text-muted);
+      letter-spacing: 0.06em;
+    }
+
+    /* ══════════════════════════════════════
+       SLIDE 0 — COVER
+    ══════════════════════════════════════ */
+    #slide-0 {
+      background: radial-gradient(ellipse at 30% 60%, rgba(245,200,66,0.08) 0%, transparent 60%),
+                  radial-gradient(ellipse at 75% 30%, rgba(255,120,79,0.06) 0%, transparent 55%),
+                  var(--black);
+      flex-direction: column;
+      text-align: center;
+    }
+    #slide-0 .cover-tag {
+      font-family: var(--mono);
+      font-size: 0.7rem;
+      color: var(--papaya);
+      letter-spacing: 0.12em;
+      margin-bottom: 24px;
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      justify-content: center;
+    }
+    .pulse-dot {
+      width: 8px; height: 8px;
+      background: var(--papaya);
+      border-radius: 50%;
+      animation: pulse 1.8s infinite;
+    }
+    @keyframes pulse { 0%,100%{opacity:1} 50%{opacity:0.3} }
+
+    #slide-0 h1 {
+      font-size: clamp(2.2rem, 6vw, 4rem);
+      font-weight: 900;
+      color: var(--white);
+      line-height: 1.1;
+      letter-spacing: -0.03em;
+      margin-bottom: 12px;
+    }
+    #slide-0 h1 em {
+      font-style: normal;
+      background: linear-gradient(90deg, var(--gold) 0%, var(--papaya) 100%);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+    }
+    #slide-0 .cover-sub {
+      font-size: 1.05rem;
+      color: var(--text-body);
+      max-width: 480px;
+      margin: 0 auto 36px;
+      line-height: 1.6;
+    }
+    .cover-meta {
+      display: flex;
+      align-items: center;
+      gap: 16px;
+      justify-content: center;
+      flex-wrap: wrap;
+    }
+    .cover-chip {
+      background: var(--gold-subtle);
+      border: 1px solid var(--gold-border);
+      border-radius: 999px;
+      padding: 6px 16px;
+      font-size: 0.78rem;
+      color: var(--gold);
+      font-weight: 500;
+    }
+    .cover-divider { width: 4px; height: 4px; background: var(--text-muted); border-radius: 50%; }
+    .cover-author {
+      font-size: 0.82rem;
+      color: var(--text-muted);
+    }
+    .cover-author strong { color: var(--text-body); }
+
+    /* Big decorative number */
+    .bg-num {
+      position: absolute;
+      font-size: clamp(8rem, 18vw, 18rem);
+      font-weight: 900;
+      color: rgba(245,200,66,0.03);
+      pointer-events: none;
+      user-select: none;
+      line-height: 1;
+      right: -2rem;
+      bottom: -2rem;
+      letter-spacing: -0.05em;
+    }
+
+    /* ══════════════════════════════════════
+       SLIDE 1–9 — AUFGABEN-SLIDES
+    ══════════════════════════════════════ */
+    .task-slide {
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+    }
+    .task-slide .slide-inner {
+      max-width: 780px;
+      width: 100%;
+    }
+
+    .task-number {
+      font-family: var(--mono);
+      font-size: 0.68rem;
+      color: var(--papaya);
+      letter-spacing: 0.1em;
+      margin-bottom: 18px;
+      display: flex;
+      align-items: center;
+      gap: 12px;
+    }
+    .task-number::after {
+      content: '';
+      flex: 1;
+      height: 1px;
+      background: linear-gradient(90deg, rgba(255,120,79,0.3), transparent);
+    }
+
+    .task-slide h2 {
+      font-size: clamp(1.6rem, 4vw, 2.8rem);
+      font-weight: 800;
+      color: var(--white);
+      line-height: 1.15;
+      letter-spacing: -0.02em;
+      margin-bottom: 16px;
+    }
+    .task-slide .task-desc {
+      font-size: 1rem;
+      color: var(--text-body);
+      margin-bottom: 32px;
+      max-width: 580px;
+      line-height: 1.65;
+    }
+
+    /* Time badge */
+    .time-badge {
+      display: inline-flex;
+      align-items: center;
+      gap: 10px;
+      background: linear-gradient(135deg, rgba(245,200,66,0.12), rgba(255,120,79,0.1));
+      border: 1px solid var(--gold-border);
+      border-radius: var(--radius, 12px);
+      padding: 14px 24px;
+      margin-bottom: 32px;
+    }
+    .time-badge .time-icon { font-size: 1.4rem; }
+    .time-badge .time-text { display: flex; flex-direction: column; }
+    .time-badge .time-value {
+      font-size: 1.5rem;
+      font-weight: 800;
+      background: linear-gradient(90deg, var(--gold), var(--papaya));
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+      line-height: 1.1;
+    }
+    .time-badge .time-label {
+      font-size: 0.72rem;
+      color: var(--text-muted);
+      font-family: var(--mono);
+      letter-spacing: 0.06em;
+    }
+
+    /* Detail items */
+    .task-details {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+      gap: 14px;
+    }
+    .detail-item {
+      background: var(--black-card);
+      border: 1px solid rgba(255,255,255,0.06);
+      border-radius: 10px;
+      padding: 16px 18px;
+      transition: border-color 0.2s ease, transform 0.2s ease;
+    }
+    .detail-item:hover { border-color: var(--gold-border); transform: translateY(-2px); }
+    .detail-item .detail-icon { font-size: 1.1rem; margin-bottom: 6px; }
+    .detail-item .detail-label {
+      font-size: 0.7rem;
+      color: var(--text-muted);
+      font-family: var(--mono);
+      letter-spacing: 0.06em;
+      margin-bottom: 4px;
+    }
+    .detail-item .detail-val {
+      font-size: 0.88rem;
+      color: var(--white);
+      font-weight: 500;
+    }
+
+    /* ══════════════════════════════════════
+       SLIDE — SUMMARY (vorletzt)
+    ══════════════════════════════════════ */
+    #slide-summary {
+      background: radial-gradient(ellipse at 50% 0%, rgba(245,200,66,0.07) 0%, transparent 65%),
+                  var(--black-mid);
+      flex-direction: column;
+      text-align: center;
+    }
+    #slide-summary .summary-inner { max-width: 680px; width: 100%; }
+    #slide-summary h2 {
+      font-size: clamp(1.8rem, 4vw, 3rem);
+      font-weight: 900;
+      color: var(--white);
+      letter-spacing: -0.03em;
+      margin-bottom: 12px;
+    }
+    #slide-summary .summary-sub {
+      color: var(--text-body);
+      font-size: 1rem;
+      margin-bottom: 40px;
+    }
+    .total-badge {
+      display: inline-flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 4px;
+      background: linear-gradient(135deg, rgba(245,200,66,0.14), rgba(255,120,79,0.1));
+      border: 1px solid var(--gold-border);
+      border-radius: 16px;
+      padding: 28px 48px;
+      margin-bottom: 40px;
+    }
+    .total-badge .total-num {
+      font-size: clamp(3rem, 8vw, 5rem);
+      font-weight: 900;
+      background: linear-gradient(90deg, var(--gold), var(--papaya));
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+      line-height: 1;
+      letter-spacing: -0.03em;
+    }
+    .total-badge .total-label {
+      font-family: var(--mono);
+      font-size: 0.78rem;
+      color: var(--text-muted);
+      letter-spacing: 0.08em;
+    }
+    .summary-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 12px;
+      text-align: left;
+    }
+    .summary-item {
+      background: var(--black-card);
+      border: 1px solid rgba(255,255,255,0.05);
+      border-radius: 10px;
+      padding: 14px 16px;
+    }
+    .summary-item .s-task {
+      font-size: 0.78rem;
+      font-weight: 600;
+      color: var(--text-body);
+      margin-bottom: 2px;
+    }
+    .summary-item .s-time {
+      font-size: 0.7rem;
+      font-family: var(--mono);
+      color: var(--papaya);
+    }
+
+    /* ══════════════════════════════════════
+       SLIDE — CTA / DOWNLOAD
+    ══════════════════════════════════════ */
+    #slide-cta {
+      background: radial-gradient(ellipse at 50% 50%, rgba(255,120,79,0.07) 0%, transparent 65%),
+                  var(--black);
+      flex-direction: column;
+      text-align: center;
+    }
+    #slide-cta .cta-inner { max-width: 560px; width: 100%; }
+    #slide-cta h2 {
+      font-size: clamp(1.8rem, 4vw, 2.8rem);
+      font-weight: 900;
+      color: var(--white);
+      letter-spacing: -0.03em;
+      margin-bottom: 14px;
+    }
+    #slide-cta h2 em {
+      font-style: normal;
+      background: linear-gradient(90deg, var(--gold), var(--papaya));
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+    }
+    #slide-cta p {
+      color: var(--text-body);
+      font-size: 1rem;
+      margin-bottom: 36px;
+      line-height: 1.65;
+    }
+    .download-btn {
+      display: inline-flex;
+      align-items: center;
+      gap: 10px;
+      background: linear-gradient(135deg, var(--gold), var(--papaya));
+      color: #08080a;
+      padding: 16px 36px;
+      border-radius: 10px;
+      font-weight: 800;
+      font-size: 1.05rem;
+      text-decoration: none;
+      transition: transform 0.2s ease, box-shadow 0.2s ease;
+      box-shadow: 0 4px 28px rgba(245, 200, 66, 0.28);
+      font-family: var(--font);
+      margin-bottom: 20px;
+    }
+    .download-btn:hover {
+      transform: translateY(-3px);
+      box-shadow: 0 8px 36px rgba(255, 120, 79, 0.42);
+    }
+    .download-icon { font-size: 1.2rem; }
+    .cta-trust {
+      display: flex;
+      gap: 14px;
+      justify-content: center;
+      flex-wrap: wrap;
+      margin-top: 20px;
+    }
+    .cta-trust-item {
+      font-size: 0.75rem;
+      color: var(--text-muted);
+      display: flex;
+      align-items: center;
+      gap: 5px;
+    }
+    .cta-sign {
+      margin-top: 40px;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 6px;
+      border-top: 1px solid rgba(255,255,255,0.05);
+      padding-top: 28px;
+    }
+    .cta-sign .sign-name {
+      font-size: 1rem;
+      font-weight: 700;
+      color: var(--white);
+    }
+    .cta-sign .sign-role {
+      font-size: 0.78rem;
+      color: var(--text-muted);
+    }
+    .cta-sign .sign-web {
+      font-family: var(--mono);
+      font-size: 0.72rem;
+      color: var(--gold);
+    }
+
+    /* ── SLIDE BACKGROUNDS ── */
+    .slide:nth-child(odd)  { background: var(--black); }
+    .slide:nth-child(even) { background: var(--black-mid); }
+
+    /* Overrides for specific slides */
+    #slide-0, #slide-summary, #slide-cta { background: unset; }
+
+    /* ── ANIMATIONS ── */
+    /* Cover slide: CSS keyframe animations (immer sichtbar, kein IntersectionObserver) */
+    @keyframes fadeUp {
+      from { opacity: 0; transform: translateY(22px); }
+      to   { opacity: 1; transform: translateY(0); }
+    }
+    #slide-0 .cover-tag  { animation: fadeUp 0.5s 0.0s  ease both; }
+    #slide-0 h1          { animation: fadeUp 0.6s 0.15s ease both; }
+    #slide-0 .cover-sub  { animation: fadeUp 0.5s 0.30s ease both; }
+    #slide-0 .cover-meta { animation: fadeUp 0.5s 0.45s ease both; }
+
+    /* Task & Spezial-Slides: nur den Container animieren */
+    .slide .slide-inner,
+    .slide .summary-inner,
+    .slide .cta-inner {
+      opacity: 0;
+      transform: translateY(24px);
+      transition: opacity 0.6s ease, transform 0.6s ease;
+    }
+    .slide.in-view .slide-inner,
+    .slide.in-view .summary-inner,
+    .slide.in-view .cta-inner { opacity: 1; transform: translateY(0); }
+
+    /* ── TASK DETAILS — nur IHR NUTZEN anzeigen ── */
+    .task-details .detail-item:nth-child(1),
+    .task-details .detail-item:nth-child(2) { display: none; }
+    .task-details { grid-template-columns: 1fr; }
+    .task-details .detail-item:nth-child(3) {
+      max-width: 520px;
+      background: linear-gradient(135deg, rgba(245,200,66,0.14), rgba(255,120,79,0.10));
+      border: 1px solid var(--gold-border);
+      padding: 20px 24px;
+    }
+    .task-details .detail-item:nth-child(3) .detail-label {
+      color: var(--gold);
+      font-size: 0.78rem;
+      font-weight: 700;
+      letter-spacing: 0.1em;
+    }
+    .task-details .detail-item:nth-child(3) .detail-icon { font-size: 1.4rem; }
+    .task-details .detail-item:nth-child(3) .detail-val {
+      font-size: 1.15rem;
+      font-weight: 700;
+      color: var(--white);
+    }
+
+    /* ── RESPONSIVE ── */
+    @media (max-width: 640px) {
+      .summary-grid { grid-template-columns: repeat(2, 1fr); }
+      #nav-dots { display: none; }
+      .slide { padding: 32px 20px; }
+    }
+    @media (max-width: 420px) {
+      .summary-grid { grid-template-columns: 1fr 1fr; }
+      .cover-divider { display: none; }
+    }
+  </style>
+</head>
+<body>
+
+  <!-- PROGRESS BAR -->
+  <div id="progress-bar" style="width:0%"></div>
+
+  <!-- NAV DOTS -->
+  <nav id="nav-dots" aria-label="Navigation"></nav>
+
+  <!-- ════════════════════════════════════
+       SLIDE 0 — COVER
+  ════════════════════════════════════ -->
+  <section class="slide" id="slide-0" data-slide="0">
+    <div class="cover-tag">
+      <span class="pulse-dot"></span>
+      KOSTENLOSE CHECKLISTE · 2026
+    </div>
+    <h1>So viel Zeit<br><em>gewinnen Sie</em><br>jede Woche.</h1>
+    <p class="cover-sub">10 Büroaufgaben, die Sie automatisieren können — mit konkreten Zeitangaben und Tool-Empfehlungen.</p>
+    <div class="cover-meta">
+      <span class="cover-chip">10 Aufgaben</span>
+      <span class="cover-divider"></span>
+      <span class="cover-chip">bis 16h Ersparnis/Woche</span>
+      <span class="cover-divider"></span>
+      <span class="cover-author">von <strong>Monika Brenner</strong></span>
+    </div>
+    <div class="bg-num">10</div>
+    <div class="scroll-hint">
+      <div class="scroll-arrow"></div>
+      <span>SCROLL</span>
+    </div>
+  </section>
+
+  <!-- ════════ AUFGABE 1 ════════ -->
+  <section class="slide task-slide" id="slide-1" data-slide="1">
+    <div class="slide-inner">
+      <div class="task-number">AUFGABE 01 / 10</div>
+      <h2>📧 E-Mail-Management</h2>
+      <p class="task-desc">Automatische Sortierung eingehender Mails, intelligente Vorlagen für häufige Anfragen und Follow-up-Erinnerungen — ohne manuelles Durchklicken.</p>
+      <div class="time-badge">
+        <span class="time-icon">⏱</span>
+        <div class="time-text">
+          <span class="time-value">bis 3 Std.</span>
+          <span class="time-label">ERSPARNIS PRO WOCHE</span>
+        </div>
+      </div>
+      <div class="task-details">
+        <div class="detail-item"><div class="detail-icon">🔧</div><div class="detail-label">TOOLS</div><div class="detail-val">Make.com · Gmail · Outlook</div></div>
+        <div class="detail-item"><div class="detail-icon">⚡</div><div class="detail-label">SCHWIERIGKEIT</div><div class="detail-val">Einfach · kein Code nötig</div></div>
+        <div class="detail-item"><div class="detail-icon">📈</div><div class="detail-label">IHR NUTZEN</div><div class="detail-val">Sofort spürbar</div></div>
+      </div>
+    </div>
+    <div class="slide-counter">01 / 10</div>
+  </section>
+
+  <!-- ════════ AUFGABE 2 ════════ -->
+  <section class="slide task-slide" id="slide-2" data-slide="2">
+    <div class="slide-inner">
+      <div class="task-number">AUFGABE 02 / 10</div>
+      <h2>📅 Terminbuchung</h2>
+      <p class="task-desc">Kunden buchen selbst — ohne hin- und herschreiben. Kalender-Synchronisation verhindert Doppelbuchungen automatisch.</p>
+      <div class="time-badge">
+        <span class="time-icon">⏱</span>
+        <div class="time-text">
+          <span class="time-value">bis 2 Std.</span>
+          <span class="time-label">ERSPARNIS PRO WOCHE</span>
+        </div>
+      </div>
+      <div class="task-details">
+        <div class="detail-item"><div class="detail-icon">🔧</div><div class="detail-label">TOOLS</div><div class="detail-val">Calendly · Cal.com · n8n</div></div>
+        <div class="detail-item"><div class="detail-icon">⚡</div><div class="detail-label">SCHWIERIGKEIT</div><div class="detail-val">Einfach · 30 Min. Setup</div></div>
+        <div class="detail-item"><div class="detail-icon">📈</div><div class="detail-label">IHR NUTZEN</div><div class="detail-val">Schon beim 1. Kunden</div></div>
+      </div>
+    </div>
+    <div class="slide-counter">02 / 10</div>
+  </section>
+
+  <!-- ════════ AUFGABE 3 ════════ -->
+  <section class="slide task-slide" id="slide-3" data-slide="3">
+    <div class="slide-inner">
+      <div class="task-number">AUFGABE 03 / 10</div>
+      <h2>🧾 Rechnungen & Mahnwesen</h2>
+      <p class="task-desc">Rechnungen nach Auftragsabschluss automatisch erstellen, versenden und — falls nötig — freundlich mahnen.</p>
+      <div class="time-badge">
+        <span class="time-icon">⏱</span>
+        <div class="time-text">
+          <span class="time-value">bis 2 Std.</span>
+          <span class="time-label">ERSPARNIS PRO WOCHE</span>
+        </div>
+      </div>
+      <div class="task-details">
+        <div class="detail-item"><div class="detail-icon">🔧</div><div class="detail-label">TOOLS</div><div class="detail-val">Lexoffice · sevDesk · n8n</div></div>
+        <div class="detail-item"><div class="detail-icon">⚡</div><div class="detail-label">SCHWIERIGKEIT</div><div class="detail-val">Mittel · 1–2 Tage Setup</div></div>
+        <div class="detail-item"><div class="detail-icon">📈</div><div class="detail-label">IHR NUTZEN</div><div class="detail-val">Weniger Zahlungsausfälle</div></div>
+      </div>
+    </div>
+    <div class="slide-counter">03 / 10</div>
+  </section>
+
+  <!-- ════════ AUFGABE 4 ════════ -->
+  <section class="slide task-slide" id="slide-4" data-slide="4">
+    <div class="slide-inner">
+      <div class="task-number">AUFGABE 04 / 10</div>
+      <h2>📊 Reporting & Berichte</h2>
+      <p class="task-desc">Wochenberichte, KPI-Dashboards und Zusammenfassungen werden automatisch aus Ihren Daten generiert — ohne einmal Excel anzufassen.</p>
+      <div class="time-badge">
+        <span class="time-icon">⏱</span>
+        <div class="time-text">
+          <span class="time-value">bis 1,5 Std.</span>
+          <span class="time-label">ERSPARNIS PRO WOCHE</span>
+        </div>
+      </div>
+      <div class="task-details">
+        <div class="detail-item"><div class="detail-icon">🔧</div><div class="detail-label">TOOLS</div><div class="detail-val">Airtable · Google Sheets · Claude</div></div>
+        <div class="detail-item"><div class="detail-icon">⚡</div><div class="detail-label">SCHWIERIGKEIT</div><div class="detail-val">Mittel · KI-unterstützt</div></div>
+        <div class="detail-item"><div class="detail-icon">📈</div><div class="detail-label">IHR NUTZEN</div><div class="detail-val">Bessere Entscheidungen</div></div>
+      </div>
+    </div>
+    <div class="slide-counter">04 / 10</div>
+  </section>
+
+  <!-- ════════ AUFGABE 5 ════════ -->
+  <section class="slide task-slide" id="slide-5" data-slide="5">
+    <div class="slide-inner">
+      <div class="task-number">AUFGABE 05 / 10</div>
+      <h2>📱 Social Media Content</h2>
+      <p class="task-desc">Content-Planung, KI-gestützte Texte und automatisches Veröffentlichen — Ihr LinkedIn läuft, während Sie schlafen.</p>
+      <div class="time-badge">
+        <span class="time-icon">⏱</span>
+        <div class="time-text">
+          <span class="time-value">bis 2 Std.</span>
+          <span class="time-label">ERSPARNIS PRO WOCHE</span>
+        </div>
+      </div>
+      <div class="task-details">
+        <div class="detail-item"><div class="detail-icon">🔧</div><div class="detail-label">TOOLS</div><div class="detail-val">Make.com · Claude · LinkedIn API</div></div>
+        <div class="detail-item"><div class="detail-icon">⚡</div><div class="detail-label">SCHWIERIGKEIT</div><div class="detail-val">Mittel · 1 Woche Setup</div></div>
+        <div class="detail-item"><div class="detail-icon">📈</div><div class="detail-label">IHR NUTZEN</div><div class="detail-val">Konstante Sichtbarkeit</div></div>
+      </div>
+    </div>
+    <div class="slide-counter">05 / 10</div>
+  </section>
+
+  <!-- ════════ AUFGABE 6 ════════ -->
+  <section class="slide task-slide" id="slide-6" data-slide="6">
+    <div class="slide-inner">
+      <div class="task-number">AUFGABE 06 / 10</div>
+      <h2>📂 Dokumenten-Ablage</h2>
+      <p class="task-desc">Eingehende Dateien automatisch benennen, sortieren und in die richtige Cloud-Ordnerstruktur ablegen — kein manuelles Archivieren mehr.</p>
+      <div class="time-badge">
+        <span class="time-icon">⏱</span>
+        <div class="time-text">
+          <span class="time-value">bis 1 Std.</span>
+          <span class="time-label">ERSPARNIS PRO WOCHE</span>
+        </div>
+      </div>
+      <div class="task-details">
+        <div class="detail-item"><div class="detail-icon">🔧</div><div class="detail-label">TOOLS</div><div class="detail-val">Google Drive · Nextcloud · n8n</div></div>
+        <div class="detail-item"><div class="detail-icon">⚡</div><div class="detail-label">SCHWIERIGKEIT</div><div class="detail-val">Einfach · 2 Stunden Setup</div></div>
+        <div class="detail-item"><div class="detail-icon">📈</div><div class="detail-label">IHR NUTZEN</div><div class="detail-val">Nie wieder suchen</div></div>
+      </div>
+    </div>
+    <div class="slide-counter">06 / 10</div>
+  </section>
+
+  <!-- ════════ AUFGABE 7 ════════ -->
+  <section class="slide task-slide" id="slide-7" data-slide="7">
+    <div class="slide-inner">
+      <div class="task-number">AUFGABE 07 / 10</div>
+      <h2>📞 Telefonat-Nachbereitung</h2>
+      <p class="task-desc">Gesprächsnotizen diktieren, KI fasst zusammen und überträgt Action Items automatisch ins CRM — direkt nach dem Call.</p>
+      <div class="time-badge">
+        <span class="time-icon">⏱</span>
+        <div class="time-text">
+          <span class="time-value">bis 1 Std.</span>
+          <span class="time-label">ERSPARNIS PRO WOCHE</span>
+        </div>
+      </div>
+      <div class="task-details">
+        <div class="detail-item"><div class="detail-icon">🔧</div><div class="detail-label">TOOLS</div><div class="detail-val">Whisper · Claude · Airtable</div></div>
+        <div class="detail-item"><div class="detail-icon">⚡</div><div class="detail-label">SCHWIERIGKEIT</div><div class="detail-val">Mittel · KI-Workflow</div></div>
+        <div class="detail-item"><div class="detail-icon">📈</div><div class="detail-label">IHR NUTZEN</div><div class="detail-val">Kein Informationsverlust</div></div>
+      </div>
+    </div>
+    <div class="slide-counter">07 / 10</div>
+  </section>
+
+  <!-- ════════ AUFGABE 8 ════════ -->
+  <section class="slide task-slide" id="slide-8" data-slide="8">
+    <div class="slide-inner">
+      <div class="task-number">AUFGABE 08 / 10</div>
+      <h2>🔄 CRM-Pflege</h2>
+      <p class="task-desc">Kontaktdaten nach jeder Interaktion automatisch aktualisieren: neue E-Mails, Gesprächsstatus und Notizen landen direkt im richtigen Feld.</p>
+      <div class="time-badge">
+        <span class="time-icon">⏱</span>
+        <div class="time-text">
+          <span class="time-value">bis 1,5 Std.</span>
+          <span class="time-label">ERSPARNIS PRO WOCHE</span>
+        </div>
+      </div>
+      <div class="task-details">
+        <div class="detail-item"><div class="detail-icon">🔧</div><div class="detail-label">TOOLS</div><div class="detail-val">Airtable · HubSpot · n8n</div></div>
+        <div class="detail-item"><div class="detail-icon">⚡</div><div class="detail-label">SCHWIERIGKEIT</div><div class="detail-val">Einfach bis Mittel</div></div>
+        <div class="detail-item"><div class="detail-icon">📈</div><div class="detail-label">IHR NUTZEN</div><div class="detail-val">Saubere Datenbasis</div></div>
+      </div>
+    </div>
+    <div class="slide-counter">08 / 10</div>
+  </section>
+
+  <!-- ════════ AUFGABE 9 ════════ -->
+  <section class="slide task-slide" id="slide-9" data-slide="9">
+    <div class="slide-inner">
+      <div class="task-number">AUFGABE 09 / 10</div>
+      <h2>🚀 Kunden-Onboarding</h2>
+      <p class="task-desc">Neuer Kunde? Willkommens-E-Mail, Vertrag, Zugangsdaten und Onboarding-Checkliste — alles automatisch versandt, sobald der Auftrag rein ist.</p>
+      <div class="time-badge">
+        <span class="time-icon">⏱</span>
+        <div class="time-text">
+          <span class="time-value">bis 1 Std.</span>
+          <span class="time-label">ERSPARNIS PRO WOCHE</span>
+        </div>
+      </div>
+      <div class="task-details">
+        <div class="detail-item"><div class="detail-icon">🔧</div><div class="detail-label">TOOLS</div><div class="detail-val">Make.com · Airtable · DocuSign</div></div>
+        <div class="detail-item"><div class="detail-icon">⚡</div><div class="detail-label">SCHWIERIGKEIT</div><div class="detail-val">Mittel · 1–2 Tage Setup</div></div>
+        <div class="detail-item"><div class="detail-icon">📈</div><div class="detail-label">IHR NUTZEN</div><div class="detail-val">Professioneller Ersteindruck</div></div>
+      </div>
+    </div>
+    <div class="slide-counter">09 / 10</div>
+  </section>
+
+  <!-- ════════ AUFGABE 10 (BONUS) ════════ -->
+  <section class="slide task-slide" id="slide-10" data-slide="10"
+           style="background: radial-gradient(ellipse at 60% 40%, rgba(255,120,79,0.08) 0%, transparent 65%), var(--black-mid);">
+    <div class="slide-inner">
+      <div class="task-number">BONUS AUFGABE 10 / 10 🎁</div>
+      <h2>🤖 KI-gestützte Angebotserstellung</h2>
+      <p class="task-desc">Den effektivsten Hebel habe ich für den Schluss aufgehoben: Mit einem KI-Workflow erstellen Sie individuelle Angebote in unter 3 Minuten — auf Basis von Kundendaten aus Ihrem CRM.</p>
+      <div class="time-badge">
+        <span class="time-icon">⏱</span>
+        <div class="time-text">
+          <span class="time-value">bis 2 Std.</span>
+          <span class="time-label">ERSPARNIS PRO WOCHE</span>
+        </div>
+      </div>
+      <div class="task-details">
+        <div class="detail-item"><div class="detail-icon">🔧</div><div class="detail-label">TOOLS</div><div class="detail-val">Claude · n8n · Google Docs</div></div>
+        <div class="detail-item"><div class="detail-icon">⚡</div><div class="detail-label">SCHWIERIGKEIT</div><div class="detail-val">Mittel–Fortgeschritten</div></div>
+        <div class="detail-item"><div class="detail-icon">📈</div><div class="detail-label">IHR NUTZEN</div><div class="detail-val">Höhere Abschlussrate</div></div>
+      </div>
+    </div>
+    <div class="slide-counter">10 / 10</div>
+  </section>
+
+  <!-- ════════ ZUSAMMENFASSUNG ════════ -->
+  <section class="slide" id="slide-summary" data-slide="11">
+    <div class="summary-inner">
+      <h2>Ihr Automatisierungs-Potenzial</h2>
+      <p class="summary-sub">Wenn Sie nur die Hälfte dieser Aufgaben automatisieren:</p>
+      <div class="total-badge">
+        <span class="total-num">bis 16h</span>
+        <span class="total-label">ERSPARNIS PRO WOCHE</span>
+      </div>
+      <div class="summary-grid">
+        <div class="summary-item"><div class="s-task">📧 E-Mail-Management</div><div class="s-time">bis 3 Std./Woche</div></div>
+        <div class="summary-item"><div class="s-task">📅 Terminbuchung</div><div class="s-time">bis 2 Std./Woche</div></div>
+        <div class="summary-item"><div class="s-task">🧾 Rechnungen</div><div class="s-time">bis 2 Std./Woche</div></div>
+        <div class="summary-item"><div class="s-task">📊 Reporting</div><div class="s-time">bis 1,5 Std./Woche</div></div>
+        <div class="summary-item"><div class="s-task">📱 Social Media</div><div class="s-time">bis 2 Std./Woche</div></div>
+        <div class="summary-item"><div class="s-task">📂 Dokumenten-Ablage</div><div class="s-time">bis 1 Std./Woche</div></div>
+        <div class="summary-item"><div class="s-task">📞 Telefonat-Nachbereitung</div><div class="s-time">bis 1 Std./Woche</div></div>
+        <div class="summary-item"><div class="s-task">🔄 CRM-Pflege</div><div class="s-time">bis 1,5 Std./Woche</div></div>
+        <div class="summary-item"><div class="s-task">🚀 Kunden-Onboarding</div><div class="s-time">bis 1 Std./Woche</div></div>
+        <div class="summary-item"><div class="s-task">🤖 Angebotserstellung</div><div class="s-time">bis 2 Std./Woche</div></div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ════════ CTA / DOWNLOAD ════════ -->
+  <section class="slide" id="slide-cta" data-slide="12">
+    <div class="cta-inner">
+      <h2>Bereit, Zeit<br><em>zurückzugewinnen?</em></h2>
+      <p>Erfahren Sie, welche Aufgaben in Ihrem Business das größte Zeitsparpotenzial haben — und wie ich das für Sie umsetze.</p>
+      <a href="checkliste.pdf" class="download-btn" download>
+        <span class="download-icon">⬇</span>
+        Checkliste als PDF herunterladen
+      </a>
+      <div class="cta-trust">
+        <span class="cta-trust-item">🔒 Kein Spam</span>
+        <span class="cta-trust-item">📄 Sofort-Download</span>
+        <span class="cta-trust-item">🇩🇪 Auf Deutsch</span>
+        <span class="cta-trust-item">✅ DSGVO-konform</span>
+      </div>
+      <div class="cta-sign">
+        <span class="sign-name">Monika Brenner</span>
+        <span class="sign-role">KI-Automatisierungs-Expertin · Freelancerin</span>
+        <span class="sign-web">monika-brenner.com</span>
+      </div>
+    </div>
+  </section>
+
+  <script>
+    const slides = document.querySelectorAll('.slide');
+    const progressBar = document.getElementById('progress-bar');
+    const navDotsEl = document.getElementById('nav-dots');
+    const total = slides.length;
+
+    // Build nav dots
+    slides.forEach((_, i) => {
+      const dot = document.createElement('div');
+      dot.className = 'nav-dot' + (i === 0 ? ' active' : '');
+      dot.title = `Slide ${i + 1}`;
+      dot.addEventListener('click', () => slides[i].scrollIntoView({ behavior: 'smooth' }));
+      navDotsEl.appendChild(dot);
+    });
+
+    const dots = document.querySelectorAll('.nav-dot');
+
+    // IntersectionObserver for in-view class + nav dots + progress
+    const observer = new IntersectionObserver((entries) => {
+      entries.forEach(entry => {
+        if (entry.isIntersecting) {
+          entry.target.classList.add('in-view');
+          const idx = Array.from(slides).indexOf(entry.target);
+          dots.forEach((d, i) => d.classList.toggle('active', i === idx));
+          const pct = ((idx) / (total - 1)) * 100;
+          progressBar.style.width = pct + '%';
+        }
+      });
+    }, { threshold: 0.3 });
+
+    // First slide visible immediately
+    slides[0].classList.add('in-view');
+
+    slides.forEach(s => observer.observe(s));
+
+    // Keyboard navigation
+    document.addEventListener('keydown', e => {
+      const current = Array.from(slides).findIndex(s => s.classList.contains('in-view'));
+      if ((e.key === 'ArrowDown' || e.key === 'Space' || e.key === 'PageDown') && current < total - 1) {
+        e.preventDefault();
+        slides[current + 1].scrollIntoView({ behavior: 'smooth' });
+      }
+      if ((e.key === 'ArrowUp' || e.key === 'PageUp') && current > 0) {
+        e.preventDefault();
+        slides[current - 1].scrollIntoView({ behavior: 'smooth' });
+      }
+    });
+  </script>
+</body>
+</html>
