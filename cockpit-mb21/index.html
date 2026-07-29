@@ -1,0 +1,378 @@
+<!DOCTYPE html>
+<!--
+  BreMo Automations-Cockpit — Demo-Dashboard
+  ------------------------------------------------------------------
+  Schritt 1: Design-Shell (Pitch-tauglich, noch ohne Live-Daten).
+  Dark-First nach bremos.org-Designsystem. Markenfarben Gold/Papaya,
+  Roboto Mono (Headlines/Zahlen) + Inter (Fliesstext).
+
+  KPI-Zahlen sind aktuell PLATZHALTER (data-key + data-target). In
+  Schritt 3 fuellt cockpit.js sie live aus dem n8n-Webhook.
+  "Live vorfuehren"-Buttons bekommen ihre Deep-Links in Schritt 4.
+-->
+<html lang="de">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>BreMo Automations-Cockpit</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=Roboto+Mono:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --bg: #08080a;
+    --bg-mid: #101012;
+    --card: #1a1a1e;
+    --card-hover: #202026;
+    --border: #222226;
+    --border-light: #2c2c32;
+    --gold: #f5c842;
+    --gold-light: #fad96a;
+    --gold-dark: #c99e20;
+    --papaya: #ff784f;
+    --papaya-dim: #d95e35;
+    --text: #f4f2ee;
+    --text-dim: #ccc9c2;
+    --text-faint: #7d7a73;
+    --green: #4ade80;
+    --mono: "Roboto Mono", ui-monospace, "SF Mono", Menlo, monospace;
+    --sans: "Inter", -apple-system, "Segoe UI", Roboto, sans-serif;
+    --grad: linear-gradient(135deg, #f5c842, #ff784f);
+  }
+
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+
+  body {
+    font-family: var(--sans);
+    background:
+      radial-gradient(1100px 600px at 80% -10%, rgba(245,200,66,.06), transparent 60%),
+      radial-gradient(900px 500px at 0% 10%, rgba(255,120,79,.05), transparent 55%),
+      var(--bg);
+    color: var(--text);
+    min-height: 100vh;
+    padding: 28px clamp(16px, 4vw, 48px) 48px;
+    -webkit-font-smoothing: antialiased;
+  }
+
+  .wrap { max-width: 1180px; margin: 0 auto; }
+
+  /* ---------- Header ---------- */
+  header {
+    display: flex; align-items: center; justify-content: space-between;
+    gap: 20px; flex-wrap: wrap;
+    padding-bottom: 22px; margin-bottom: 30px;
+    border-bottom: 1px solid var(--border);
+  }
+  .brand { display: flex; align-items: center; gap: 16px; }
+  .logo-chip {
+    background: #ffffff; border-radius: 14px; padding: 9px;
+    display: flex; box-shadow: 0 6px 18px rgba(0,0,0,.45);
+  }
+  .logo-chip img { height: 44px; width: 44px; display: block; }
+  .brand-name { font-family: var(--mono); font-weight: 700; font-size: 1.32rem; letter-spacing: .3px; line-height: 1.1; }
+  .brand-name b { color: var(--gold); font-weight: 700; }
+  .brand-sub {
+    font-family: var(--mono); font-size: .68rem; letter-spacing: .22em;
+    text-transform: uppercase; color: var(--text-faint); margin-top: 5px;
+  }
+
+  .status-pill {
+    display: inline-flex; align-items: center; gap: 10px;
+    background: var(--card); border: 1px solid var(--border-light);
+    border-radius: 999px; padding: 9px 16px 9px 14px;
+  }
+  .status-pill .dot {
+    width: 9px; height: 9px; border-radius: 50%; background: var(--green);
+    box-shadow: 0 0 0 0 rgba(74,222,128,.6); animation: pulse 2.2s infinite;
+  }
+  @keyframes pulse {
+    0%   { box-shadow: 0 0 0 0 rgba(74,222,128,.55); }
+    70%  { box-shadow: 0 0 0 8px rgba(74,222,128,0); }
+    100% { box-shadow: 0 0 0 0 rgba(74,222,128,0); }
+  }
+  .status-pill .txt { font-family: var(--mono); font-size: .78rem; font-weight: 500; }
+  .status-pill .sub { color: var(--text-faint); font-size: .68rem; }
+
+  /* ---------- Intro ---------- */
+  .intro { margin-bottom: 26px; }
+  .intro h1 {
+    font-family: var(--mono); font-weight: 600; font-size: clamp(1.5rem, 3.4vw, 2.1rem);
+    letter-spacing: .5px; line-height: 1.15;
+  }
+  .intro h1 span { background: var(--grad); -webkit-background-clip: text; background-clip: text; color: transparent; }
+  .intro p { color: var(--text-dim); font-size: 1.02rem; margin-top: 10px; max-width: 640px; }
+
+  /* ---------- KPI-Zeile ---------- */
+  .kpi-label {
+    font-family: var(--mono); text-transform: uppercase; letter-spacing: .16em;
+    font-size: .7rem; color: var(--text-faint); margin: 4px 0 12px;
+  }
+  .kpis {
+    display: grid; grid-template-columns: repeat(5, 1fr); gap: 14px; margin-bottom: 40px;
+  }
+  .kpi {
+    background: var(--card); border: 1px solid var(--border);
+    border-radius: 16px; padding: 20px 18px; position: relative; overflow: hidden;
+  }
+  .kpi::before {
+    content: ""; position: absolute; left: 0; top: 0; height: 3px; width: 100%;
+    background: var(--grad); opacity: .8;
+  }
+  .kpi .num {
+    font-family: var(--mono); font-weight: 700; font-size: 2.15rem; line-height: 1;
+    color: var(--gold); letter-spacing: -.5px;
+  }
+  .kpi .cap { font-size: .82rem; color: var(--text-dim); margin-top: 9px; line-height: 1.35; }
+  .kpi .foot {
+    font-family: var(--mono); font-size: .64rem; text-transform: uppercase; letter-spacing: .1em;
+    color: var(--text-faint); margin-top: 8px;
+  }
+
+  /* ---------- Demo-Grid ---------- */
+  .section-head { display: flex; align-items: baseline; justify-content: space-between; margin-bottom: 16px; }
+  .section-head h2 { font-family: var(--mono); font-weight: 600; font-size: 1.15rem; letter-spacing: .3px; }
+  .section-head .count { font-family: var(--mono); font-size: .78rem; color: var(--text-faint); }
+
+  .grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(320px, 1fr)); gap: 16px; }
+
+  .demo {
+    background: var(--card); border: 1px solid var(--border);
+    border-radius: 18px; padding: 22px 22px 20px; display: flex; flex-direction: column;
+    transition: transform .18s ease, border-color .18s ease, box-shadow .18s ease;
+  }
+  .demo:hover {
+    transform: translateY(-3px); border-color: var(--border-light);
+    box-shadow: 0 14px 30px -12px rgba(0,0,0,.6), 0 0 26px rgba(245,200,66,.07);
+  }
+  .demo.planned { opacity: .72; }
+  .demo-top { display: flex; align-items: center; gap: 13px; margin-bottom: 14px; }
+  .icon {
+    width: 44px; height: 44px; flex: none; border-radius: 12px;
+    background: rgba(245,200,66,.09); border: 1px solid rgba(245,200,66,.18);
+    display: flex; align-items: center; justify-content: center;
+  }
+  .icon svg { width: 22px; height: 22px; stroke: var(--gold); fill: none; stroke-width: 1.7; stroke-linecap: round; stroke-linejoin: round; }
+  .demo.planned .icon { background: rgba(255,255,255,.03); border-color: var(--border-light); }
+  .demo.planned .icon svg { stroke: var(--text-faint); }
+  .demo-no { font-family: var(--mono); font-size: .66rem; letter-spacing: .12em; color: var(--text-faint); text-transform: uppercase; }
+  .demo h3 { font-family: var(--mono); font-weight: 600; font-size: 1.02rem; margin-top: 2px; letter-spacing: .2px; }
+  .demo p { color: var(--text-dim); font-size: .9rem; line-height: 1.5; flex: 1; }
+
+  .badge {
+    font-family: var(--mono); font-size: .62rem; font-weight: 600; text-transform: uppercase;
+    letter-spacing: .1em; padding: 4px 9px; border-radius: 999px; white-space: nowrap;
+  }
+  .badge.live { color: #0a0a0a; background: var(--green); }
+  .badge.plan { color: var(--text-faint); background: rgba(255,255,255,.05); border: 1px solid var(--border-light); }
+
+  .demo-foot { display: flex; align-items: center; justify-content: space-between; gap: 12px; margin-top: 18px; }
+  .btn {
+    font-family: var(--sans); font-weight: 600; font-size: .84rem;
+    border: none; border-radius: 10px; padding: 10px 16px; cursor: pointer;
+    background: var(--grad); color: #131007; letter-spacing: .2px;
+    transition: transform .15s ease, filter .15s ease;
+  }
+  .btn:hover { transform: translateY(-1px); filter: brightness(1.06); }
+  .btn:disabled { background: rgba(255,255,255,.05); color: var(--text-faint); cursor: default; transform: none; filter: none; }
+  .demo-tag { font-family: var(--mono); font-size: .64rem; text-transform: uppercase; letter-spacing: .1em; color: var(--text-faint); }
+
+  /* ---------- Footer ---------- */
+  footer {
+    margin-top: 42px; padding-top: 20px; border-top: 1px solid var(--border);
+    display: flex; justify-content: space-between; gap: 12px; flex-wrap: wrap;
+    font-size: .8rem; color: var(--text-faint);
+  }
+  footer a { color: var(--gold-dark); text-decoration: none; }
+  footer a:hover { color: var(--gold); }
+
+  @media (max-width: 860px) { .kpis { grid-template-columns: repeat(2, 1fr); } }
+  @media (max-width: 480px) { .kpis { grid-template-columns: 1fr; } }
+</style>
+</head>
+<body>
+<div class="wrap">
+
+  <header>
+    <div class="brand">
+      <div class="logo-chip"><img src="logo.png" alt="BreMo KI-Beratung"></div>
+      <div>
+        <div class="brand-name">BreMo <b>KI-Beratung</b></div>
+        <div class="brand-sub">Automations-Cockpit</div>
+      </div>
+    </div>
+    <div class="status-pill">
+      <span class="dot"></span>
+      <span class="txt">Alle Systeme aktiv</span>
+      <span class="sub" id="refreshInfo">· live</span>
+    </div>
+  </header>
+
+  <div class="intro">
+    <h1>Ihre Routinen laufen <span>automatisch</span>.</h1>
+    <p>Dieses Cockpit zeigt die Automatisierungen, die im Hintergrund für Sie arbeiten — mit den Zahlen aus der laufenden Demo-Umgebung. Jede Automatisierung ist in unter 60 Sekunden live vorführbar.</p>
+  </div>
+
+  <div class="kpi-label">Live aus der Demo-Umgebung</div>
+  <div class="kpis">
+    <div class="kpi">
+      <div class="num" data-key="mails" data-target="40">0</div>
+      <div class="cap">E-Mails automatisch sortiert</div>
+      <div class="foot">Demo 1 · Smart Inbox</div>
+    </div>
+    <div class="kpi">
+      <div class="num" data-key="termine" data-target="12">0</div>
+      <div class="cap">Termine mit Briefing</div>
+      <div class="foot">Demo 2 · Cal.com</div>
+    </div>
+    <div class="kpi">
+      <div class="num" data-key="rechnungen" data-target="9">0</div>
+      <div class="cap">Rechnungen erstellt</div>
+      <div class="foot">Demo 4 · Rechnungen</div>
+    </div>
+    <div class="kpi">
+      <div class="num" data-key="angebote" data-target="5">0</div>
+      <div class="cap">Angebote generiert</div>
+      <div class="foot">Demo 7 · Angebote</div>
+    </div>
+    <div class="kpi">
+      <div class="num" data-key="leads" data-target="20">0</div>
+      <div class="cap">Leads im Follow-up</div>
+      <div class="foot">Demo 6 · Follow-ups</div>
+    </div>
+  </div>
+
+  <div class="section-head">
+    <h2>Automatisierungen</h2>
+    <span class="count">5 von 7 live</span>
+  </div>
+
+  <div class="grid" id="demoGrid"></div>
+
+  <footer>
+    <span>BreMo KI-Beratung · Monika Brenner</span>
+    <span><a href="https://www.bremos.org">www.bremos.org</a> · info@bremos.org</span>
+  </footer>
+
+</div>
+
+<script>
+  // ---- Demo-Definitionen (Deep-Links "action" folgen in Schritt 4) ----
+  const ICONS = {
+    inbox: '<svg viewBox="0 0 24 24"><path d="M22 12h-6l-2 3h-4l-2-3H2"/><path d="M5.45 5.11 2 12v6a2 2 0 0 0 2 2h16a2 2 0 0 0 2-2v-6l-3.45-6.89A2 2 0 0 0 16.76 4H7.24a2 2 0 0 0-1.79 1.11z"/></svg>',
+    calendar: '<svg viewBox="0 0 24 24"><rect x="3" y="4" width="18" height="18" rx="2"/><path d="M16 2v4M8 2v4M3 10h18"/></svg>',
+    phone: '<svg viewBox="0 0 24 24"><path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72c.13.96.36 1.9.7 2.81a2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45c.9.34 1.85.57 2.81.7A2 2 0 0 1 22 16.92z"/></svg>',
+    invoice: '<svg viewBox="0 0 24 24"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><path d="M14 2v6h6M9 13h6M9 17h6"/></svg>',
+    chart: '<svg viewBox="0 0 24 24"><path d="M3 3v18h18"/><path d="M7 15l3-4 3 3 4-6"/></svg>',
+    followup: '<svg viewBox="0 0 24 24"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/><path d="M8 10h.01M12 10h.01M16 10h.01"/></svg>',
+    offer: '<svg viewBox="0 0 24 24"><path d="M12 2l2.4 4.9 5.4.8-3.9 3.8.9 5.4-4.8-2.5-4.8 2.5.9-5.4L4.2 7.7l5.4-.8z"/></svg>'
+  };
+
+  const AT = 'https://airtable.com/appGt0iKdgIzNEY82/';
+  const DEMOS = [
+    { no: 1, icon: 'inbox',    live: true,  title: 'Smart Inbox',          desc: 'Eingehende E-Mails werden automatisch klassifiziert, sortiert und bei Dringlichkeit priorisiert.', action: AT + 'tbl6MSVo8Ik7QFzGq', actionLabel: 'Posteingang öffnen' },
+    { no: 2, icon: 'calendar', live: true,  title: 'Termin-Briefing',      desc: 'Zu jeder Online-Buchung entsteht automatisch ein Briefing mit allen Infos für das Gespräch.', action: 'https://bremos.org/termin', actionLabel: 'Live buchen' },
+    { no: 3, icon: 'phone',    live: false, title: 'Voicemail-Agent',      desc: 'Ein KI-Sprachassistent nimmt Anrufe entgegen und leitet Anliegen strukturiert weiter.' },
+    { no: 4, icon: 'invoice',  live: true,  title: 'Rechnungen & Mahnwesen',desc: 'Rechnungen und Mahnungen entstehen automatisch als PDF und werden als Entwurf vorgelegt.', action: AT + 'tbl8KV6Y4nS2tFosJ', actionLabel: 'Rechnungen öffnen' },
+    { no: 5, icon: 'chart',    live: false, title: 'Reporting & Berichte',  desc: 'Wochen- und Monatsberichte werden automatisch aus den vorhandenen Daten erzeugt.' },
+    { no: 6, icon: 'followup', live: true,  title: 'Follow-ups',           desc: 'Neue Leads erhalten automatisch eine dreistufige, persönliche Nachfass-Sequenz.', action: AT + 'tblD4orTvvbFMJJBP', actionLabel: 'Leads öffnen' },
+    { no: 7, icon: 'offer',    live: true,  title: 'Angebotserstellung',    desc: 'Aus einer Anfrage entsteht per KI ein fertiger, gebrandeter Angebots-Entwurf als PDF.', action: AT + 'tblV9OJcXvOtKI7xP', actionLabel: 'Angebote öffnen' }
+  ];
+
+  const grid = document.getElementById('demoGrid');
+  DEMOS.forEach(d => {
+    const el = document.createElement('div');
+    el.className = 'demo' + (d.live ? '' : ' planned');
+    el.innerHTML = `
+      <div class="demo-top">
+        <div class="icon">${ICONS[d.icon]}</div>
+        <div>
+          <div class="demo-no">Demo ${d.no}</div>
+          <h3>${d.title}</h3>
+        </div>
+      </div>
+      <p>${d.desc}</p>
+      <div class="demo-foot">
+        ${d.live
+          ? '<button class="btn" data-action="'+d.action+'">'+(d.actionLabel||'Live vorführen')+'</button><span class="badge live">Live</span>'
+          : '<button class="btn" disabled>In Vorbereitung</button><span class="badge plan">Geplant</span>'}
+      </div>`;
+    grid.appendChild(el);
+  });
+
+  // "Live vorführen" öffnet den echten Beweis (Airtable-Tabelle / Cal.com-Buchung) in neuem Tab
+  grid.addEventListener('click', e => {
+    const b = e.target.closest('.btn[data-action]');
+    if (!b) return;
+    b.animate([{transform:'scale(1)'},{transform:'scale(.96)'},{transform:'scale(1)'}], {duration:180});
+    window.open(b.dataset.action, '_blank', 'noopener');
+  });
+
+  // ===================================================================
+  //  LIVE-DATEN (Schritt 2/3)
+  //  Nach dem Bau des n8n-Webhooks hier die Produktions-URL eintragen:
+  //  z.B. 'https://n8n.srv1417885.hstgr.cloud/webhook/cockpit-stats'
+  //  Leer lassen = Cockpit zeigt die Fallback-Zahlen (data-target).
+  // ===================================================================
+  const WEBHOOK_URL = 'https://n8n.srv1417885.hstgr.cloud/webhook/cockpit-stats';
+  const REFRESH_MS = 60000;
+
+  const numEls = {};
+  document.querySelectorAll('.kpi .num').forEach(el => numEls[el.dataset.key] = el);
+  const info = document.getElementById('refreshInfo');
+  const pill = document.querySelector('.status-pill');
+  const pillTxt = pill.querySelector('.txt');
+  const pillDot = pill.querySelector('.dot');
+
+  // Zahl weich von aktuellem Wert auf Ziel hochzählen
+  function countUp(el, target, ms) {
+    const from = parseInt((el.textContent || '0').replace(/\D/g, '')) || 0;
+    const start = performance.now();
+    (function step(now){
+      const p = Math.min((now - start) / ms, 1);
+      const eased = 1 - Math.pow(1 - p, 3);
+      el.textContent = Math.round(from + (target - from) * eased).toLocaleString('de-DE');
+      if (p < 1) requestAnimationFrame(step);
+    })(start);
+  }
+
+  function showFallback() {
+    Object.values(numEls).forEach((el, i) =>
+      setTimeout(() => countUp(el, +el.dataset.target, 1000), 100 * i));
+  }
+
+  let lastUpdate = null;
+  function tickAge() {
+    if (!lastUpdate) return;
+    const s = Math.round((Date.now() - lastUpdate) / 1000);
+    info.textContent = '· vor ' + s + 's aktualisiert';
+  }
+
+  async function fetchStats() {
+    try {
+      const res = await fetch(WEBHOOK_URL, { cache: 'no-store' });
+      const data = await res.json();
+      const c = data.counts || {};
+      Object.keys(numEls).forEach(k => {
+        if (typeof c[k] === 'number') countUp(numEls[k], c[k], 800);
+      });
+      lastUpdate = Date.now();
+      pillDot.style.background = 'var(--green)';
+      pillTxt.textContent = 'Alle Systeme aktiv';
+    } catch (e) {
+      // Webhook nicht erreichbar: letzte Zahlen stehen lassen, nie leeren
+      pillDot.style.background = 'var(--gold)';
+      pillTxt.textContent = 'Zahlen gecacht';
+    }
+  }
+
+  if (WEBHOOK_URL) {
+    fetchStats();
+    setInterval(fetchStats, REFRESH_MS);
+  } else {
+    showFallback();
+    lastUpdate = Date.now();
+  }
+  setInterval(tickAge, 1000);
+</script>
+</body>
+</html>
