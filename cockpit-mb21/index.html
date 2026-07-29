@@ -325,14 +325,18 @@
 
   // Zahl weich von aktuellem Wert auf Ziel hochzählen
   function countUp(el, target, ms) {
+    const fmt = n => n.toLocaleString('de-DE');
     const from = parseInt((el.textContent || '0').replace(/\D/g, '')) || 0;
     const start = performance.now();
     (function step(now){
       const p = Math.min((now - start) / ms, 1);
       const eased = 1 - Math.pow(1 - p, 3);
-      el.textContent = Math.round(from + (target - from) * eased).toLocaleString('de-DE');
+      el.textContent = fmt(Math.round(from + (target - from) * eased));
       if (p < 1) requestAnimationFrame(step);
     })(start);
+    // Sicherheitsnetz: falls requestAnimationFrame gedrosselt ist (Tab im
+    // Hintergrund), den Endwert nach Ablauf der Dauer garantiert setzen.
+    setTimeout(() => { el.textContent = fmt(target); }, ms + 250);
   }
 
   function showFallback() {
