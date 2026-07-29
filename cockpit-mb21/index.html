@@ -185,6 +185,18 @@
   footer a { color: var(--gold-dark); text-decoration: none; }
   footer a:hover { color: var(--gold); }
 
+  /* ---------- Aktivitäts-Feed ---------- */
+  .activity { background: var(--card); border: 1px solid var(--border); border-radius: 16px; padding: 16px 20px 6px; margin-bottom: 40px; }
+  .act-head { display: flex; align-items: baseline; justify-content: space-between; margin-bottom: 6px; }
+  .act-title { font-family: var(--mono); font-weight: 600; font-size: .95rem; letter-spacing: .3px; }
+  .act-live { font-family: var(--mono); font-size: .6rem; letter-spacing: .12em; text-transform: uppercase; color: var(--green); }
+  .feed { list-style: none; }
+  .feed li { display: flex; align-items: center; gap: 12px; padding: 10px 0; border-top: 1px solid var(--border); font-size: .9rem; }
+  .feed li:first-child { border-top: none; }
+  .feed .dot2 { width: 8px; height: 8px; border-radius: 50%; flex: none; }
+  .feed .txt2 { color: var(--text-dim); flex: 1; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+  .feed .time2 { font-family: var(--mono); font-size: .7rem; color: var(--text-faint); white-space: nowrap; }
+
   @media (max-width: 860px) { .kpis { grid-template-columns: repeat(2, 1fr); } }
   @media (max-width: 480px) { .kpis { grid-template-columns: 1fr; } }
 </style>
@@ -240,6 +252,14 @@
       <div class="foot">Demo 6 · Follow-ups</div>
     </div>
   </div>
+
+  <section class="activity" id="activity" hidden>
+    <div class="act-head">
+      <span class="act-title">Letzte Aktivität</span>
+      <span class="act-live">● live</span>
+    </div>
+    <ul class="feed" id="feed"></ul>
+  </section>
 
   <div class="section-head">
     <h2>Automatisierungen</h2>
@@ -344,6 +364,29 @@
       setTimeout(() => countUp(el, +el.dataset.target, 1000), 100 * i));
   }
 
+  // ---- Aktivitäts-Feed ----
+  const TYPE_COLOR = { mail: 'var(--gold)', termin: 'var(--green)', rechnung: 'var(--papaya)', angebot: 'var(--gold-light)', lead: 'var(--green)' };
+  function escapeHtml(s) {
+    return String(s == null ? '' : s).replace(/[&<>"']/g, c => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[c]));
+  }
+  function relTime(iso) {
+    const diff = (Date.now() - new Date(iso).getTime()) / 1000;
+    if (diff < 60) return 'gerade eben';
+    if (diff < 3600) return 'vor ' + Math.floor(diff / 60) + ' Min';
+    if (diff < 86400) return 'vor ' + Math.floor(diff / 3600) + ' Std';
+    return 'vor ' + Math.floor(diff / 86400) + ' Tg';
+  }
+  function renderFeed(recent) {
+    const wrap = document.getElementById('activity');
+    const feed = document.getElementById('feed');
+    if (!Array.isArray(recent) || !recent.length) { wrap.hidden = true; return; }
+    feed.innerHTML = recent.map(e =>
+      '<li><span class="dot2" style="background:' + (TYPE_COLOR[e.type] || 'var(--gold)') + '"></span>' +
+      '<span class="txt2">' + escapeHtml(e.text) + '</span>' +
+      '<span class="time2">' + relTime(e.ts) + '</span></li>').join('');
+    wrap.hidden = false;
+  }
+
   let lastUpdate = null;
   function tickAge() {
     if (!lastUpdate) return;
@@ -359,6 +402,7 @@
       Object.keys(numEls).forEach(k => {
         if (typeof c[k] === 'number') countUp(numEls[k], c[k], 800);
       });
+      renderFeed(data.recent);
       lastUpdate = Date.now();
       pillDot.style.background = 'var(--green)';
       pillTxt.textContent = 'Alle Systeme aktiv';
