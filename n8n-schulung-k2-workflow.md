@@ -18,9 +18,9 @@
 1. Bestehenden Checklisten-Workflow **duplizieren** und umbenennen: "Schulung K2"
 2. **Webhook-Node:** Pfad auf `schulung-k2` ändern (POST, Respond immediately)
 3. **Sheets-Node ("Append row in sheet"):** gleiches Dokument; im Google Sheet einmalig Spalte "Quelle" ergänzen, dann im Node mappen: Vorname → `{{ $json.body.vorname }}`, E-Mail → `{{ $json.body.email }}`, Quelle → fester Text `Schulung K2` (Nachname bleibt leer — das Schulungs-Formular fragt nur Vorname + E-Mail)
-4. **Gmail-Node:** Betreff und Text ersetzen (Vorlage unten), UTF-8/Umlaute wie beim Checklisten-Fix beibehalten
+4. **Gmail-Node:** To auf `{{ $json["E-Mail"] }}` setzen (Daten kommen vom Sheets-Node, nicht mehr vom Webhook!), dann Betreff und Text ersetzen (Vorlage unten), UTF-8/Umlaute wie beim Checklisten-Fix beibehalten
 5. **WICHTIG (Reaktivierungs-Gotcha):** Workflow nach jeder Änderung deaktivieren und wieder aktivieren, sonst läuft der Live-Webhook mit der alten Version
-6. **Test:** Formular auf bremos.org/schulung mit eigener Adresse absenden → Airtable-Eintrag + Mail prüfen
+6. **Test:** Formular auf bremos.org/schulung mit eigener Adresse absenden → Sheet-Eintrag + Mail prüfen
 
 ## Mail-Vorlage (HTML, Anrede Sie — offizielle Zustellung)
 
@@ -28,7 +28,7 @@ Betreff: `Ihr Kapitel 2: Diese Routinen können Sie heute schon abgeben`
 
 ```html
 <div style="font-family:'Inter',Arial,sans-serif;max-width:560px;padding:24px">
-  <h2 style="color:#c99e20;font-size:20px">Hallo {{ $json.body.vorname }},</h2>
+  <h2 style="color:#c99e20;font-size:20px">Hallo {{ $json.Vorname }},</h2>
   <p style="font-size:15px;line-height:1.7">
     schön, dass Sie weitermachen. Hier ist Ihr Zugang zu Kapitel 2 der Schulung —
     darin sehen Sie, welche Büroroutinen sich heute schon automatisieren lassen
