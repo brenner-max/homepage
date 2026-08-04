@@ -190,15 +190,23 @@ footer{background:#050505;color:var(--blue-200);padding:3rem 0 1.5rem}
   .hero h1{font-size:2rem}
   .hero-grid,.pain-grid,.about-grid,.footer-grid{grid-template-columns:1fr}
   .usp-grid,.services-grid{grid-template-columns:1fr}
-  .process-steps{grid-template-columns:repeat(2,1fr)}
+  .process-steps{grid-template-columns:repeat(2,minmax(0,1fr))}
+  .about-stats{grid-template-columns:repeat(3,minmax(0,1fr));gap:.6rem}
+  .stat{padding:.85rem .4rem}
+  .stat-label{font-size:.68rem}
   .nav-links{display:none;position:absolute;top:100%;left:0;right:0;flex-direction:column;background:rgba(8,8,10,.98);padding:1.5rem;gap:1rem;border-radius:0 0 12px 12px}
   .nav-links.open{display:flex}
   .hamburger{display:flex}
   .hero-visual{order:-1}
   .about-image{max-width:280px;margin:0 auto}
   .cta-section h2{font-size:1.6rem}
-  .leadmagnet-grid{grid-template-columns:1fr}
-  .lm-form-card{padding:24px 20px}
+}
+
+@media(max-width:480px){
+  .process-steps{grid-template-columns:1fr}
+  /* Lange deutsche Komposita ("KI-Automatisierung", "Zusammenarbeit") sprengen
+     auf 320px sonst das Layout. lang="de" ist gesetzt, also trennt der Browser sauber. */
+  h1,h2,h3,p,.stat-label{overflow-wrap:break-word;hyphens:auto}
 }
 
 /* ═══ LEAD MAGNET ═══ */
@@ -210,12 +218,24 @@ footer{background:#050505;color:var(--blue-200);padding:3rem 0 1.5rem}
 .lm-benefit strong{color:var(--white)}
 .lm-check{color:var(--cyan);font-weight:700;font-size:1.1rem}
 .lm-badge{font-size:.78rem;color:var(--blue-200);background:rgba(255,255,255,.04);border:1px solid rgba(255,255,255,.08);padding:5px 14px;border-radius:999px}
+.lm-crosslink{font-size:.92rem;color:var(--blue-200);margin-top:1.75rem}
+.lm-crosslink a{color:var(--cyan);font-weight:500;border-bottom:1px solid rgba(245,200,66,.35);transition:color .3s,border-color .3s}
+.lm-crosslink a:hover{color:var(--cyan-light);border-bottom-color:var(--cyan-light)}
 .lm-form-card{background:var(--blue-800);border:1px solid rgba(245,200,66,.15);border-radius:16px;padding:32px;box-shadow:0 24px 60px rgba(0,0,0,.3)}
+.lm-name-row{display:grid;grid-template-columns:1fr 1fr;gap:12px}
 .lm-field{display:flex;flex-direction:column;gap:6px;margin-bottom:14px}
 .lm-field label{font-family:var(--font-heading);font-size:.7rem;color:var(--gray-400);letter-spacing:.06em}
 .lm-field input{background:rgba(255,255,255,.04);border:1px solid rgba(255,255,255,.1);border-radius:8px;padding:12px 16px;color:var(--white);font-family:var(--font-body);font-size:.9rem;outline:none;transition:border-color .2s,box-shadow .2s;width:100%}
 .lm-field input::placeholder{color:var(--gray-400)}
 .lm-field input:focus{border-color:var(--cyan);box-shadow:0 0 0 3px rgba(245,200,66,.08)}
+
+/* Mobil-Overrides fuer den Lead-Magnet: MUESSEN nach dem Block oben stehen,
+   sonst gewinnt bei gleicher Spezifitaet die spaetere Regel und sie greifen nicht. */
+@media(max-width:768px){
+  .leadmagnet-grid{grid-template-columns:1fr;gap:2.5rem}
+  .lm-form-card{padding:24px 20px}
+  .lm-name-row{grid-template-columns:1fr}
+}
 </style>
 </head>
 <body>
@@ -368,6 +388,7 @@ footer{background:#050505;color:var(--blue-200);padding:3rem 0 1.5rem}
       <span class="lm-badge">🔒 Kein Spam</span>
       <span class="lm-badge">🇩🇪 Auf Deutsch</span>
     </div>
+    <p class="lm-crosslink">Lieber gleich tiefer einsteigen? <a href="/schulung">Zur kostenlosen KI-Schulung →</a></p>
   </div>
   <div class="leadmagnet-form-wrap reveal">
     <div class="lm-form-card">
@@ -375,7 +396,7 @@ footer{background:#050505;color:var(--blue-200);padding:3rem 0 1.5rem}
       <h3 style="font-size:1.2rem;font-weight:700;color:var(--white);margin-bottom:6px">Checkliste jetzt erhalten</h3>
       <p style="font-size:.85rem;color:var(--gray-400);margin-bottom:24px">Tragen Sie sich ein — ich sende Ihnen die Checkliste sofort per E-Mail zu.</p>
       <form id="leadmagnet-form" onsubmit="sendLeadMagnet(event)">
-        <div style="display:grid;grid-template-columns:1fr 1fr;gap:12px">
+        <div class="lm-name-row">
           <div class="lm-field">
             <label>VORNAME</label>
             <input type="text" id="lm-vorname" name="vorname" placeholder="Anna" required autocomplete="given-name">
@@ -397,6 +418,7 @@ footer{background:#050505;color:var(--blue-200);padding:3rem 0 1.5rem}
         <h3 style="font-size:1.2rem;color:var(--white);margin-bottom:8px">Ihre Checkliste ist da!</h3>
         <p style="font-size:.9rem;color:var(--blue-200);margin-bottom:20px">Sie erhalten sie zusätzlich per E-Mail — prüfen Sie ggf. den Spam-Ordner.</p>
         <a href="checkliste.html" target="_blank" rel="noopener" class="btn btn-primary" style="justify-content:center">Checkliste jetzt ansehen →</a>
+        <p class="lm-crosslink" style="margin-top:1.25rem;font-size:.85rem">Noch einen Schritt weiter: <a href="/schulung" target="_blank" rel="noopener">die kostenlose KI-Schulung →</a></p>
       </div>
     </div>
   </div>
@@ -452,7 +474,7 @@ footer{background:#050505;color:var(--blue-200);padding:3rem 0 1.5rem}
     <div class="nav-logo" style="margin-bottom:.5rem"><img src="logo.png" alt="Logo" style="width:36px;height:36px;border-radius:6px">Monika Brenner</div>
     <p>KI-Beratung und Automatisierung für mehr Effizienz, Sichtbarkeit und Rentabilität. Für Solopreneure, Arztpraxen und kleine Unternehmen.</p>
   </div>
-  <div class="footer-col"><h4>Navigation</h4><ul><li><a href="#leistungen">Leistungen</a></li><li><a href="#ueber-mich">Über mich</a></li><li><a href="#prozess">Prozess</a></li><li><a href="#erstberatung">Erstberatung</a></li></ul></div>
+  <div class="footer-col"><h4>Navigation</h4><ul><li><a href="#leistungen">Leistungen</a></li><li><a href="#ueber-mich">Über mich</a></li><li><a href="#prozess">Prozess</a></li><li><a href="/schulung">Kostenlose Schulung</a></li><li><a href="#erstberatung">Erstberatung</a></li></ul></div>
   <div class="footer-col"><h4>Kontakt</h4><ul><li><a href="tel:+4915757054754">0157 57054754</a></li><li><a href="mailto:info@bremos.org">info@bremos.org</a></li></ul></div>
   <div class="footer-col"><h4>Rechtliches</h4><ul><li><a href="#" onclick="openModal('impressum');return false">Impressum</a></li><li><a href="#" onclick="openModal('datenschutz');return false">Datenschutz</a></li><li><a href="#" onclick="openModal('agb');return false">AGB</a></li></ul></div>
 </div>
