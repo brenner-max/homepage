@@ -8,7 +8,7 @@
 | Eigenschaft | Wert |
 |---|---|
 | **Trigger** | Webhook `POST /webhook/schulung-k2` |
-| **Payload** | `{ "vorname": "...", "email": "...", "quelle": "Schulung K2" }` |
+| **Payload** | `{ "vorname": "...", "email": "...", "quelle": "Schulung K2", "werbung": "Ja\|Nein", "einwilligung_am": "<ISO oder leer>" }` |
 | **Ziel 1** | Google Sheets: Lead-Log des Checklisten-Funnels, Spalte "Quelle" = Schulung K2 |
 | **Ziel 2** | Gmail: Mail an den Lead mit dem Kapitel-2-Link |
 | **Kapitel-2-Link** | `https://bremos.org/schulung/k2-9d3b2807b991.html` |
@@ -113,3 +113,35 @@ Den neuen Node **parallel** an den Sheets-Node hängen, nicht hinter den bestehe
 - [ ] Testlead ausgelöst: Lead-Mail UND Alert-Mail angekommen
 - [ ] Workflow einmal aus/an geschaltet
 - [ ] Testzeile im Sheet "Schulung K2" gelöscht
+
+---
+
+## Nachtrag 2026-08-09 (2): Werbe-Einwilligung aufnehmen
+
+Das Formular auf `/schulung` hat seit 2026-08-09 eine **freiwillige, standardmäßig leere Checkbox** für die Einwilligung in werbliche E-Mails. Ohne Häkchen bekommt der Lead trotzdem Kapitel 2 — nur das Nachfassen entfällt.
+
+Der Webhook schickt jetzt zwei zusätzliche Felder:
+
+| Feld | Wert |
+|---|---|
+| `werbung` | `Ja` oder `Nein` |
+| `einwilligung_am` | ISO-Zeitstempel des Absendens, bei `Nein` leerer String |
+
+> [!important] Reihenfolge: erst n8n, dann die Seite live
+> Solange die beiden Spalten im Google Sheet fehlen, verwirft der Sheets-Node die Felder stillschweigend. Dann kreuzt jemand an, und die Einwilligung ist nirgends dokumentiert — die Rechenschaftspflicht aus Art. 5 Abs. 2 DSGVO verlangt aber, dass sich Einwilligungen nachweisen lassen. Eine nicht dokumentierte Einwilligung ist wertlos: Sie dürfen dann faktisch nicht nachfassen und wissen es nicht einmal.
+
+### Schritte
+
+1. Im Google Sheet, Blatt **"Schulung K2"**, zwei Spalten ergänzen: **`Werbung`** und **`Einwilligung am`**
+2. Im n8n-Sheets-Node **"Refresh columns"** klicken (sonst greift der Spalten-Cache — bekannter Stolperstein aus dem Erstaufbau), dann mappen:
+   - `Werbung` → `={{ $json.body.werbung }}`
+   - `Einwilligung am` → `={{ $json.body.einwilligung_am }}`
+3. Workflow deaktivieren + reaktivieren
+4. Test über das Formular, **einmal mit und einmal ohne Häkchen** — beide Zeilen im Sheet prüfen, danach beide Testzeilen löschen
+
+### Was das erlaubt und was nicht
+
+- Nachfassen ist nur bei Leads mit `Werbung = Ja` zulässig, und erst ab dem Tag, an dem die Checkbox live ist
+- Die Leads von vor dem 09.08. haben diese Einwilligung **nicht** — sie gilt nicht rückwirkend, auch nicht durch nachträgliches Anschreiben mit der Bitte um Zustimmung (das wäre selbst schon Werbung)
+- Jede Werbemail braucht einen funktionierenden Abmeldeweg; ein Widerruf muss im Sheet nachgeführt werden
+- Rechtlich final abgesichert ist das erst mit anwaltlicher Prüfung — sinnvoll gemeinsam mit den Vertragsbausteinen, die ohnehin schon beim Anwalt liegen

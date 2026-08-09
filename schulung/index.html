@@ -59,6 +59,9 @@ section{padding:4rem 0}
 .lm-field label{display:block;font-family:var(--font-heading);font-size:.65rem;color:var(--gray-500);letter-spacing:.1em;margin-bottom:6px}
 .lm-field input{width:100%;background:var(--blue-900);border:1px solid rgba(255,255,255,.12);border-radius:8px;padding:.75rem 1rem;color:var(--white);font-size:.95rem;font-family:var(--font-body)}
 .lm-field input:focus{outline:none;border-color:var(--cyan)}
+.lm-consent{display:flex;align-items:flex-start;gap:10px;margin:2px 0 16px}
+.lm-consent input{flex-shrink:0;width:16px;height:16px;margin-top:3px;accent-color:var(--cyan);cursor:pointer}
+.lm-consent label{font-size:.75rem;line-height:1.55;color:var(--gray-500);text-align:left;cursor:pointer}
 .hint{font-size:.72rem;color:var(--gray-400);text-align:center;margin-top:12px}
 .quer{text-align:center;padding:2.5rem 0 4rem}
 .quer p{color:var(--gray-500);font-size:.9rem}
@@ -119,8 +122,12 @@ footer .container{display:flex;justify-content:space-between;gap:1rem;flex-wrap:
             <label>E-MAIL ADRESSE</label>
             <input type="email" id="k2-email" placeholder="anna@beispiel.de" required autocomplete="email">
           </div>
+          <div class="lm-consent">
+            <input type="checkbox" id="k2-werbung">
+            <label for="k2-werbung">Ja, ich möchte von BreMo KI-Beratung gelegentlich Tipps und Angebote rund um Büroautomatisierung per E-Mail erhalten. Diese Einwilligung kann ich jederzeit widerrufen, formlos an info@bremos.org.</label>
+          </div>
           <button type="submit" id="k2-btn" class="btn btn-primary" style="width:100%;justify-content:center">Kapitel 2 kostenlos erhalten ↗</button>
-          <p class="hint">Kein Spam. Jederzeit abmeldbar. DSGVO-konform.</p>
+          <p class="hint">Kapitel 2 erhalten Sie in jedem Fall — das Häkchen ist freiwillig. Kein Spam, jederzeit abmeldbar. Wie ich mit Ihren Daten umgehe, steht in der Datenschutzerklärung auf der Startseite.</p>
         </form>
         <div id="k2-success" style="display:none;text-align:center;padding:1.2rem 0">
           <div style="font-size:2.4rem;margin-bottom:10px">🎉</div>
@@ -148,6 +155,7 @@ footer .container{display:flex;justify-content:space-between;gap:1rem;flex-wrap:
 async function sendK2(e){
   e.preventDefault();
   const btn=document.getElementById('k2-btn');
+  const werbung=document.getElementById('k2-werbung').checked;
   btn.disabled=true;btn.textContent='Wird gesendet …';
   try{
     await fetch('https://n8n.srv1417885.hstgr.cloud/webhook/schulung-k2',{
@@ -156,7 +164,9 @@ async function sendK2(e){
       body:JSON.stringify({
         vorname:document.getElementById('k2-vorname').value.trim(),
         email:document.getElementById('k2-email').value.trim(),
-        quelle:'Schulung K2'
+        quelle:'Schulung K2',
+        werbung:werbung?'Ja':'Nein',
+        einwilligung_am:werbung?new Date().toISOString():''
       })
     });
   }catch(err){/* Erfolgspanel trotzdem zeigen — Link ist der Kern */}
