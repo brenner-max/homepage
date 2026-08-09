@@ -99,7 +99,7 @@ Den neuen Node **parallel** an den Sheets-Node hängen, nicht hinter den bestehe
   </p>
   <p style="color:#555">
     Kapitel 2 wurde automatisch zugestellt. Ein aktives Nachfassen per E-Mail ist
-    von der Einwilligung nicht gedeckt — abwarten, ob der Lead das Erstgespräch bucht.
+    nur erlaubt, wenn in der Spalte "Werbung" ein Ja steht.
   </p>
 </div>
 ```
