@@ -79,10 +79,14 @@ Den neuen Node **parallel** an den Sheets-Node hängen, nicht hinter den bestehe
 1. Auf dem Canvas am **Ausgangspunkt des Sheets-Nodes** ein zweites Mal ziehen — es entsteht ein zweiter Zweig neben dem bestehenden Gmail-Node
 2. Node hinzufügen: **Gmail → Send Message**, Credential wie gehabt (Gmail OAuth2, info@bremos.org)
 3. Felder setzen:
-   - **To:** `brenner@bremos.org` (internes Postfach für Alerts — info@ ist die Außendarstellung und hier bewusst nicht gemeint)
-   - **Subject:** `={{ "Neuer Schulungs-Lead: " + $json.Vorname }}`
+   - **To:** `brenner@bremos.org` — bleibt auf **Fixed** (fester Text, keine Expression)
+   - **Subject:** auf **Expression** umschalten, dann `{{ "Neuer Schulungs-Lead: " + $json.Vorname }}`
    - **Email Type:** **HTML** (nicht Text — Gmail kollabiert Plain-Text-Zeilenumbrüche beim Anzeigen)
-   - **Message:** Vorlage unten
+   - **Message:** auf **Expression** umschalten, dann die Vorlage unten einfügen
+
+> [!warning] Fixed vs. Expression — hier gehen die meisten Fehler los
+> `{{ ... }}` wird nur ausgewertet, wenn das Feld auf **Expression** steht. Zum Umschalten mit der Maus über das Feld fahren, dann erscheint oben rechts am Feld der Umschalter `Fixed | Expression`.
+> **Kein `=` davor tippen.** n8n speichert Expressions intern mit führendem `=`, im Eingabefeld gehört es nicht hin — sonst steht es als sichtbares Zeichen im Ergebnis (Betreff wird zu `=Neuer Schulungs-Lead: …`) oder Google Sheets hält den Zellinhalt für eine Formel und zeigt `#NAME?`.
 4. Node umbenennen in `Alert Monika`, damit auf dem Canvas sofort klar ist, welcher Gmail-Node wohin schickt
 5. **Reaktivierungs-Gotcha:** Workflow deaktivieren und wieder aktivieren — sonst läuft der Live-Webhook weiter mit der alten Version
 6. Test: Formular auf bremos.org/schulung mit eigener Adresse absenden. Danach **die Testzeile im Sheet löschen** (sonst verfälscht sie den 2-Wochen-Check)
@@ -133,9 +137,10 @@ Der Webhook schickt jetzt zwei zusätzliche Felder:
 ### Schritte
 
 1. Im Google Sheet, Blatt **"Schulung K2"**, zwei Spalten ergänzen: **`Werbung`** und **`Einwilligung am`**
-2. Im n8n-Sheets-Node **"Refresh columns"** klicken (sonst greift der Spalten-Cache — bekannter Stolperstein aus dem Erstaufbau), dann mappen:
-   - `Werbung` → `={{ $json.body.werbung }}`
-   - `Einwilligung am` → `={{ $json.body.einwilligung_am }}`
+2. Im n8n-Sheets-Node **"Refresh columns"** klicken (sonst greift der Spalten-Cache — bekannter Stolperstein aus dem Erstaufbau), dann beide Felder **auf Expression umschalten** (siehe Warnung oben) und mappen — ohne `=` davor:
+   - `Werbung` → `{{ $json.body.werbung }}`
+   - `Einwilligung am` → `{{ $json.body.einwilligung_am }}`
+   > Steht in der Zelle später `#NAME?` oder `#ERROR!`, war das Feld auf **Fixed**: n8n hat den Ausdruck als Text geschrieben, und Google Sheets hat das führende `=` als Formel gelesen.
 3. Workflow deaktivieren + reaktivieren
 4. Test über das Formular, **einmal mit und einmal ohne Häkchen** — beide Zeilen im Sheet prüfen, danach beide Testzeilen löschen
 
