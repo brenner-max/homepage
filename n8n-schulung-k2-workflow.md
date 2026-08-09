@@ -62,3 +62,54 @@ Betreff: `Ihr Kapitel 2: Diese Routinen können Sie heute schon abgeben`
 - [ ] Testlead im Google Sheet mit Quelle "Schulung K2"
 - [ ] Mail kommt an, Umlaute korrekt, Link funktioniert
 - [ ] Workflow-Toggle aktiv (nach letzter Änderung einmal aus/an)
+
+---
+
+## Nachtrag 2026-08-09: Benachrichtigung an Monika ergänzen
+
+**Warum:** Der Workflow meldet neue Leads bisher niemandem. Sie landen still im Sheet — wer nicht aktiv reinschaut, merkt nichts. Zum Vergleich: Demo 2 (Cal.com-Briefing) schickt eine interne Mail, dieser Workflow nicht.
+
+> [!warning] Benachrichtigt werden ≠ nachfassen dürfen
+> Dieser Node informiert **dich**. Er schafft keine Erlaubnis, den Lead werblich anzuschreiben. Der Formular-Hinweis ("Kein Spam. Jederzeit abmeldbar. DSGVO-konform.") deckt nur die Zusendung von Kapitel 2 ab; werbliche E-Mail-Ansprache braucht nach § 7 Abs. 2 Nr. 2 UWG eine Einwilligung, und § 7 Abs. 3 (Bestandskunden) greift nicht, weil kein Kauf stattfand. Wer aktiv nachfassen will, muss zuerst den Einwilligungstext am Formular erweitern — das gilt dann ab Änderung, nicht rückwirkend. Der bereits eingebaute Weg bleibt zulässig: die K2-Mail verlinkt das kostenlose Erstgespräch, der Lead meldet sich selbst.
+
+### Aufbau: zweiter Zweig aus dem Sheets-Node
+
+Den neuen Node **parallel** an den Sheets-Node hängen, nicht hinter den bestehenden Gmail-Node. Zwei Gründe: Die Benachrichtigung läuft auch dann, wenn der Mailversand an den Lead klemmt — und `$json` zeigt im Parallelzweig direkt auf die Sheet-Zeile, wodurch die Mapping-Trap (`$json` zeigt immer nur auf den DIREKTEN Vorgänger) gar nicht erst auftritt.
+
+1. Auf dem Canvas am **Ausgangspunkt des Sheets-Nodes** ein zweites Mal ziehen — es entsteht ein zweiter Zweig neben dem bestehenden Gmail-Node
+2. Node hinzufügen: **Gmail → Send Message**, Credential wie gehabt (Gmail OAuth2, info@bremos.org)
+3. Felder setzen:
+   - **To:** `brenner@bremos.org` (internes Postfach für Alerts — info@ ist die Außendarstellung und hier bewusst nicht gemeint)
+   - **Subject:** `={{ "Neuer Schulungs-Lead: " + $json.Vorname }}`
+   - **Email Type:** **HTML** (nicht Text — Gmail kollabiert Plain-Text-Zeilenumbrüche beim Anzeigen)
+   - **Message:** Vorlage unten
+4. Node umbenennen in `Alert Monika`, damit auf dem Canvas sofort klar ist, welcher Gmail-Node wohin schickt
+5. **Reaktivierungs-Gotcha:** Workflow deaktivieren und wieder aktivieren — sonst läuft der Live-Webhook weiter mit der alten Version
+6. Test: Formular auf bremos.org/schulung mit eigener Adresse absenden. Danach **die Testzeile im Sheet löschen** (sonst verfälscht sie den 2-Wochen-Check)
+
+### Mail-Vorlage (HTML)
+
+```html
+<div style="font-family:Arial,sans-serif;font-size:15px;line-height:1.7">
+  <p><strong>Neuer Lead über die Schulung (Kapitel 2)</strong></p>
+  <p>
+    Vorname: {{ $json.Vorname }}<br>
+    E-Mail: {{ $json["E-Mail"] }}<br>
+    Quelle: {{ $json.Quelle }}
+  </p>
+  <p style="color:#555">
+    Kapitel 2 wurde automatisch zugestellt. Ein aktives Nachfassen per E-Mail ist
+    von der Einwilligung nicht gedeckt — abwarten, ob der Lead das Erstgespräch bucht.
+  </p>
+</div>
+```
+
+> Die Feldnamen (`Vorname`, `E-Mail`, `Quelle`) sind die **Spaltenüberschriften des Google Sheets**, nicht die Webhook-Felder. `E-Mail` braucht wegen des Bindestrichs die Klammerschreibweise `$json["E-Mail"]`. Wenn eine Spalte anders heißt, im Output-Panel des Sheets-Nodes nachsehen und per Drag-and-Drop übernehmen.
+
+### Checkliste
+
+- [ ] Zweiter Zweig am Sheets-Node, Node heißt `Alert Monika`
+- [ ] Email Type = HTML
+- [ ] Testlead ausgelöst: Lead-Mail UND Alert-Mail angekommen
+- [ ] Workflow einmal aus/an geschaltet
+- [ ] Testzeile im Sheet "Schulung K2" gelöscht
