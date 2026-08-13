@@ -174,17 +174,6 @@ footer{background:#050505;color:var(--blue-200);padding:3rem 0 1.5rem}
 .footer-col a:hover{color:var(--cyan-light)}
 .footer-bottom{border-top:1px solid rgba(255,255,255,.06);padding-top:1.5rem;display:flex;justify-content:space-between;align-items:center;font-size:.8rem;color:var(--gray-500)}
 
-/* LEGAL MODALS */
-.modal-overlay{display:none;position:fixed;inset:0;background:rgba(0,0,0,.7);z-index:2000;backdrop-filter:blur(4px);align-items:center;justify-content:center}
-.modal-overlay.active{display:flex}
-.modal{background:var(--blue-800);border:1px solid rgba(245,200,66,.12);border-radius:16px;max-width:700px;width:90%;max-height:80vh;overflow-y:auto;padding:2.5rem;position:relative}
-.modal h2{font-size:1.5rem;margin-bottom:1.5rem;color:var(--white)}
-.modal h3{font-size:1.1rem;margin:1.5rem 0 .5rem;color:var(--cyan)}
-.modal p,.modal li{font-size:.9rem;color:var(--blue-200);line-height:1.7;margin-bottom:.5rem}
-.modal ul{padding-left:1.5rem}
-.modal-close{position:absolute;top:1rem;right:1rem;width:36px;height:36px;border-radius:50%;border:none;background:rgba(255,255,255,.08);color:var(--white);cursor:pointer;font-size:1.2rem;display:flex;align-items:center;justify-content:center;transition:background .3s}
-.modal-close:hover{background:rgba(255,255,255,.15)}
-
 /* RESPONSIVE */
 @media(max-width:768px){
   .hero h1{font-size:2rem}
@@ -476,7 +465,7 @@ footer{background:#050505;color:var(--blue-200);padding:3rem 0 1.5rem}
   </div>
   <div class="footer-col"><h4>Navigation</h4><ul><li><a href="#leistungen">Leistungen</a></li><li><a href="#ueber-mich">Über mich</a></li><li><a href="#prozess">Prozess</a></li><li><a href="/schulung">Kostenlose Schulung</a></li><li><a href="#erstberatung">Erstberatung</a></li></ul></div>
   <div class="footer-col"><h4>Kontakt</h4><ul><li><a href="tel:+4915757054754">0157 57054754</a></li><li><a href="mailto:info@bremos.org">info@bremos.org</a></li></ul></div>
-  <div class="footer-col"><h4>Rechtliches</h4><ul><li><a href="#" onclick="openModal('impressum');return false">Impressum</a></li><li><a href="#" onclick="openModal('datenschutz');return false">Datenschutz</a></li><li><a href="#" onclick="openModal('agb');return false">AGB</a></li></ul></div>
+  <div class="footer-col"><h4>Rechtliches</h4><ul><li><a href="/impressum">Impressum</a></li><li><a href="/datenschutz">Datenschutz</a></li><li><a href="/agb">AGB</a></li></ul></div>
 </div>
 <div class="footer-bottom">
   <span>© 2026 BreMo KI-Beratung. Alle Rechte vorbehalten.</span>
@@ -484,74 +473,6 @@ footer{background:#050505;color:var(--blue-200);padding:3rem 0 1.5rem}
 </div>
 </div>
 </footer>
-
-<!-- IMPRESSUM MODAL -->
-<div class="modal-overlay" id="impressum"><div class="modal">
-<button class="modal-close" onclick="closeModal('impressum')">✕</button>
-<h2>Impressum</h2>
-<h3>Angaben gemäß § 5 DDG</h3>
-<p>BreMo KI-Beratung<br>Inhaberin: Monika Brenner<br>Am Königswingert 12<br>67157 Wachenheim</p>
-<h3>Kontakt</h3>
-<p>Telefon: 0157 57054754<br>E-Mail: info@bremos.org</p>
-<h3>Umsatzsteuerhinweis</h3>
-<p>Kleinunternehmer gemäß § 19 UStG — es wird keine Umsatzsteuer erhoben.</p>
-<h3>Streitschlichtung</h3>
-<p>Wir sind nicht bereit oder verpflichtet, an Streitbeilegungsverfahren vor einer Verbraucherschlichtungsstelle teilzunehmen.</p>
-<h3>Haftung für Inhalte</h3>
-<p>Als Diensteanbieter sind wir gemäß § 7 Abs. 1 DDG für eigene Inhalte auf diesen Seiten nach den allgemeinen Gesetzen verantwortlich. Nach §§ 8 bis 10 DDG sind wir als Diensteanbieter jedoch nicht verpflichtet, übermittelte oder gespeicherte fremde Informationen zu überwachen.</p>
-<h3>Haftung für Links</h3>
-<p>Unser Angebot enthält Links zu externen Websites Dritter, auf deren Inhalte wir keinen Einfluss haben. Für die Inhalte der verlinkten Seiten ist stets der jeweilige Anbieter oder Betreiber der Seiten verantwortlich.</p>
-</div></div>
-
-<!-- DATENSCHUTZ MODAL -->
-<div class="modal-overlay" id="datenschutz"><div class="modal">
-<button class="modal-close" onclick="closeModal('datenschutz')">✕</button>
-<h2>Datenschutzerklärung</h2>
-<h3>1. Datenschutz auf einen Blick</h3>
-<p>Die folgenden Hinweise geben einen Überblick darüber, was mit Ihren personenbezogenen Daten passiert, wenn Sie diese Website besuchen. Personenbezogene Daten sind alle Daten, mit denen Sie persönlich identifiziert werden können.</p>
-<h3>2. Verantwortliche Stelle</h3>
-<p>BreMo KI-Beratung<br>Inhaberin: Monika Brenner<br>E-Mail: info@bremos.org<br>Telefon: 0157 57054754</p>
-<h3>3. Datenerfassung auf dieser Website</h3>
-<p>Die Datenverarbeitung auf dieser Website erfolgt durch den Websitebetreiber. Die Daten werden erhoben, wenn Sie uns diese mitteilen (z.B. per E-Mail oder Kontaktformular).</p>
-<h3>4. Hosting</h3>
-<p>Diese Website wird bei einem externen Dienstleister gehostet. Personenbezogene Daten, die auf dieser Website erfasst werden, werden auf den Servern des Hosters gespeichert. Server-Log-Files werden automatisch erhoben (Browsertyp, Betriebssystem, Referrer URL, IP-Adresse, Uhrzeit).</p>
-<h3>5. Ihre Rechte</h3>
-<p>Sie haben jederzeit das Recht auf unentgeltliche Auskunft über Ihre gespeicherten personenbezogenen Daten, deren Herkunft und Empfänger und den Zweck der Datenverarbeitung sowie ein Recht auf Berichtigung oder Löschung dieser Daten (Art. 15–21 DSGVO). Hierzu können Sie sich jederzeit an uns wenden.</p>
-<h3>6. Google Fonts</h3>
-<p>Diese Seite nutzt zur einheitlichen Darstellung von Schriftarten Google Fonts. Beim Aufruf einer Seite lädt Ihr Browser die benötigten Fonts in Ihren Browsercache. Zu diesem Zweck muss Ihr Browser Verbindung zu den Servern von Google aufnehmen. Anbieter ist die Google Ireland Limited. Weitere Informationen finden Sie in der Datenschutzerklärung von Google: <a href="https://policies.google.com/privacy" target="_blank">https://policies.google.com/privacy</a></p>
-<h3>7. Kontaktaufnahme</h3>
-<p>Wenn Sie uns per E-Mail oder Telefon kontaktieren, werden die von Ihnen mitgeteilten Daten (Name, E-Mail-Adresse, ggf. Telefonnummer) zum Zwecke der Bearbeitung Ihrer Anfrage gespeichert. Die Rechtsgrundlage hierfür ist Art. 6 Abs. 1 lit. b DSGVO.</p>
-</div></div>
-
-<!-- AGB MODAL -->
-<div class="modal-overlay" id="agb"><div class="modal">
-<button class="modal-close" onclick="closeModal('agb')">✕</button>
-<h2>Allgemeine Geschäftsbedingungen (AGB)</h2>
-<h3>§ 1 Geltungsbereich</h3>
-<p>Diese Allgemeinen Geschäftsbedingungen gelten für alle Verträge zwischen BreMo KI-Beratung, Inhaberin Monika Brenner (nachfolgend „Auftragnehmer") und dem Auftraggeber über Beratungsleistungen, Automatisierungslösungen, die Erstellung von Schulungs- und Lerninhalten sowie damit verbundene Dienstleistungen.</p>
-<h3>§ 2 Vertragsschluss</h3>
-<p>Angebote des Auftragnehmers sind freibleibend. Ein Vertrag kommt erst durch schriftliche Auftragsbestätigung oder Beginn der Leistungserbringung zustande.</p>
-<h3>§ 3 Leistungsumfang und Nutzungsrechte</h3>
-<p>Der Umfang der Leistungen ergibt sich aus der jeweiligen Leistungsbeschreibung oder dem individuellen Angebot. Änderungen des Leistungsumfangs bedürfen der schriftlichen Vereinbarung.</p>
-<p>Erstellt der Auftragnehmer Schulungs- oder Lerninhalte, erhält der Auftraggeber mit vollständiger Bezahlung ein einfaches, zeitlich und räumlich unbeschränktes Recht, diese Inhalte im eigenen Betrieb zu nutzen und seinen Beschäftigten zugänglich zu machen. Das Nutzungsrecht erstreckt sich nicht auf verbundene Unternehmen, weitere Betriebe oder Dritte. Eine Weitergabe an Dritte, eine öffentliche Zugänglichmachung sowie eine Vermarktung als eigenes Schulungsangebot sind ausgeschlossen. Eine Bearbeitung der Inhalte bedarf der vorherigen Zustimmung des Auftragnehmers.</p>
-<p>An Vorlagen, Gestaltungsrastern, Interaktionsformen, Methodik und Produktionsverfahren des Auftragnehmers verbleiben sämtliche Rechte beim Auftragnehmer. Übertragen werden ausschließlich die Rechte an den individuell für den Auftraggeber erstellten Inhalten.</p>
-<p>Schulungs- und Lerninhalte sind für den internen Einsatz beim Auftraggeber bestimmt. Der Auftragnehmer erbringt keine Unterrichtsleistung gegenüber den Beschäftigten des Auftraggebers und überwacht deren Lernerfolg nicht. Bereitstellung, Betrieb und eine etwaige Erfolgskontrolle obliegen dem Auftraggeber.</p>
-<h3>§ 4 Vergütung und Zahlung</h3>
-<p>Die Vergütung richtet sich nach dem individuellen Angebot. Rechnungen sind innerhalb von 14 Tagen nach Rechnungsstellung zur Zahlung fällig. Alle Preise sind Endpreise — gemäß § 19 UStG (Kleinunternehmerregelung) wird keine Umsatzsteuer erhoben.</p>
-<h3>§ 5 Mitwirkungspflichten</h3>
-<p>Der Auftraggeber stellt alle für die Leistungserbringung erforderlichen Informationen, Zugänge und Materialien rechtzeitig und vollständig zur Verfügung.</p>
-<p>Bei der Erstellung von Schulungs- und Lerninhalten stellt der Auftraggeber die fachlichen Inhalte bereit und gibt Konzept und Texte vor der Produktion in Textform frei. Für die inhaltliche Richtigkeit, Vollständigkeit und rechtliche Zulässigkeit der von ihm bereitgestellten und freigegebenen Inhalte ist der Auftraggeber verantwortlich.</p>
-<h3>§ 6 Geheimhaltung & Datenschutz</h3>
-<p>Beide Parteien verpflichten sich, vertrauliche Informationen der jeweils anderen Partei geheim zu halten. Die Verarbeitung personenbezogener Daten erfolgt in Übereinstimmung mit der DSGVO.</p>
-<h3>§ 7 Haftung</h3>
-<p>Der Auftragnehmer haftet unbeschränkt bei Vorsatz und grober Fahrlässigkeit. Bei leichter Fahrlässigkeit haftet der Auftragnehmer nur bei Verletzung wesentlicher Vertragspflichten, begrenzt auf den vorhersehbaren, vertragstypischen Schaden.</p>
-<p>Für die inhaltliche Richtigkeit der vom Auftraggeber bereitgestellten und freigegebenen Fachinhalte übernimmt der Auftragnehmer keine Haftung. Ein bestimmter Lernerfolg wird nicht geschuldet. Schulungs- und Lerninhalte ersetzen keine gesetzlich vorgeschriebene Unterweisung; die Prüfung bestehender Unterweisungspflichten obliegt dem Auftraggeber.</p>
-<h3>§ 8 Kündigung</h3>
-<p>Laufende Beratungsverträge können mit einer Frist von 4 Wochen zum Monatsende gekündigt werden. Das Recht zur außerordentlichen Kündigung aus wichtigem Grund bleibt unberührt.</p>
-<h3>§ 9 Schlussbestimmungen</h3>
-<p>Es gilt das Recht der Bundesrepublik Deutschland. Gerichtsstand ist der Sitz des Auftragnehmers, sofern der Auftraggeber Kaufmann ist. Sollten einzelne Bestimmungen unwirksam sein, bleibt die Wirksamkeit der übrigen Bestimmungen unberührt.</p>
-<p style="margin-top:1.5rem;color:var(--gray-400);font-size:.8rem">Stand: August 2026</p>
-</div></div>
 
 <script>
 // Navbar scroll
@@ -561,11 +482,6 @@ window.addEventListener('scroll',()=>{nav.classList.toggle('scrolled',window.scr
 // Reveal animations
 const observer=new IntersectionObserver((entries)=>{entries.forEach(e=>{if(e.isIntersecting){e.target.classList.add('visible');observer.unobserve(e.target)}})},{threshold:0.15});
 document.querySelectorAll('.reveal').forEach(el=>observer.observe(el));
-
-// Modals
-function openModal(id){document.getElementById(id).classList.add('active');document.body.style.overflow='hidden'}
-function closeModal(id){document.getElementById(id).classList.remove('active');document.body.style.overflow=''}
-document.querySelectorAll('.modal-overlay').forEach(overlay=>{overlay.addEventListener('click',e=>{if(e.target===overlay){overlay.classList.remove('active');document.body.style.overflow=''}})});
 
 // Close hamburger on link click
 document.querySelectorAll('.nav-links a').forEach(a=>{a.addEventListener('click',()=>{document.querySelector('.nav-links').classList.remove('open')})});

@@ -1,0 +1,98 @@
+/* Gemeinsames Layout fuer die Rechtsseiten (Impressum, Datenschutz, AGB).
+   Bewusst schlank gehalten: Lesbarkeit vor Effekt, Farben aus dem
+   bremos.org-Designsystem. Schriften kommen lokal aus /fonts. */
+
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+
+:root{
+  --bg:#08080a;
+  --bg-2:#101012;
+  --text:#e8e4dc;
+  --text-dim:#9a9590;
+  --gold:#f5c842;
+  --gold-light:#fad96a;
+  --line:rgba(245,200,66,.15);
+  --font-heading:'Roboto Mono',monospace;
+  --font-body:'Inter',sans-serif;
+}
+
+html{font-size:16px}
+body{
+  font-family:var(--font-body);
+  background:var(--bg);
+  color:var(--text);
+  line-height:1.75;
+  overflow-x:hidden;
+}
+
+.wrap{max-width:760px;margin:0 auto;padding:0 1.5rem}
+
+a{color:var(--gold);text-decoration:none;transition:color .3s}
+a:hover{color:var(--gold-light)}
+
+/* Kopf */
+nav{
+  background:rgba(8,8,10,.95);
+  border-bottom:1px solid rgba(255,255,255,.06);
+  padding:.9rem 0;
+  position:sticky;top:0;z-index:10;
+  backdrop-filter:blur(12px);
+}
+nav .wrap{display:flex;justify-content:space-between;align-items:center;gap:1rem;flex-wrap:wrap}
+.brand{
+  display:flex;align-items:center;gap:.7rem;
+  color:var(--text);font-family:var(--font-heading);font-weight:700;font-size:1rem;
+}
+.brand img{width:36px;height:36px;border-radius:8px}
+.brand:hover{color:var(--text)}
+.back{font-size:.9rem;color:var(--text-dim)}
+.back:hover{color:var(--gold-light)}
+
+/* Inhalt */
+main{padding:3.5rem 0 4rem}
+h1{
+  font-family:var(--font-heading);font-weight:600;font-size:2rem;
+  color:#fff;line-height:1.25;margin-bottom:2rem;
+  padding-bottom:1rem;border-bottom:1px solid var(--line);
+}
+h2{
+  font-family:var(--font-heading);font-weight:600;font-size:1.05rem;
+  color:var(--gold);margin:2.2rem 0 .6rem;line-height:1.4;
+}
+h2:first-of-type{margin-top:0}
+p{margin-bottom:.9rem;color:var(--text)}
+ul{margin:0 0 1rem 1.3rem}
+li{margin-bottom:.4rem}
+table{
+  width:100%;border-collapse:collapse;margin:.5rem 0 1.4rem;
+  font-size:.92rem;
+}
+th,td{
+  text-align:left;padding:.6rem .8rem;
+  border-bottom:1px solid rgba(255,255,255,.08);vertical-align:top;
+}
+th{color:var(--gold);font-family:var(--font-heading);font-weight:600;font-size:.8rem;letter-spacing:.04em}
+.stand{margin-top:2.5rem;font-size:.82rem;color:var(--text-dim)}
+
+/* Fuss */
+footer{
+  border-top:1px solid rgba(255,255,255,.06);
+  background:#050505;padding:1.8rem 0;
+  font-size:.82rem;color:var(--text-dim);
+}
+footer .wrap{display:flex;justify-content:space-between;gap:1rem;flex-wrap:wrap}
+footer a{color:var(--text-dim)}
+footer a:hover{color:var(--gold-light)}
+
+/* Lange deutsche Komposita sprengen auf schmalen Displays sonst die Zeile.
+   lang="de" ist gesetzt, der Browser trennt also sauber. */
+@media(max-width:600px){
+  h1{font-size:1.5rem}
+  main{padding:2.5rem 0 3rem}
+  h1,h2,p,li,td{overflow-wrap:break-word;hyphens:auto}
+  table,thead,tbody,tr,th,td{display:block}
+  th{border:none;padding-bottom:.2rem}
+  td{padding-top:.2rem}
+  tr{border-bottom:1px solid rgba(255,255,255,.08);padding:.5rem 0}
+  td:last-child{border-bottom:none}
+}
