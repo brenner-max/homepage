@@ -38,7 +38,8 @@ In **beiden** bestehenden Workflows (`Lead-Magnet` und `Schulung K2`) am **Googl
 > `{{ ... }}` wird nur ausgewertet, wenn das Feld auf **Expression** steht. Mit der Maus über das Feld fahren, dann erscheint oben rechts der Umschalter `Fixed | Expression`.
 > **Kein `=` davor tippen.** Das setzt n8n selbst. Sonst steht das Zeichen sichtbar im Ergebnis, oder Google Sheets liest die Zelle als Formel und zeigt `#NAME?`.
 
-3. Beim Schulungs-Workflow zusätzlich die Spalte `Quelle` mit festem Text `Schulung K2` belegen, falls dort noch nichts steht — sonst lässt sich später nicht unterscheiden, woher ein Lead kam
+3. **Nur im Checklisten-Workflow**, optional: Spalte `Quelle` auf Expression `{{ $json.body.source }}` (das Formular schickt dort `bremos-org-leadmagnet`).
+   > Das Blatt **"Schulung K2" hat keine Quelle-Spalte** und braucht auch keine — die Herkunft ergibt sich aus dem Blatt. Die Spalte stammt aus der ursprünglichen Planung, als beide Funnel in dasselbe Blatt schreiben sollten. Dort also **nur `timestamp`** setzen.
 4. **Reaktivierungs-Gotcha:** Workflow deaktivieren und wieder aktivieren, sonst läuft der Live-Webhook mit der alten Fassung
 5. Testlead über das jeweilige Formular schicken, im Sheet prüfen, dass `timestamp` gefüllt ist. Testzeile danach löschen
 
@@ -232,7 +233,7 @@ Für das Postfach lohnt eine wiederkehrende Aufgabe im Kalender, quartalsweise. 
 
 ## Checkliste
 
-- [ ] Schritt 1: `timestamp` in beiden Workflows auf Expression `{{ $now.toISO() }}`, `Quelle` beim Schulungs-Workflow gesetzt
+- [ ] Schritt 1: `timestamp` in beiden Workflows auf Expression `{{ $now.toISO() }}` (die Spalte `Quelle` gibt es nur im Checklisten-Blatt und ist optional)
 - [ ] Beide Workflows aus- und wieder eingeschaltet, je ein Testlead geprüft, Testzeilen gelöscht
 - [ ] Schritt 2: Testzeilen und die kaputte `}}`-Zeile aus dem Checklisten-Blatt entfernt, echte Leads mit Datum versehen
 - [ ] Schritt 3: Workflow gebaut, **ohne** Lösch-Node
