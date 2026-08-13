@@ -139,7 +139,14 @@ Der Webhook schickt jetzt zwei zusätzliche Felder:
 1. Im Google Sheet, Blatt **"Schulung K2"**, zwei Spalten ergänzen: **`Werbung`** und **`Einwilligung am`**
 2. Im n8n-Sheets-Node **"Refresh columns"** klicken (sonst greift der Spalten-Cache — bekannter Stolperstein aus dem Erstaufbau), dann beide Felder **auf Expression umschalten** (siehe Warnung oben) und mappen — ohne `=` davor:
    - `Werbung` → `{{ $json.body.werbung }}`
-   - `Einwilligung am` → `{{ $json.body.einwilligung_am }}`
+   - `Einwilligung am` → `{{ $json.body.werbung === "Ja" ? $now.toISO() : "" }}`
+
+> [!warning] Zeitstempel serverseitig setzen, nicht aus dem Formular übernehmen
+> Ursprünglich stand hier `{{ $json.body.einwilligung_am }}`, also der Wert aus dem Browser des Nutzers. Zwei Gründe, warum das jetzt anders ist:
+> 1. Ein Zeitstempel vom Gerät des Nutzers hängt an dessen Systemuhr und ist manipulierbar. Für einen Nachweis nach Art. 7 Abs. 1 DSGVO taugt er nicht.
+> 2. Am 13.08.2026 fiel auf, dass im Feld ein **fest eingetragener Testwert vom 09.08.** stand — jede Einwilligung hätte dieses Datum bekommen. Das ist die heimtückische Variante des Fixed-statt-Expression-Fehlers: Es gibt keine Fehlermeldung, kein `#NAME?`, der Wert sieht plausibel aus. Auffallen kann es nur, wenn jemand das Datum mit dem tatsächlichen Eintrag vergleicht.
+>
+> Kontrolle nach jeder Änderung am Mapping: Der Wert in `Einwilligung am` muss auf die Sekunde zu `timestamp` in derselben Zeile passen. Weichen sie ab, stimmt etwas nicht.
    > Steht in der Zelle später `#NAME?` oder `#ERROR!`, war das Feld auf **Fixed**: n8n hat den Ausdruck als Text geschrieben, und Google Sheets hat das führende `=` als Formel gelesen.
 3. Workflow deaktivieren + reaktivieren
 4. Test über das Formular, **einmal mit und einmal ohne Häkchen** — beide Zeilen im Sheet prüfen, danach beide Testzeilen löschen
