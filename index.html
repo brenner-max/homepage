@@ -174,6 +174,11 @@ footer{background:#050505;color:var(--blue-200);padding:3rem 0 1.5rem}
 .footer-col a:hover{color:var(--cyan-light)}
 .footer-bottom{border-top:1px solid rgba(255,255,255,.06);padding-top:1.5rem;display:flex;justify-content:space-between;align-items:center;font-size:.8rem;color:var(--gray-500)}
 
+/* Honeypot: unsichtbares Feld gegen Bots. Menschen sehen es nie und
+   füllen es nie aus. Bewusst kein display:none, manche Bots erkennen
+   das und überspringen solche Felder. */
+.hp-wrap{position:absolute;left:-9999px;top:auto;width:1px;height:1px;overflow:hidden}
+
 /* RESPONSIVE */
 @media(max-width:768px){
   .hero h1{font-size:2rem}
@@ -399,6 +404,10 @@ footer{background:#050505;color:var(--blue-200);padding:3rem 0 1.5rem}
           <label>E-MAIL ADRESSE</label>
           <input type="email" id="lm-email" name="email" placeholder="anna@beispiel.de" required autocomplete="email">
         </div>
+        <div class="hp-wrap" aria-hidden="true">
+          <label for="lm-firma">Firma</label>
+          <input type="text" id="lm-firma" name="firma" tabindex="-1" autocomplete="off">
+        </div>
         <button type="submit" id="lm-submit-btn" class="btn btn-primary" style="width:100%;margin-top:8px;justify-content:center">Checkliste kostenlos erhalten ↗</button>
         <p style="text-align:center;font-size:.72rem;color:var(--gray-400);margin-top:12px">Kein Spam. Jederzeit abmeldbar. DSGVO-konform.</p>
       </form>
@@ -497,6 +506,7 @@ async function sendLeadMagnet(e){
     vorname:document.getElementById('lm-vorname').value.trim(),
     nachname:document.getElementById('lm-nachname').value.trim(),
     email:document.getElementById('lm-email').value.trim().toLowerCase(),
+    hp:document.getElementById('lm-firma').value.trim(),
     timestamp:new Date().toISOString(),
     source:'bremos-org-leadmagnet'
   };

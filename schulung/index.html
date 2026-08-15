@@ -66,6 +66,10 @@ section{padding:4rem 0}
 .quer p{color:var(--gray-500);font-size:.9rem}
 footer{border-top:1px solid rgba(255,255,255,.07);padding:2rem 0;font-size:.8rem;color:var(--gray-500)}
 footer .container{display:flex;justify-content:space-between;gap:1rem;flex-wrap:wrap}
+/* Honeypot: unsichtbares Feld gegen Bots. Menschen sehen es nie und
+   füllen es nie aus. Bewusst kein display:none, manche Bots erkennen
+   das und überspringen solche Felder. */
+.hp-wrap{position:absolute;left:-9999px;top:auto;width:1px;height:1px;overflow:hidden}
 @media(max-width:820px){.kap-grid{grid-template-columns:1fr}.hero h1{font-size:2rem}}
 </style>
 </head>
@@ -121,6 +125,10 @@ footer .container{display:flex;justify-content:space-between;gap:1rem;flex-wrap:
             <label>E-MAIL ADRESSE</label>
             <input type="email" id="k2-email" placeholder="anna@beispiel.de" required autocomplete="email">
           </div>
+          <div class="hp-wrap" aria-hidden="true">
+            <label for="k2-firma">Firma</label>
+            <input type="text" id="k2-firma" name="firma" tabindex="-1" autocomplete="off">
+          </div>
           <div class="lm-consent">
             <input type="checkbox" id="k2-werbung">
             <label for="k2-werbung">Ja, ich möchte von BreMo KI-Beratung gelegentlich Tipps und Angebote rund um Büroautomatisierung per E-Mail erhalten. Diese Einwilligung kann ich jederzeit widerrufen, formlos an info@bremos.org.</label>
@@ -163,6 +171,7 @@ async function sendK2(e){
       body:JSON.stringify({
         vorname:document.getElementById('k2-vorname').value.trim(),
         email:document.getElementById('k2-email').value.trim(),
+        hp:document.getElementById('k2-firma').value.trim(),
         quelle:'Schulung K2',
         werbung:werbung?'Ja':'Nein',
         einwilligung_am:werbung?new Date().toISOString():''
