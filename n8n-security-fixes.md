@@ -27,9 +27,10 @@ Drei Änderungen, alle in n8n, zusammen etwa 15 Minuten. Reihenfolge einhalten: 
 3. Ganz nach unten scrollen bis zum Abschnitt **Options**
 4. Auf **Add option** klicken
 5. In der Liste **Cell Format** wählen
-   > Heißt die Option bei dir **Value Input Mode**, ist es dieselbe Sache unter altem Namen.
-6. Den Wert auf **Raw** stellen (in älteren Fassungen `RAW` geschrieben)
-   > Die Voreinstellung ist "User Entered". Genau die sorgt dafür, dass Sheets den Inhalt wie eine Tastatureingabe behandelt und Formeln ausführt.
+6. Den Wert von **"Let Google Sheets format"** auf **"Let n8n format"** umstellen
+   > Die Voreinstellung "Let Google Sheets format" ist der gefährliche Wert: Sie behandelt den Inhalt, als hätte ihn jemand eingetippt, und führt Formeln aus. "Let n8n format" übernimmt die Datentypen so, wie n8n sie liefert.
+   >
+   > In älteren n8n-Fassungen hießen dieselben zwei Werte `USER_ENTERED` und `RAW`, in noch älteren stand die Option unter **Value Input Mode**. Gemeint ist immer dasselbe.
 7. Node schließen, **Save**
 8. Workflow **aus- und wieder einschalten**
 
@@ -39,8 +40,11 @@ Ein harmloser Test, der ohne echten Angriff eine klare Antwort gibt:
 
 1. Formular auf `bremos.org/schulung` absenden, als Vorname genau das eintragen: `=1+1`
 2. Ins Blatt "Schulung K2" schauen:
-   - Steht dort **`=1+1`** als Text: Raw greift, erledigt
-   - Steht dort **`2`**: die Einstellung sitzt noch nicht, Schritt 3 bis 7 nochmal prüfen
+   - Steht dort **`=1+1`** als Text: die Einstellung greift, erledigt
+   - Steht dort **`2`**: Sheets rechnet weiter, Schritt 3 bis 7 nochmal prüfen
+
+> [!important] Dieser Test ist der eigentliche Beweis
+> Die n8n-Doku beschreibt "Let n8n format" nur als "gleiche Datentypen wie die Eingabe", sie sagt nicht ausdrücklich, dass Formeln nicht mehr ausgeführt werden. Die Einstellung zu setzen und anzunehmen, es wirke, wäre genau der Fehler vom 13.08.: ein plausibel aussehender Zustand ohne Nachweis. Erst der Test oben belegt es.
 3. Testzeile danach löschen
 
 > Diesen Test erst **nach** dem 2-Wochen-Check machen, sonst steht eine zusätzliche Zeile im Blatt, während gezählt wird.
