@@ -106,10 +106,23 @@ In beide Formulare kommt ein verstecktes Feld, das per CSS aus dem Sichtfeld gen
 6. Verbindungen prüfen: Der Ausgang **true** muss zum Sheets-Node führen. Der Ausgang **false** bleibt **unverbunden** — damit endet der Durchlauf dort still, genau das ist gewollt
 7. **Save**, Workflow aus- und wieder einschalten
 
-### Prüfen
+> [!warning] Der Fehler, der am 15.08. eine halbe Stunde gekostet hat
+> Wird der Node **neben** die Kette gesetzt statt **auf** die Verbindungslinie, bleibt die alte Direktverbindung vom Webhook zum Sheets-Node bestehen, und die Ausgänge des If-Nodes hängen im Leeren. Der Node prüft dann völlig korrekt und schickt das Ergebnis ins Nichts, während der Eintrag am ihm vorbei ins Sheet läuft. Von außen sieht das aus wie eine falsche Bedingung, und man sucht an der falschen Stelle.
+>
+> **Die eine Kontrollfrage:** Hat der Sheets-Node hinterher genau **einen** eingehenden Pfeil, und kommt der vom **true**-Ausgang? Zwei Pfeile heißen: Umweg noch offen.
+>
+> Dass der Ausdruck im Editor **rot** erscheint, ist kein Hinweis auf einen Fehler. Ohne Eingabedaten kann n8n ihn dort nicht auflösen. Entschieden wird es im echten Lauf.
 
-1. Formular ganz normal absenden: Zeile erscheint im Sheet, Mails kommen. Wenn nicht, führt der **false**-Ausgang zum Sheets-Node statt **true**, die beiden Ausgänge sind vertauscht
-2. Testzeile löschen
+### Prüfen — immer beide Richtungen
+
+Ein Filter, der **alles** wegwirft, sieht im Negativtest genauso erfolgreich aus wie einer, der richtig arbeitet. Deshalb zwei Absendungen, nicht eine:
+
+1. **Negativtest:** Honeypot füllen (im Browser über die Entwicklertools, das Feld hat die ID `k2-firma` bzw. `lm-firma`). Erwartung: **keine** Zeile, **keine** Mail
+2. **Positivtest:** ganz normal absenden, Honeypot bleibt leer. Erwartung: Zeile und Mails wie gewohnt
+3. Fehlen **beide**, hängt der Sheets-Node am **false**- statt am **true**-Ausgang. Das ist der einzige Fall, der schlimmer ist als gar kein Filter, weil dann echte Interessenten weggeworfen werden
+4. Testzeilen löschen
+
+> Der Erfolgsbildschirm auf der Seite taugt hier nicht als Nachweis: Der Webhook steht auf "Respond Immediately" und antwortet mit 200, lange bevor der If-Node läuft. Entschieden wird es im Blatt.
 
 ---
 
