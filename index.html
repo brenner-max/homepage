@@ -411,6 +411,10 @@ footer{background:#050505;color:var(--blue-200);padding:3rem 0 1.5rem}
         <button type="submit" id="lm-submit-btn" class="btn btn-primary" style="width:100%;margin-top:8px;justify-content:center">Checkliste kostenlos erhalten ↗</button>
         <p style="text-align:center;font-size:.72rem;color:var(--gray-400);margin-top:12px">Kein Spam. Jederzeit abmeldbar. DSGVO-konform.</p>
       </form>
+      <div id="lm-error" style="display:none;text-align:left;padding:1rem 0 0">
+        <p style="font-size:.85rem;color:var(--white);margin-bottom:6px"><strong>Das hat gerade nicht geklappt.</strong></p>
+        <p style="font-size:.8rem;color:var(--gray-400);line-height:1.6">Ihre Angaben konnten nicht übermittelt werden. Bitte versuchen Sie es gleich noch einmal. Wenn es weiter klemmt, schreiben Sie kurz an <a href="mailto:info@bremos.org" style="color:var(--papaya)">info@bremos.org</a>, dann melde ich mich persönlich. Die Checkliste können Sie in der Zwischenzeit direkt <a href="checkliste.html" target="_blank" rel="noopener" style="color:var(--papaya)">hier ansehen</a>.</p>
+      </div>
       <div id="lm-success" style="display:none;text-align:center;padding:2rem 0">
         <div style="font-size:3rem;margin-bottom:12px">🎉</div>
         <h3 style="font-size:1.2rem;color:var(--white);margin-bottom:8px">Ihre Checkliste ist da!</h3>
@@ -510,13 +514,25 @@ async function sendLeadMagnet(e){
     timestamp:new Date().toISOString(),
     source:'bremos-org-leadmagnet'
   };
+  const fehler=document.getElementById('lm-error');
+  fehler.style.display='none';
+  let ok=false;
   try{
-    await fetch('https://n8n.srv1417885.hstgr.cloud/webhook/lead-magnet',{
+    const res=await fetch('https://n8n.srv1417885.hstgr.cloud/webhook/lead-magnet',{
       method:'POST',
       body:JSON.stringify(payload),
       headers:{'Content-Type':'application/json'}
     });
+    ok=res.ok;
   }catch(err){console.error('Form error:',err)}
+  if(!ok){
+    // Kein Erfolgsbildschirm ohne bestaetigten Eingang: sonst wartet jemand
+    // auf eine E-Mail, die nie kommt, und wir erfahren nichts davon.
+    fehler.style.display='block';
+    btn.disabled=false;
+    btn.textContent='Checkliste kostenlos erhalten ↗';
+    return;
+  }
   form.style.display='none';
   document.getElementById('lm-success').style.display='block';
   window.open('checkliste.html','_blank');

@@ -136,6 +136,10 @@ footer .container{display:flex;justify-content:space-between;gap:1rem;flex-wrap:
           <button type="submit" id="k2-btn" class="btn btn-primary" style="width:100%;justify-content:center">Kapitel 2 kostenlos erhalten ↗</button>
           <p class="hint">Kapitel 2 erhalten Sie in jedem Fall — das Häkchen ist freiwillig. Kein Spam, jederzeit abmeldbar. Wie ich mit Ihren Daten umgehe, steht in der <a href="/datenschutz">Datenschutzerklärung</a>.</p>
         </form>
+        <div id="k2-error" style="display:none;text-align:left;padding:.8rem 0 0">
+          <p style="font-size:.85rem;color:var(--white);margin-bottom:6px"><strong>Das hat gerade nicht geklappt.</strong></p>
+          <p style="font-size:.8rem;color:var(--gray-500);line-height:1.6">Ihre Anfrage konnte nicht übermittelt werden. Bitte versuchen Sie es gleich noch einmal. Wenn es weiter klemmt, schreiben Sie kurz an <a href="mailto:info@bremos.org">info@bremos.org</a>, dann schicke ich Ihnen Kapitel 2 von Hand.</p>
+        </div>
         <div id="k2-success" style="display:none;text-align:center;padding:1.2rem 0">
           <div style="font-size:2.4rem;margin-bottom:10px">🎉</div>
           <h3 style="font-size:1.1rem;color:var(--white);margin-bottom:6px">Kapitel 2 ist unterwegs!</h3>
@@ -163,9 +167,12 @@ async function sendK2(e){
   e.preventDefault();
   const btn=document.getElementById('k2-btn');
   const werbung=document.getElementById('k2-werbung').checked;
+  const fehler=document.getElementById('k2-error');
+  fehler.style.display='none';
   btn.disabled=true;btn.textContent='Wird gesendet …';
+  let ok=false;
   try{
-    await fetch('https://n8n.srv1417885.hstgr.cloud/webhook/schulung-k2',{
+    const res=await fetch('https://n8n.srv1417885.hstgr.cloud/webhook/schulung-k2',{
       method:'POST',
       headers:{'Content-Type':'application/json'},
       body:JSON.stringify({
@@ -177,7 +184,15 @@ async function sendK2(e){
         einwilligung_am:werbung?new Date().toISOString():''
       })
     });
-  }catch(err){/* Erfolgspanel trotzdem zeigen — Link ist der Kern */}
+    ok=res.ok;
+  }catch(err){console.error('Form error:',err)}
+  if(!ok){
+    // Kein Erfolgsbildschirm ohne bestaetigten Eingang: sonst wartet jemand
+    // auf eine E-Mail, die nie kommt, und wir erfahren nichts davon.
+    fehler.style.display='block';
+    btn.disabled=false;btn.textContent='Kapitel 2 kostenlos erhalten ↗';
+    return;
+  }
   document.getElementById('k2-form').style.display='none';
   document.getElementById('k2-success').style.display='block';
 }
