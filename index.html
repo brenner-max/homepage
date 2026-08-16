@@ -223,12 +223,31 @@ footer{background:#050505;color:var(--blue-200);padding:3rem 0 1.5rem}
 .lm-field input::placeholder{color:var(--gray-400)}
 .lm-field input:focus{border-color:var(--cyan);box-shadow:0 0 0 3px rgba(245,200,66,.08)}
 
-/* Mobil-Overrides fuer den Lead-Magnet: MUESSEN nach dem Block oben stehen,
+/* Schulung als primaerer Einstieg (16.08.2026). Nutzt bewusst .leadmagnet-grid,
+   damit die Mobil-Regel unten fuer beide Sektionen gilt. */
+.schulung-lead{background:var(--blue-900);padding:5rem 0;position:relative;overflow:hidden}
+.schulung-lead::before{content:'';position:absolute;inset:0;background:radial-gradient(ellipse at 70% 40%,rgba(255,120,79,.05) 0%,transparent 60%)}
+.sl-inner{position:relative;z-index:1;max-width:760px;margin:0 auto;text-align:center}
+.sl-lead{color:var(--blue-200);font-size:1.05rem;margin-bottom:2rem}
+.sl-benefits{display:inline-flex;text-align:left;margin:0 auto}
+.sl-actions{display:flex;gap:14px;flex-wrap:wrap;justify-content:center;margin-top:2.25rem}
+.sl-note{font-size:.85rem;color:var(--gray-400);margin-top:1.5rem;line-height:1.6}
+
+/* Checkliste als Nebenweg: kompakter als vorher */
+.leadmagnet.is-secondary{padding:4rem 0}
+
+/* Letzte Leistungskarte ueber die volle Breite, damit die ungerade Reihe nicht halb leer steht.
+   Bewusst als Klasse und nicht inline, sonst greift der Mobil-Override unten nicht. */
+.service-card.is-wide{grid-column:1/-1}
+
+/* Mobil-Overrides fuer beide Lead-Sektionen: MUESSEN nach den Bloecken oben stehen,
    sonst gewinnt bei gleicher Spezifitaet die spaetere Regel und sie greifen nicht. */
 @media(max-width:768px){
   .leadmagnet-grid{grid-template-columns:1fr;gap:2.5rem}
   .lm-form-card{padding:24px 20px}
   .lm-name-row{grid-template-columns:1fr}
+  .schulung-lead{padding:3.5rem 0}
+  .sl-actions .btn{width:100%;justify-content:center}
 }
 </style>
 </head>
@@ -245,7 +264,7 @@ footer{background:#050505;color:var(--blue-200);padding:3rem 0 1.5rem}
     <li><a href="#leistungen">Leistungen</a></li>
     <li><a href="#ueber-mich">Über mich</a></li>
     <li><a href="#prozess">Prozess</a></li>
-    <li><a href="#checkliste">Checkliste</a></li>
+    <li><a href="#schulung-lead">Schulungen</a></li>
     <li><a href="#erstberatung" class="nav-cta">Kostenlose Erstberatung</a></li>
   </ul>
 </div>
@@ -260,14 +279,14 @@ footer{background:#050505;color:var(--blue-200);padding:3rem 0 1.5rem}
     <h1>Mehr <span class="accent">Effizienz</span> und Rentabilität durch intelligente Automatisierung</h1>
     <p>25 Jahre Branchenerfahrung im Gesundheitswesen — jetzt mit KI-Lösungen, die Ihnen Stunden pro Woche zurückgeben. Pragmatisch. Messbar. Für Solopreneure, Arztpraxen und kleine Unternehmen.</p>
     <div class="hero-buttons">
-      <a href="#erstberatung" class="btn btn-primary">Kostenlose Erstberatung →</a>
-      <a href="#leistungen" class="btn btn-secondary">Leistungen entdecken</a>
+      <a href="#schulung-lead" class="btn btn-primary">Schulungen für Ihr Team →</a>
+      <a href="/schulung" class="btn btn-secondary">Kostenlose KI-Schulung ansehen</a>
     </div>
   </div>
   <div class="hero-visual">
     <div class="hero-card">
       <div class="metric"><div class="metric-icon" style="background:rgba(245,200,66,.08);color:var(--cyan)">⏱</div><div class="metric-text"><h4>Bis zu 10h / Woche gespart</h4><p>Durch automatisierte Routine-Prozesse</p></div></div>
-      <div class="metric"><div class="metric-icon" style="background:rgba(255,120,79,.08);color:var(--papaya)">📈</div><div class="metric-text"><h4>Mehr Sichtbarkeit</h4><p>KI-gestützte Content-Erstellung</p></div></div>
+      <div class="metric"><div class="metric-icon" style="background:rgba(255,120,79,.08);color:var(--papaya)">🎓</div><div class="metric-text"><h4>Wissen bleibt im Haus</h4><p>Video-Schulungen für die Einarbeitung neuer Mitarbeiter</p></div></div>
       <div class="metric"><div class="metric-icon" style="background:rgba(245,200,66,.08);color:var(--cyan)">🔒</div><div class="metric-text"><h4>DSGVO-konform</h4><p>Alle Lösungen datenschutzkonform</p></div></div>
       <div class="metric"><div class="metric-icon" style="background:rgba(255,120,79,.08);color:var(--papaya)">🤝</div><div class="metric-text"><h4>Persönliche Beratung</h4><p>Keine Agentur-Maschine — 1:1 Zusammenarbeit</p></div></div>
 
@@ -299,11 +318,10 @@ footer{background:#050505;color:var(--blue-200);padding:3rem 0 1.5rem}
   <p class="section-subtitle">Von der strategischen Beratung bis zur technischen Umsetzung — alles aus einer Hand.</p>
   <div class="services-grid">
     <div class="service-card reveal"><div class="service-num">01</div><div><h3>Strategische KI-Beratung</h3><p>Wo lohnt sich KI für Ihr Business wirklich? Gemeinsam identifizieren wir die Hebel mit dem größten Impact — und setzen sie um.</p></div></div>
-    <div class="service-card reveal"><div class="service-num">02</div><div><h3>KI-Workshops für Chef & Team</h3><p>Praxisnahe Workshops, die Führung und Mitarbeiter gemeinsam abholen: verständliche KI-Grundlagen, konkrete Anwendungsfälle aus Ihrem Büroalltag — und ein klarer Fahrplan, was Sie danach selbst umsetzen können.</p></div></div>
-    <div class="service-card reveal"><div class="service-num">03</div><div><h3>Workflow-Automatisierung</h3><p>Wiederkehrende Prozesse wie Email-Routing, Terminbestätigungen, Follow-ups und Rechnungsversand — automatisiert mit n8n und KI.</p></div></div>
-    <div class="service-card reveal"><div class="service-num">04</div><div><h3>KI-gestützte Content-Erstellung</h3><p>Mehr Sichtbarkeit ohne Zeitaufwand — LinkedIn-Posts, Blog-Artikel und Social Media Content, unterstützt durch intelligente KI-Tools.</p></div></div>
-    <div class="service-card reveal"><div class="service-num">05</div><div><h3>Voicemail & Omnichannel</h3><p>Automatisierte Sprachnachrichten-Verarbeitung, kanalübergreifende Kommunikation — kein Anruf geht mehr verloren.</p></div></div>
-    <div class="service-card reveal"><div class="service-num">06</div><div><h3>Schulungen für Ihr Team</h3><p>Ihre Abläufe, Ihre Produkte, Ihre Art zu arbeiten — als interaktive Lerneinheit, die Sie Ihrem Team geben, so oft Sie wollen. Für die Einarbeitung neuer Mitarbeiter und für Wissen, das bisher nur in einem Kopf steckt.</p></div></div>
+    <div class="service-card reveal"><div class="service-num">02</div><div><h3>KI-Workshops für Chef & Team</h3><p><strong>Ein Termin, alle gemeinsam, ich bin dabei.</strong> Verständliche Grundlagen, Anwendungsfälle aus Ihrem eigenen Büroalltag, und am Ende ein Fahrplan, was Sie selbst umsetzen können. Bringt Führung und Mitarbeiter auf denselben Stand.</p></div></div>
+    <div class="service-card reveal"><div class="service-num">03</div><div><h3>Video-Schulungen für Ihr Team</h3><p><strong>Einmal produziert, jeder einzeln, jederzeit.</strong> Ihre eigenen Abläufe und Produkte als interaktive Lerneinheit mit Video. Sorgt dafür, dass auch der fünfte Neuzugang denselben Stand erreicht, ohne dass jemand daneben sitzen muss.</p></div></div>
+    <div class="service-card reveal"><div class="service-num">04</div><div><h3>Workflow-Automatisierung</h3><p>Wiederkehrende Prozesse wie Email-Routing, Terminbestätigungen, Follow-ups und Rechnungsversand — automatisiert mit n8n und KI.</p></div></div>
+    <div class="service-card is-wide reveal"><div class="service-num">05</div><div><h3>Voicemail & Omnichannel</h3><p>Automatisierte Sprachnachrichten-Verarbeitung, kanalübergreifende Kommunikation — kein Anruf geht mehr verloren.</p></div></div>
   </div>
 </div>
 </section>
@@ -318,12 +336,12 @@ footer{background:#050505;color:var(--blue-200);padding:3rem 0 1.5rem}
     <div class="pain-list">
       <div class="pain-item reveal"><div class="pain-icon">😩</div><div><h4>„Ich verbringe mehr Zeit mit Admin als mit meinem Kerngeschäft."</h4><p>Emails, Termine, Rechnungen — der Tag ist vorbei, bevor die eigentliche Arbeit beginnt.</p></div></div>
       <div class="pain-item reveal"><div class="pain-icon">😰</div><div><h4>„Alle reden über KI, aber ich weiß nicht, wo ich anfangen soll."</h4><p>Die Flut an Tools und Möglichkeiten ist überwältigend. Ohne Orientierung bleibt alles beim Alten.</p></div></div>
-      <div class="pain-item reveal"><div class="pain-icon">😤</div><div><h4>„Ich habe kein Budget für ein Marketing-Team."</h4><p>Content erstellen, Social Media pflegen, sichtbar bleiben — als Solopreneur unmöglich neben dem Tagesgeschäft.</p></div></div>
+      <div class="pain-item reveal"><div class="pain-icon">😟</div><div><h4>„Wenn meine erfahrenste Kraft geht, geht ihr Wissen mit."</h4><p>Rente, Wechsel, Elternzeit — und plötzlich weiß niemand mehr, warum etwas so gemacht wird, wie es gemacht wird.</p></div></div>
     </div>
     <div class="solution-list pain-list">
       <div class="pain-item reveal"><div class="pain-icon">✅</div><div><h4>Automatisierte Routine = mehr Zeit fürs Wesentliche</h4><p>Ihre wiederkehrenden Aufgaben laufen im Hintergrund. Sie konzentrieren sich auf Patienten und Kunden.</p></div></div>
       <div class="pain-item reveal"><div class="pain-icon">✅</div><div><h4>Klare Roadmap statt Überforderung</h4><p>Ich zeige Ihnen genau, wo KI bei Ihnen den größten Unterschied macht — und setze es direkt um.</p></div></div>
-      <div class="pain-item reveal"><div class="pain-icon">✅</div><div><h4>Sichtbarkeit auf Autopilot</h4><p>KI-gestützter Content, der Ihre Expertise zeigt — ohne Stunden vor dem Bildschirm zu sitzen.</p></div></div>
+      <div class="pain-item reveal"><div class="pain-icon">✅</div><div><h4>Wissen, das im Betrieb bleibt</h4><p>Ihre Abläufe als Lerneinheit mit Video: verfügbar für jeden Neuzugang, auch wenn die Person längst weg ist — und anpassbar, sobald sich etwas ändert.</p></div></div>
     </div>
   </div>
 </div>
@@ -365,12 +383,35 @@ footer{background:#050505;color:var(--blue-200);padding:3rem 0 1.5rem}
 </section>
 
 <!-- LEAD MAGNET -->
-<section class="leadmagnet" id="checkliste">
+<!-- SCHULUNG (primaerer Einstieg seit 16.08.2026) -->
+<section class="schulung-lead" id="schulung-lead">
+<div class="container">
+  <div class="sl-inner reveal">
+    <div class="section-label">→ Video-Schulungen für Ihr Team</div>
+    <h2 class="section-title">Wissen, das nur in einem Kopf steckt, <span style="background:linear-gradient(90deg,var(--cyan),var(--papaya));-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text">fährt mit in den Urlaub.</span></h2>
+    <p class="sl-lead">Neue Mitarbeiterin, dieselbe Erklärung zum zwanzigsten Mal. Ich mache aus Ihren Abläufen interaktive Lerneinheiten mit Video und Übungen: einmal gebaut, beliebig oft nutzbar. Ihre Inhalte, Ihr Betrieb.</p>
+    <div class="lm-benefits sl-benefits">
+      <div class="lm-benefit"><span class="lm-check">✓</span> <strong>Einarbeitung ohne Daneben-Sitzen</strong> — auch beim fünften Neuzugang</div>
+      <div class="lm-benefit"><span class="lm-check">✓</span> <strong>Ihre Abläufe und Produkte</strong> — keine Standardware von der Stange</div>
+      <div class="lm-benefit"><span class="lm-check">✓</span> <strong>Ändert sich ein Ablauf</strong> — die Lerneinheit wird angepasst, nicht neu gebaut</div>
+      <div class="lm-benefit"><span class="lm-check">✓</span> <strong>Fertige Dateien</strong> — laufen auf Ihren eigenen Systemen und bleiben bei Ihnen</div>
+    </div>
+    <div class="sl-actions">
+      <a href="#erstberatung" class="btn btn-primary">Projekt anfragen →</a>
+      <a href="/schulung" class="btn btn-secondary">Kostenlose KI-Schulung ansehen</a>
+    </div>
+    <p class="sl-note">Die kostenlose Schulung ist meine eigene, zum Thema KI. Sie zeigt, wie ich arbeite. Was für Ihr Team entsteht, konzipiere ich einzeln: vom schlanken Erklärstück bis zur aufwendigen Produktion, je nachdem, was Ihr Thema braucht.</p>
+  </div>
+</div>
+</section>
+
+<!-- CHECKLISTE (Nebenweg seit 16.08.2026) -->
+<section class="leadmagnet is-secondary" id="checkliste">
 <div class="container">
 <div class="leadmagnet-grid">
   <div class="leadmagnet-content reveal">
     <div class="section-label">→ Kostenlose Checkliste</div>
-    <h2 class="section-title" style="max-width:500px">Noch nicht bereit für ein Gespräch? <span style="background:linear-gradient(90deg,var(--cyan),var(--papaya));-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text">Starten Sie hier.</span></h2>
+    <h2 class="section-title" style="max-width:500px">Lieber erst mal <span style="background:linear-gradient(90deg,var(--cyan),var(--papaya));-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text">nachlesen?</span></h2>
     <p style="color:var(--blue-200);font-size:1.05rem;margin-bottom:2rem;max-width:480px">10 Büroaufgaben, die sich automatisieren lassen — mit dem konkreten Zeitgewinn für Ihr Business. Kostenlos als PDF.</p>
     <div class="lm-benefits">
       <div class="lm-benefit"><span class="lm-check">✓</span> <strong>Bis zu 10h pro Woche</strong> zurückgewinnen</div>
@@ -382,7 +423,6 @@ footer{background:#050505;color:var(--blue-200);padding:3rem 0 1.5rem}
       <span class="lm-badge">🔒 Kein Spam</span>
       <span class="lm-badge">🇩🇪 Auf Deutsch</span>
     </div>
-    <p class="lm-crosslink">Lieber gleich tiefer einsteigen? <a href="/schulung">Zur kostenlosen KI-Schulung →</a></p>
   </div>
   <div class="leadmagnet-form-wrap reveal">
     <div class="lm-form-card">
@@ -420,7 +460,7 @@ footer{background:#050505;color:var(--blue-200);padding:3rem 0 1.5rem}
         <h3 style="font-size:1.2rem;color:var(--white);margin-bottom:8px">Ihre Checkliste ist da!</h3>
         <p style="font-size:.9rem;color:var(--blue-200);margin-bottom:20px">Sie erhalten sie zusätzlich per E-Mail — prüfen Sie ggf. den Spam-Ordner.</p>
         <a href="checkliste.html" target="_blank" rel="noopener" class="btn btn-primary" style="justify-content:center">Checkliste jetzt ansehen →</a>
-        <p class="lm-crosslink" style="margin-top:1.25rem;font-size:.85rem">Noch einen Schritt weiter: <a href="/schulung" target="_blank" rel="noopener">die kostenlose KI-Schulung →</a></p>
+        <p class="lm-crosslink" style="margin-top:1.25rem;font-size:.85rem">Noch einen Schritt weiter: <a href="/schulung" target="_blank" rel="noopener">die kostenlose KI-Schulung mit Video →</a></p>
       </div>
     </div>
   </div>
@@ -474,7 +514,7 @@ footer{background:#050505;color:var(--blue-200);padding:3rem 0 1.5rem}
 <div class="footer-grid">
   <div class="footer-brand">
     <div class="nav-logo" style="margin-bottom:.5rem"><img src="logo.png" alt="Logo" style="width:36px;height:36px;border-radius:6px">Monika Brenner</div>
-    <p>KI-Beratung und Automatisierung für mehr Effizienz, Sichtbarkeit und Rentabilität. Für Solopreneure, Arztpraxen und kleine Unternehmen.</p>
+    <p>KI-Beratung, Automatisierung und Schulungen für mehr Effizienz und Rentabilität. Für Solopreneure, Arztpraxen und kleine Unternehmen.</p>
   </div>
   <div class="footer-col"><h4>Navigation</h4><ul><li><a href="#leistungen">Leistungen</a></li><li><a href="#ueber-mich">Über mich</a></li><li><a href="#prozess">Prozess</a></li><li><a href="/schulung">Kostenlose Schulung</a></li><li><a href="#erstberatung">Erstberatung</a></li></ul></div>
   <div class="footer-col"><h4>Kontakt</h4><ul><li><a href="tel:+4915757054754">0157 57054754</a></li><li><a href="mailto:info@bremos.org">info@bremos.org</a></li></ul></div>
