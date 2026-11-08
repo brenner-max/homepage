@@ -194,8 +194,25 @@
       <p>Wenn du beim Aufschauen auf deine Routinen Unterstützung willst: Genau damit beginnt jede gute Automatisierung — und genau das ist der Kern eines kostenlosen 15-Minuten-Erstgesprächs bei <a href="https://bremos.org/termin" target="_blank" rel="noopener">BreMo KI-Beratung</a>.</p>
     </div>
     <div class="card no-print" style="margin-top:4px">
-      <p style="font-weight:600">Im nächsten Kapitel:</p>
+      <p style="font-weight:600">Kapitel 3 entsteht</p>
       <p class="dim">Wie du deine aufgeschriebene Routine in einen konkreten Plan verwandelst — und woran du erkennst, ob sich die Umsetzung lohnt.</p>
+      <p class="dim" style="margin-top:10px">Ein Datum dafür gibt es noch nicht. Wenn du Bescheid bekommen willst, sobald es fertig ist, trag dich hier ein.</p>
+      <form id="k3-form" onsubmit="sendK3(event)" style="margin-top:12px">
+        <input id="k3-vorname" placeholder="Dein Vorname" autocomplete="given-name" style="background:var(--card);border:1px solid var(--card-border);color:var(--text);border-radius:8px;padding:10px 14px;font-size:15px;width:100%;max-width:320px;margin-bottom:8px">
+        <input id="k3-email" type="email" required placeholder="Deine E-Mail-Adresse" autocomplete="email" style="background:var(--card);border:1px solid var(--card-border);color:var(--text);border-radius:8px;padding:10px 14px;font-size:15px;width:100%;max-width:320px;margin-bottom:8px">
+        <div style="position:absolute;left:-9999px" aria-hidden="true">
+          <input type="text" id="k3-hp" name="firma" tabindex="-1" autocomplete="off">
+        </div>
+        <button type="submit" id="k3-btn" class="btn">Bescheid geben</button>
+      </form>
+      <p class="dim" style="font-size:12px;margin-top:10px">Deine Adresse wird ausschließlich für diese eine Benachrichtigung benutzt, nicht für Werbung, und danach gelöscht. <a href="https://bremos.org/datenschutz" target="_blank" rel="noopener">Datenschutzerklärung</a></p>
+      <div id="k3-error" style="display:none;margin-top:10px">
+        <p class="dim" style="font-size:13px"><strong style="color:var(--text)">Das hat gerade nicht geklappt.</strong> Bitte versuch es gleich noch einmal. Wenn es weiter klemmt, schreib kurz an <a href="mailto:info@bremos.org">info@bremos.org</a>, dann merke ich dich von Hand vor.</p>
+      </div>
+      <div id="k3-ok" style="display:none;margin-top:10px">
+        <p style="font-weight:600;color:var(--gold)">Eingetragen.</p>
+        <p class="dim">Du bekommst eine Nachricht, sobald Kapitel 3 steht. Sonst nichts.</p>
+      </div>
     </div>
     <button class="btn no-print" onclick="window.print()">Merkblatt drucken</button>
     <button class="btn ghost no-print" onclick="resetAll()">Lektion zurücksetzen</button>
@@ -240,6 +257,37 @@ function updateHeader() {
   document.querySelector("#bar > div").style.width = p + "%";
   document.getElementById("xp").textContent = S.xp + " XP";
 }
+async function sendK3(e) {
+  e.preventDefault();
+  const btn = document.getElementById("k3-btn");
+  const fehler = document.getElementById("k3-error");
+  fehler.style.display = "none";
+  btn.disabled = true; btn.textContent = "Wird gesendet …";
+  let ok = false;
+  try {
+    const res = await fetch("https://n8n.srv1417885.hstgr.cloud/webhook/kapitel-3-warteliste", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({
+        vorname: document.getElementById("k3-vorname").value.trim(),
+        email: document.getElementById("k3-email").value.trim(),
+        hp: document.getElementById("k3-hp").value.trim(),
+        quelle: "Kapitel 2 Abschluss"
+      })
+    });
+    ok = res.ok;
+  } catch (err) { console.error("K3 form error:", err) }
+  if (!ok) {
+    // Kein Erfolgszustand ohne bestaetigten Eingang: sonst wartet jemand auf
+    // eine Nachricht, die nie kommt, und auf beiden Seiten entsteht kein Signal.
+    fehler.style.display = "block";
+    btn.disabled = false; btn.textContent = "Bescheid geben";
+    return;
+  }
+  document.getElementById("k3-form").style.display = "none";
+  document.getElementById("k3-ok").style.display = "block";
+}
+
 function startLesson() { S.name = document.getElementById("name-in").value.trim(); save(); gotoVideo(1); }
 function resumeLesson() {
   try { S = JSON.parse(localStorage.getItem(LS_KEY)); } catch (e) {}
@@ -479,6 +527,8 @@ function nextQuestion() {
 }
 function finishLesson() {
   document.getElementById("ende-gruss").textContent = S.name ? "Geschafft, " + S.name + "." : "Geschafft.";
+  const k3v = document.getElementById("k3-vorname");
+  if (k3v && S.name) k3v.value = S.name;
   document.getElementById("ende-xp").textContent = S.xp;
   if (S.zeitfresser && S.zeitfresser.length === 2) {
     document.getElementById("ende-zf").style.display = "block";
