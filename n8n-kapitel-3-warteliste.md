@@ -125,3 +125,112 @@ Erscheint stattdessen "Das hat gerade nicht geklappt", ist das kein Anzeigefehle
 - **Verarbeitungsverzeichnis ergänzen** — `verarbeitungsverzeichnis-entwurf-2026-08-24.md` listet neun Verarbeitungen, diese ist die zehnte. Zweck, Rechtsgrundlage (Art. 6 Abs. 1 lit. a), Empfänger (Google, keine neuen) und Frist eintragen
 - **Kein Double-Opt-In, und das ist hier vertretbar** — meine Einschätzung, keine Rechtsauskunft: Die Adresse wird für genau den Zweck erhoben, den der Eintragende selbst anstößt, und für nichts anderes. Es ist keine Werbeliste. Der offene DOI-Punkt aus dem Security-Check betrifft Werbemails und blockiert diese Benachrichtigung nicht. Wenn die Liste später für Werbung benutzt werden soll, gilt er wieder in voller Härte, und dann braucht es die Einwilligung neu
 - **Eine der vier Kapitel-2-Kopien ist veraltet** — `schulungen/kapitel-2-routinen-automatisieren/kapitel-2-routinen-automatisieren.html` fehlt die Anbieterkennzeichnung mit Impressum und Datenschutz, also der Rechts-Fix vom 13.08., und das `noindex`. Die Datei hat deshalb bewusst **keine** Formular-Änderung bekommen. Entweder löschen oder auf den Stand bringen, aber als Entscheidung, nicht im Vorbeigehen
+
+
+---
+
+## Nachtrag: die Löschroutine um diesen Reiter erweitern
+
+Der Reiter "Kapitel 3 Warteliste" ist die einzige der drei Listen ohne Löschmechanik. Die Frist steht im Verzeichnis unter **A4a**, ausgeführt wird sie bisher von niemandem. Eine dokumentierte Frist, die nie stattfindet, ist schlechter als keine Angabe: Sie belegt, dass man es besser wusste.
+
+`loeschfristen-workflow.json` ist bereits erweitert und liegt versioniert vor: **16 Nodes statt 12**, der Merge-Node hat **drei** Eingänge statt zwei.
+
+> [!warning] Nicht neu importieren
+> Der Live-Workflow trägt fünf eingerichtete Credentials. Ein Import legt einen zweiten Workflow an oder kostet dich alle fünf noch einmal. Die zwei neuen Nodes werden **von Hand** ergänzt.
+
+### 1. Lese-Node ergänzen
+
+Den bestehenden Node **`Lesen: Schulung K2`** anklicken, **Strg + C**, **Strg + V**. Die Kopie umbenennen in `Lesen: Kapitel 3 Warteliste` und darin nur **Sheet** auf `Kapitel 3 Warteliste` umstellen. Document und Credential stimmen schon, weil es dasselbe Dokument ist.
+
+Dann vom **Schedule Trigger** eine dritte Linie auf diesen Node ziehen.
+
+**Woran du erkennst, dass es sitzt:** Am Trigger hängen drei Linien, nicht zwei. Im neuen Node steht bei **Always Output Data** der Schalter an — das ist wichtig, sonst bricht der Zweig ab, solange die Liste leer ist, und das ist sie am Anfang immer.
+
+### 2. Code-Node ergänzen
+
+**`Fristen prüfen: Schulung K2`** kopieren und einfügen, umbenennen in `Fristen prüfen: Kapitel 3 Warteliste`. Den Code darin komplett ersetzen:
+
+```javascript
+// Speicherbegrenzung nach Art. 5 Abs. 1 lit. e DSGVO.
+// Kuerzere Frist als bei den Lead-Blaettern: Die Adresse ist fuer genau eine
+// Benachrichtigung erhoben (Verzeichnis A4a). Mit deren Versand ist der Zweck
+// erledigt; 12 Monate sind die Obergrenze, nicht die Regel.
+// Dieser Node löscht NICHTS. Er entscheidet nur, was fällig wäre.
+
+const BLATT  = "Kapitel 3 Warteliste";
+const MONATE = 12;
+const grenze = DateTime.now().minus({ months: MONATE });
+
+const zuLoeschen = [];
+const ohneDatum  = [];
+let   geprueft   = 0;
+
+for (const item of $input.all()) {
+  const zeile = item.json || {};
+
+  // Leeres Platzhalter-Item überspringen. Es entsteht durch "Always Output Data",
+  // wenn das Blatt keine Datenzeile hat. Das ist kein Fehler und keine Zeile.
+  if (zeile.row_number === undefined) continue;
+  geprueft++;
+
+  const roh   = zeile.timestamp;
+  const email = zeile["E-Mail"] || "(keine)";
+
+  // Zeilen ohne verwertbares Datum werden NIE automatisch gelöscht, nur gemeldet.
+  // Ein fehlendes Datum ist ein Fehler in der Erfassung, kein Grund zu löschen.
+  if (!roh || String(roh).trim() === "") {
+    ohneDatum.push({ zeile: zeile.row_number, email, hinweis: "kein Datum" });
+    continue;
+  }
+
+  const datum = DateTime.fromISO(String(roh));
+  if (!datum.isValid) {
+    ohneDatum.push({ zeile: zeile.row_number, email, hinweis: "Datum unlesbar: " + roh });
+    continue;
+  }
+
+  if (datum < grenze) {
+    zuLoeschen.push({
+      zeile: zeile.row_number,
+      email,
+      eingetragen: datum.toFormat("dd.MM.yyyy"),
+      alterInMonaten: Math.floor(DateTime.now().diff(datum, "months").months),
+    });
+  }
+}
+
+// Absteigend nach Zeilennummer sortieren. Wer von oben löscht, verschiebt alles
+// darunter und trifft danach die falschen Zeilen.
+zuLoeschen.sort((a, b) => b.zeile - a.zeile);
+
+return [{ json: {
+  blatt: BLATT,
+  geprueft,
+  zuLoeschenAnzahl: zuLoeschen.length,
+  zuLoeschen,
+  ohneDatumAnzahl: ohneDatum.length,
+  ohneDatum,
+  stichtag: grenze.toFormat("dd.MM.yyyy"),
+} }];
+
+```
+
+Die beiden einzigen Unterschiede zum Nachbarn stehen oben: `BLATT` und `MONATE`. **12 Monate statt 24**, weil der Zweck mit dem einen Versand erledigt ist.
+
+Dann `Lesen: Kapitel 3 Warteliste` → `Fristen prüfen: Kapitel 3 Warteliste` verbinden.
+
+### 3. Merge auf drei Eingänge
+
+**`Zusammenführen`** öffnen, **Number of Inputs** von 2 auf **3** stellen. Am Node erscheint links ein dritter Anschluss. Den neuen Code-Node dorthin verbinden.
+
+**Woran du erkennst, dass es sitzt:** Der Merge-Node hat links drei Eingänge, und an allen dreien hängt eine Linie. Ein leerer dritter Eingang heißt, der Bericht zählt den Reiter nicht mit — und das fällt nicht auf, weil der Bericht trotzdem kommt.
+
+### 4. Der Löschzweig bleibt aus
+
+Die beiden Nodes `Fällige Zeilen: Kapitel 3 Warteliste` und `LÖSCHEN: Kapitel 3 Warteliste` stehen im JSON **deaktiviert**. Von Hand brauchst du sie jetzt nicht. Erst wenn der Bericht zweimal plausibel aussah, wird gelöscht. Das ist der eine Schritt, den kein Backup im Sheet rückgängig macht.
+
+### 5. Prüfen
+
+Workflow **deaktivieren und wieder aktivieren**, dann einmal von Hand ausführen.
+
+**Woran du erkennst, dass es sitzt:** Im Bericht steht ein dritter Abschnitt für `Kapitel 3 Warteliste`. **Wichtig ist dort die Zahl bei "geprüft", nicht die Null bei "fällig"** — eine leere Liste meldet null fällige Zeilen, aber ein Zweig, der gar nicht läuft, meldet dasselbe. Steht der Abschnitt nicht im Bericht, hängt der dritte Merge-Eingang im Leeren.
