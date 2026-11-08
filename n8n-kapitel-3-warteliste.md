@@ -46,9 +46,17 @@ Im Google Sheet **"Lead Magnet"** (dasselbe Dokument, in dem schon die Reiter "L
 
 ## Schritt 2: Workflow importieren
 
-1. In n8n oben rechts auf **+** → **Import from File**
-2. Die Datei `kapitel-3-warteliste-workflow.json` auswählen
-3. Der Workflow heißt danach **"Kapitel 3 Warteliste"** und hat **fünf Nodes**
+Der Klickweg ist der am 24.08. anhand eines Screenshots aus der Instanz korrigierte, nicht der aus der Dokumentation: **Der Pfeil ▾ neben "Create workflow" enthält keinen Import.** Der sitzt ausschließlich im Menü der offenen Arbeitsfläche.
+
+1. Links in der Leiste auf **Overview** bzw. **Workflows**
+2. Oben rechts auf **Create workflow** — auf den **Knopf selbst**, nicht auf den Pfeil daneben. Es öffnet sich eine leere Arbeitsfläche
+3. Dort oben rechts das **⋯**-Menü (neben Save und dem Inactive-Schalter) → **Import from File…**
+4. Die Datei auswählen: `C:\Users\User\Desktop\mein-business\04-projects\homepage\kapitel-3-warteliste-workflow.json`
+5. Der Workflow heißt danach **"Kapitel 3 Warteliste"** und hat **fünf Nodes**
+6. **Oben rechts auf Save.** Ein Import allein speichert nicht
+
+> [!tip] Falls das ⋯-Menü keinen Import zeigt
+> JSON-Datei im Editor öffnen, alles markieren, kopieren, auf der leeren Arbeitsfläche **Strg + V**. n8n baut die Nodes aus der Zwischenablage. Nur der Workflow-Name kommt dabei nicht mit, den trägst du oben links von Hand ein.
 
 **Woran du erkennst, dass es sitzt:** Fünf Kästen auf der Fläche, von links nach rechts: `Webhook` → `Kein Bot` → oben `In Warteliste schreiben` → `Alert Monika`, und nach unten abgezweigt `Bot verworfen`. Am `Kein Bot` gehen **zwei** Linien weg, eine nach oben rechts und eine nach unten. Keine Linie endet im Leeren.
 
